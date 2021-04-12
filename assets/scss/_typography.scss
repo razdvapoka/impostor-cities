@@ -1,0 +1,34 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+}
+
+h1,
+.H1 {
+  @include font-style(x1-cin);
+}
+
+h2,
+.H2 {}
+
+@mixin typography-system($screen: null) {
+  @each $styleName, $styleMap in $font-styles {
+    $base-class-name: 'text-#{$styleName}';
+    $class-name: if($screen, '#{$screen}\\:#{$base-class-name}', $base-class-name);
+
+    .#{$class-name} {
+      @include font-style($styleName);
+    }
+  }
+}
+
+@include typography-system();
+
+@each $screen in $style-system-screens {
+  @include mediaQuery($screen) {
+    @include typography-system($screen);
+  }
+}

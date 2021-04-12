@@ -1,0 +1,42 @@
+$ff-suisse: 'Suisse', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+
+$screens: (
+  desktop: (
+    min: 1024px,
+  ),
+);
+
+$style-system-screens: (desktop);
+
+$font-styles: (
+  reg: (
+    font-family: $ff-suisse,
+    font-size: 1.6rem,
+    line-height: 20 / 16,
+  ),
+  reg-head: (
+    font-family: $ff-suisse,
+    font-size: 1.6rem,
+    line-height: 20 / 16,
+    text-transform: uppercase,
+  ),
+);
+
+// дублируется в tailwind.config.js
+$colors: (
+  black: (
+    base: #000,
+  ),
+  white: (
+    base: #fff,
+  ),
+  red: (
+    base: #ff2e00,
+  ),
+  grey: (
+    base: #111111,
+  ),
+);
+
+$color-primary: map_get(map_get($colors, white), base);
+$color-secondary: map_get(map_get($colors, black), base);

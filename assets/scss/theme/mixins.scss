@@ -1,0 +1,5 @@
+@mixin font-style($size) {
+  @each $rule, $value in map_get($font-styles, $size) {
+    #{$rule}: #{$value};
+  }
+}

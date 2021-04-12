@@ -1,0 +1,40 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "inline-react-svg",
+      {
+        "svgo": {
+          "plugins": [
+            {
+              "removeDimensions": true
+            },
+            {
+              "removeAttrs": { "attrs": "(data-name)" }
+            },
+            {
+              "cleanupIDs": true
+            },
+            {
+              "removeTitle": true
+            },
+            {
+              "removeViewBox": false
+            },
+            {
+              "convertColors": {
+                "shorthex": false,
+                "currentColor": true
+              }
+            },
+            {
+              "addAttributesToSVGElement": {
+                "attributes": ['preserveAspectRatio="xMidYMid"']
+              }
+            }
+          ]
+        }
+      }
+    ]
+  ]
+}
