@@ -10,6 +10,7 @@ export const getStaticProps = async (context) => {
       commonData,
       page,
     },
+    revalidate: 10,
   }
 }
 
