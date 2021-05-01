@@ -1,4 +1,4 @@
-$ff-suisse: 'Suisse', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+$ff-helvetica: 'Helvetica Neue LT Pro', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 
 $screens: (
   desktop: (
@@ -9,17 +9,46 @@ $screens: (
 $style-system-screens: (desktop);
 
 $font-styles: (
-  reg: (
-    font-family: $ff-suisse,
-    font-size: 1.6rem,
-    line-height: 20 / 16,
+  ts1: (
+    font-family: $ff-helvetica,
+    font-size: 14px,
+    line-height: 15 / 14,
+    letter-spacing: (-15em/1000)
   ),
-  reg-head: (
-    font-family: $ff-suisse,
-    font-size: 1.6rem,
-    line-height: 20 / 16,
-    text-transform: uppercase,
+  ts2: (
+    font-family: $ff-helvetica,
+    font-size: 34px,
+    font-weight: bold,
+    line-height: 35 / 34,
+    letter-spacing: (-23em/1000)
   ),
+  ts3: (
+    font-family: $ff-helvetica,
+    font-size: 14px,
+    line-height: 17 / 14,
+    letter-spacing: (20em/1000)
+  ),
+  ts3I: (
+    font-family: $ff-helvetica,
+    font-size: 14px,
+    font-style: italic,
+    line-height: 17 / 14,
+    letter-spacing: (30em/1000)
+  ),
+  ts3B: (
+    font-family: $ff-helvetica,
+    font-size: 14px,
+    font-weight: bold,
+    line-height: 17 / 14,
+    letter-spacing: (-15em/1000)
+  ),
+  tsC: (
+    font-family: $ff-helvetica,
+    font-size: 28px,
+    font-weight: bold,
+    line-height: 32.57 / 28,
+    letter-spacing: (-23em/1000)
+  )
 );
 
 // дублируется в tailwind.config.js
@@ -30,11 +59,11 @@ $colors: (
   white: (
     base: #fff,
   ),
-  red: (
-    base: #ff2e00,
-  ),
   grey: (
-    base: #111111,
+    base: #6D6E71,
+  ),
+  purple: (
+    base: #B456FF,
   ),
 );
 

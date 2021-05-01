@@ -20,4 +20,14 @@ module.exports = withPlugins([nextTranslate], {
   future: {
     webpack5: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/en/presse',
+        destination: '/fr/presse',
+        locale: false,
+        permanent: true,
+      },
+    ]
+  },
 })

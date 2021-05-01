@@ -1,0 +1,9 @@
+.line {
+  height: 2px;
+  background-color: white;
+  transform: scaleX(0);
+  transform-origin: left center;
+  &Revealed {
+    transform: scaleX(1)
+  }
+}

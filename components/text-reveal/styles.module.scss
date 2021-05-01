@@ -1,0 +1,15 @@
+.textOverlay {
+  color: transparent;
+  background-image: linear-gradient(
+    90deg, transparent 0%, transparent 50%, black 55%, black 100%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  &Box {
+    transform:translateY(-1px);
+  }
+  &Hidden {
+    background-position: 0 0;
+  }
+}

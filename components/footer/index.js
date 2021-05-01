@@ -1,5 +1,4 @@
 import styles from './styles.module.scss'
-console.log(styles)
 
 const Footer = ({ text, title }) => {
   return (

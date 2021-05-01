@@ -1,0 +1,58 @@
+.logo {
+  width: 46px;
+  height: 25px;
+}
+
+.dot {
+  transform: translateY(-5px);
+}
+
+.navLink:hover {
+  color: color(grey);
+}
+
+.headerNav {
+  transition: height 0.1s ease;
+}
+
+.headerInfo {
+  transition: height 0.1s ease;
+  &Opened {
+    transition: height 0.3s ease 0.3s;
+  }
+  &Content {
+    border-color: color(black);
+  }
+  &ContentOpened {
+    border-color: color(white);
+    transition: border-color 0.2s ease 0.6s;
+  }
+  &Logo {
+    width: 141px;
+    height: 130px;
+    opacity: 0;
+  }
+  &LogoOpened {
+    opacity: 1;
+    transition: opacity 0.2s ease 0.6s;
+  }
+}
+
+.lift {
+  transform: translateY(20px);
+  &Up {
+    transform: none;
+    transition: transform 0.3s ease 1s;
+  }
+}
+
+.nav {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  &Open {
+    opacity: 1;
+    transform: none;
+  }
+}
+
