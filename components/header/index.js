@@ -1,4 +1,5 @@
-import { useToggle, useMeasure } from 'react-use'
+import { useRef } from 'react'
+import { useToggle, useMeasure, useClickAway } from 'react-use'
 import styles from './styles.module.scss'
 import cn from 'classnames'
 import Link from 'next/link'
@@ -238,9 +239,16 @@ const HeaderInfo = ({ isOpen }) => {
 
 const Header = ({ isOpenByDefault = false }) => {
   const [isOpen, toggleOpen] = useToggle(isOpenByDefault)
+  const ref = useRef(null)
+  useClickAway(ref, () => {
+    if (isOpen) {
+      toggleOpen()
+    }
+  })
 
   return (
     <header
+      ref={ref}
       className={`
         fixed top-0 left-0
         w-screen
