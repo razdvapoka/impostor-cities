@@ -8,7 +8,7 @@ import { NAV_ITEMS } from '@/consts'
 
 const HeaderMain = ({ open }) => {
   return (
-    <div className="pb-4 my-grid text-ts3B cursor-pointer" onClick={open}>
+    <div className="pb-4 cursor-pointer my-grid text-ts3B" onClick={open}>
       <div className="w-2/8">
         <div className={cn('bg-white ml-1', styles.logo)} />
       </div>
@@ -48,7 +48,7 @@ const Nav = ({ lang, isOpen }) => {
       <ul>
         {items.map((item) => (
           <li key={item.href}>
-            <Link href={item.href}>
+            <Link href={item.href} locale={lang}>
               <a className="transition-colors hover:text-grey">{item.title}</a>
             </Link>
           </li>

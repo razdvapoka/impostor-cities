@@ -1,23 +1,20 @@
-import { Typograph, Layout, Image } from '@/components'
-import { getMainPage } from '@/lib/contentful'
+import { Press } from '@/components'
+import { getPressPage } from '@/lib/contentful'
 import { withCommonData } from '@/lib/utils'
 
 export const getStaticProps = async (context) => {
-  const { commonData } = await withCommonData()(context)
+  const { commonData, data } = await withCommonData(getPressPage)(context)
   return {
     props: {
       commonData,
+      data,
     },
     revalidate: 10,
   }
 }
 
-const PressPage = ({ commonData }) => {
-  return (
-    <Layout {...commonData}>
-      <h1 className="mb-6 text-reg-head">PRESSE</h1>
-    </Layout>
-  )
+const PressPage = ({ commonData, data }) => {
+  return <Press commonData={commonData} data={data} />
 }
 
 export default PressPage
