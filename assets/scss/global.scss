@@ -82,6 +82,7 @@ button {
 
 .my-grid {
   display: flex;
+  flex-wrap: wrap;
   margin-left: -2px;
   margin-right: -2px;
 }

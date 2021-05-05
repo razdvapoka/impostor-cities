@@ -88,5 +88,5 @@ module.exports = {
       gridColumn: ['last'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/aspect-ratio')],
 }
