@@ -1,7 +1,7 @@
 import { Layout } from '@/components'
-import useTranslation from 'next-translate/useTranslation'
+// import useTranslation from 'next-translate/useTranslation'
 import { getVideos } from '@/lib/contentful'
-import { withCommonData } from '@/lib/utils'
+import { withCommonData, repeat } from '@/lib/utils'
 
 export const getStaticProps = async (context) => {
   const { commonData, data: videos } = await withCommonData(getVideos)(context)
@@ -22,14 +22,6 @@ const VideoItem = ({ src, poster }) => {
       </div>
     </div>
   )
-}
-
-const repeat = (item, count) => {
-  const result = []
-  for (let i = 0; i < count; i++) {
-    result.push(item)
-  }
-  return result
 }
 
 const HomePage = ({ commonData, videos }) => {

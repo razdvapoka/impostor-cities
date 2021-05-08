@@ -15,7 +15,7 @@ module.exports = withPlugins([nextTranslate], {
     `,
   },
   images: {
-    domains: ['images.ctfassets.net'],
+    domains: ['images.ctfassets.net', 'cdn.shopify.com'],
   },
   future: {
     webpack5: true,
@@ -25,6 +25,12 @@ module.exports = withPlugins([nextTranslate], {
       {
         source: '/en/presse',
         destination: '/fr/presse',
+        locale: false,
+        permanent: true,
+      },
+      {
+        source: '/en/boutique',
+        destination: '/fr/boutique',
         locale: false,
         permanent: true,
       },

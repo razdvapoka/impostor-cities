@@ -1,4 +1,6 @@
 export const ROUTE_MAP = {
+  '/shop': '/boutique',
+  '/boutique': '/shop',
   '/presse': '/press',
   '/press': '/presse',
   '/': '/',
