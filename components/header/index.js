@@ -224,7 +224,7 @@ const HeaderInfo = ({ isOpen }) => {
                   [styles.headerInfoLogoOpened]: isOpen,
                 })}
                 style={{
-                  backgroundImage: 'url(images/biennale-logo.svg)',
+                  backgroundImage: 'url(/images/biennale-logo.svg)',
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                 }}

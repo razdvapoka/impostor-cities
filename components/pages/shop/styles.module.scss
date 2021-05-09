@@ -1,0 +1,24 @@
+.overlay {
+  mix-blend-mode: exclusion;
+}
+
+.overlayButton {
+  cursor: none;
+}
+
+.overlayButton:not(:disabled):hover {
+  .overlayButtonCursor {
+    opacity: 1;
+  }
+}
+
+.overlayButtonCursor {
+  opacity: 0;
+  width: 43px;
+  height: 35px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(/images/slider-arrow.svg);
+  pointer-events: none;
+}

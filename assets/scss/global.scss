@@ -55,7 +55,7 @@ button {
 }
 
 *:focus {
-  outline: 0;
+  outline: 0 !important;
 }
 
 .centered {
@@ -90,6 +90,17 @@ button {
 .my-grid > * {
   padding-left: 2px;
   padding-right: 2px;
+}
+
+.embla {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+}
+.embla__slide {
+  position: relative;
+  flex: 0 0 100%;
 }
 
 /*! purgecss end ignore */
