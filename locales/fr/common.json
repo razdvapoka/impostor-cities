@@ -1,3 +1,7 @@
 {
-  "test": "le test"
+  "selectSize": "Sélectionnez une taille",
+  "description": "Déscription",
+  "addToCart": "Ajouter au panier",
+  "goToCart": "Passé au panier",
+  "cart": "panier"
 }

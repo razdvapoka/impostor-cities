@@ -86,6 +86,8 @@ module.exports = {
   variants: {
     extend: {
       gridColumn: ['last'],
+      pointerEvents: ['disabled'],
+      textDecoration: ['disabled'],
     },
   },
   plugins: [require('@tailwindcss/aspect-ratio')],

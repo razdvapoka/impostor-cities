@@ -1,6 +1,7 @@
 import { Shop } from '@/components'
 import { getProducts } from '@/lib/shopify'
 import { withCommonData } from '@/lib/utils'
+import { CartProvider } from '@/contexts/cart'
 
 export const getStaticProps = async (context) => {
   const { commonData, data } = await withCommonData(getProducts)(context)
@@ -14,7 +15,16 @@ export const getStaticProps = async (context) => {
 }
 
 const ShopPage = ({ commonData, products }) => {
-  return <Shop commonData={commonData} products={products} />
+  return (
+    <CartProvider
+      initialValue={{
+        products,
+        selected: {},
+      }}
+    >
+      <Shop commonData={commonData} products={products} />
+    </CartProvider>
+  )
 }
 
 export default ShopPage

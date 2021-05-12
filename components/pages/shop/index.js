@@ -2,18 +2,25 @@ import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components'
 import Image from 'next/image'
 import Link from 'next/link'
-import { repeat } from '@/lib/utils'
+import { repeat, getSizeOption, hasVariants } from '@/lib/utils'
+import cn from 'classnames'
 
-const ProductInfo = ({ title, price, options }) => {
-  const hasOptions = options.length > 0 && options[0].name !== 'Title'
+const ProductInfo = ({ title, price, variants }) => {
+  const variantsExist = hasVariants(variants)
+
   return (
     <div>
       <div>{title}</div>
       <div>{price}</div>
-      {hasOptions && (
+      {variantsExist && (
         <div className="flex space-x-2">
-          {options[0].values.map((option, optionIndex) => (
-            <span key={optionIndex}>{option}</span>
+          {variants.map((variant, variantIndex) => (
+            <span
+              key={variantIndex}
+              className={cn({ 'line-through': !variant.available })}
+            >
+              {getSizeOption(variant).value}
+            </span>
           ))}
         </div>
       )}
@@ -22,10 +29,10 @@ const ProductInfo = ({ title, price, options }) => {
 }
 
 const ProductCard = ({
-  en: { images, title: titleEn, variants, options: optionsEn, handle },
-  fr: { title: titleFr, options: optionsFr },
+  en: { images, title: titleEn, variants: variantsEn, handle },
+  fr: { title: titleFr, variants: variantsFr },
 }) => {
-  const { price } = variants[0]
+  const { price } = variantsEn[0]
   const priceString = `$${price} CDN`
   const titlesDiffer = titleEn !== titleFr
   const { lang } = useTranslation('common')
@@ -36,17 +43,17 @@ const ProductCard = ({
         <div className="aspect-w-1 aspect-h-1">
           <Image layout="fill" src={images[0].src} />
         </div>
-        <div className="flex space-x-10 pt-1 text-ts3B">
+        <div className="flex pt-1 space-x-10 text-ts3B">
           <ProductInfo
             title={titleEn}
             price={priceString}
-            options={optionsEn}
+            variants={variantsEn}
           />
           {titlesDiffer && (
             <ProductInfo
               title={titleFr}
               price={priceString}
-              options={optionsFr}
+              variants={variantsFr}
             />
           )}
         </div>

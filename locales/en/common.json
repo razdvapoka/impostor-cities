@@ -1,3 +1,7 @@
 {
-  "test": "test"
+  "selectSize": "Select Size",
+  "description": "Description",
+  "addToCart": "Add to Cart",
+  "goToCart": "Go to Cart",
+  "cart": "cart"
 }
