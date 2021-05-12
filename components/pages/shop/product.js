@@ -179,23 +179,18 @@ const Product = ({ commonData, product }) => {
   )
   const [cart, setCart] = useCart()
 
-  console.log(cart)
-
-  const isVariantSelected = cart.selected[productId]?.find(
-    (vId) => vId === selectedVariantId
+  const isVariantSelected = cart[productId]?.find(
+    (v) => v.variantId === selectedVariantId
   )
-  console.log(selectedVariantId, isVariantSelected)
+  // const isProductSelected = cart[productId] && cart[productId].length > 0
 
   const addVariantToCart = useCallback(() => {
+    const variant = { count: 1, variantId: selectedVariantId }
     setCart({
       ...cart,
-      selected: {
-        ...cart.selected,
-        [productId]: cart.selected[productId]
-          ? [...cart.selected[productId], selectedVariantId]
-          : [selectedVariantId],
-      },
+      [productId]: cart[productId] ? [...cart[productId], variant] : [variant],
     })
+
     setSelectedVariantId(variantsExist ? null : en.variants[0].id)
   }, [cart, setCart, product, selectedVariantId])
 

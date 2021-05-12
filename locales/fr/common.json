@@ -3,5 +3,6 @@
   "description": "Déscription",
   "addToCart": "Ajouter au panier",
   "goToCart": "Passé au panier",
-  "cart": "panier"
+  "cart": "panier",
+  "cartUC": "Panier"
 }

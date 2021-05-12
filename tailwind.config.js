@@ -20,6 +20,7 @@ const width = {
   ...grid(2),
   ...grid(6),
   ...grid(8),
+  ...grid(16),
 }
 
 const spacing = range(30).reduce(

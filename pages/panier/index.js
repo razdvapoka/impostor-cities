@@ -1,4 +1,4 @@
-import { Shop } from '@/components'
+import { Cart } from '@/components'
 import { getProducts } from '@/lib/shopify'
 import { withCommonData } from '@/lib/utils'
 
@@ -13,8 +13,8 @@ export const getStaticProps = async (context) => {
   }
 }
 
-const ShopPage = ({ commonData, products }) => {
-  return <Shop commonData={commonData} products={products} />
+const CartPage = ({ commonData, products }) => {
+  return <Cart commonData={commonData} products={products} />
 }
 
-export default ShopPage
+export default CartPage

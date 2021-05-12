@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import '../assets/css/tailwind.css'
 import '../assets/scss/global.scss'
+import { CartProvider } from '@/contexts/cart'
 
 const touchEventsDetector = `
     if ('ontouchstart' in window || (window.DocumentTouch && document instanceof DocumentTouch)) {
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <script dangerouslySetInnerHTML={{ __html: touchEventsDetector }} />
       </Head>
-      <Component {...pageProps} />
+      <CartProvider>
+        <Component {...pageProps} />
+      </CartProvider>
     </div>
   )
 }

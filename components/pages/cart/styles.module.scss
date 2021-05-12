@@ -1,0 +1,13 @@
+.cart {
+  margin-top: 184px;
+}
+
+.leftBorder::before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 100%;
+  left: -4px;
+  width: 1px;
+  background-color: color(grey);
+}
