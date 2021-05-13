@@ -5,18 +5,31 @@ const VideoItem = ({
   unmutedVideoIndex,
   setUnmutedVideoIndex,
   index,
+  hasUserInteraction,
+  setHasUserInteraction,
 }) => {
   const handleMouseEnter = useCallback(() => {
+    if (!hasUserInteraction) {
+      setHasUserInteraction(true)
+    }
     if (index !== unmutedVideoIndex) {
       setUnmutedVideoIndex(index)
     }
-  }, [index, unmutedVideoIndex, setUnmutedVideoIndex])
+  }, [
+    index,
+    unmutedVideoIndex,
+    setUnmutedVideoIndex,
+    hasUserInteraction,
+    setHasUserInteraction,
+  ])
   const handleMouseLeave = useCallback(() => {
     if (index === unmutedVideoIndex) {
       setUnmutedVideoIndex(null)
     }
   }, [index, unmutedVideoIndex, setUnmutedVideoIndex])
-  const isMuted = unmutedVideoIndex !== null && index !== unmutedVideoIndex
+  const isMuted =
+    !hasUserInteraction ||
+    (unmutedVideoIndex !== null && index !== unmutedVideoIndex)
   return (
     <div className="w-2/6 mb-1">
       <div className="aspect-w-16 aspect-h-9">
