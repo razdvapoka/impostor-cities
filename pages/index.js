@@ -1,7 +1,6 @@
-import { Layout } from '@/components'
-// import useTranslation from 'next-translate/useTranslation'
+import { Layout, VideoGrid } from '@/components'
 import { getVideos } from '@/lib/contentful'
-import { withCommonData, repeat } from '@/lib/utils'
+import { withCommonData } from '@/lib/utils'
 
 export const getStaticProps = async (context) => {
   const { commonData, data: videos } = await withCommonData(getVideos)(context)
@@ -14,30 +13,10 @@ export const getStaticProps = async (context) => {
   }
 }
 
-const VideoItem = ({ src, poster }) => {
-  return (
-    <div className="w-2/6 mb-1">
-      <div className="aspect-w-16 aspect-h-9">
-        <video src={src} poster={poster} autoPlay playsInline loop />
-      </div>
-    </div>
-  )
-}
-
 const HomePage = ({ commonData, videos }) => {
-  // const { t } = useTranslation('common')
-  const fakeVideos = repeat(videos[0], 9)
   return (
     <Layout {...commonData}>
-      <div className="my-grid py-20">
-        {fakeVideos.map((video) => (
-          <VideoItem
-            key={video.sys.id}
-            src={video.vimeoUrl}
-            poster={video.vimeoPosterUrl}
-          />
-        ))}
-      </div>
+      <VideoGrid videos={videos} />
     </Layout>
   )
 }
