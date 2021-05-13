@@ -16,7 +16,7 @@ import {
 
 const HeaderMain = ({ open }) => {
   return (
-    <div className="pb-4 cursor-pointer my-grid text-ts3B" onClick={open}>
+    <div className="pb-4 cursor-pointer my-grid text-ts1B" onClick={open}>
       <div className="w-2/8">
         <div className={cn('bg-white ml-1', styles.logo)} />
       </div>
@@ -133,7 +133,7 @@ const HeaderNav = ({ isOpen, route, isCart }) => {
         <div className="w-2/8 text-ts2">
           <Nav lang="fr" isOpen={isOpen} route={route} isCart={isCart} />
         </div>
-        <div className="w-2/8 text-ts3B">
+        <div className="w-2/8 text-ts1B">
           <SocialMediaLinks isOpen={isOpen} />
         </div>
       </div>
@@ -181,7 +181,7 @@ const HeaderInfo = ({ isOpen }) => {
         </HeaderInfoColumn>
         <HeaderInfoColumn isOpen={isOpen}>
           <Lift isUp={isOpen}>
-            <div className="text-ts3B">
+            <div className="text-ts1B">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
                 17th International
                 <br />
@@ -196,7 +196,7 @@ const HeaderInfo = ({ isOpen }) => {
               </TextReveal>
             </div>
           </Lift>
-          <div className="mt-20">
+          <div className="mt-20 text-ts3">
             <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
               ©2021 Impostor Cities
               <br />
@@ -206,7 +206,7 @@ const HeaderInfo = ({ isOpen }) => {
         </HeaderInfoColumn>
         <HeaderInfoColumn isOpen={isOpen}>
           <Lift isUp={isOpen}>
-            <div className="text-ts3B">
+            <div className="text-ts1B">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
                 17e exposition internationale
                 <br />
@@ -221,18 +221,18 @@ const HeaderInfo = ({ isOpen }) => {
               </TextReveal>
             </div>
           </Lift>
-          <div className="mt-20">
+          <div className="mt-20 text-ts1">
             <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-              ©2021 Impostor Cities
+              ©2021 Édifices et artifice
               <br />
-              All rights reserved
+              Tous droits réservés
             </TextReveal>
           </div>
         </HeaderInfoColumn>
         <HeaderInfoColumn isOpen={isOpen}>
           <div className="flex justify-between">
             <Lift isUp={isOpen}>
-              <div className="text-ts3B">
+              <div className="text-ts1B">
                 <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
                   Padiglione Canada
                   <br />

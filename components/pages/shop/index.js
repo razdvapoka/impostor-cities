@@ -43,7 +43,7 @@ const ProductCard = ({
         <div className="aspect-w-1 aspect-h-1">
           <Image layout="fill" src={images[0].src} />
         </div>
-        <div className="flex pt-1 space-x-10 text-ts3B">
+        <div className="flex pt-1 space-x-10 text-ts1B">
           <ProductInfo
             title={titleEn}
             price={priceString}

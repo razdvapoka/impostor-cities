@@ -14,7 +14,7 @@ const getVariants = (product, variantId) => {
 const CartProduct = ({ product, variant: { variantId, count } }) => {
   const { variantEn, variantFr } = getVariants(product, variantId)
   return (
-    <div className="my-grid text-ts3B">
+    <div className="my-grid text-ts1B">
       <div className="w-1/8">{product.en.title}</div>
       <div className="w-1/8">{product.fr.title}</div>
       <div className="w-1/16">{getColorOption(variantEn).value}</div>
@@ -42,7 +42,7 @@ const Cart = ({ commonData, products }) => {
   return (
     <Layout {...commonData}>
       <div className={cn('', styles.cart)}>
-        <div className="my-grid pt-3 text-ts3B mb-1">
+        <div className="my-grid pt-3 text-ts1B mb-1">
           <div className="w-1/8">
             <div className="pb-8">Item</div>
           </div>

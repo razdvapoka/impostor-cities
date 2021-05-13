@@ -102,7 +102,7 @@ const ProductInfo = ({
         <div>
           {variantsExist && (
             <div>
-              <div className="mt-3 text-ts3B">{t('selectSize')}</div>
+              <div className="mt-3 text-ts1B">{t('selectSize')}</div>
               <div className="mt-1 space-x-4">
                 {variants.map((variant, variantIndex) => (
                   <button
