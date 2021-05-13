@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { VideoItem } from '@/components'
 import { VIDEO_ITEM_TYPE } from '@/consts'
 
-const VideoGrid = ({ videos }) => {
-  const [hasUserInteraction, setHasUserInteraction] = useState(false)
+const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
   const singles = videos.filter((v) => v.__typename === VIDEO_ITEM_TYPE)
   return (
@@ -14,10 +13,11 @@ const VideoGrid = ({ videos }) => {
           index={videoIndex}
           src={video.vimeoUrl}
           poster={video.vimeoPosterUrl}
+          stopOnHover={video.stopOnHover}
           unmutedVideoIndex={unmutedVideoIndex}
           setUnmutedVideoIndex={setUnmutedVideoIndex}
           hasUserInteraction={hasUserInteraction}
-          setHasUserInteraction={setHasUserInteraction}
+          pageHasFocus={pageHasFocus}
         />
       ))}
     </div>
