@@ -2,15 +2,22 @@ import { useCallback } from 'react'
 import { useVideo } from 'react-use'
 
 const VideoItem = ({
-  src,
-  poster,
+  vimeoUrl,
+  vimeoPosterUrl,
   unmutedVideoIndex,
   setUnmutedVideoIndex,
   index,
   hasUserInteraction,
   stopOnHover,
   pageHasFocus,
+  transitionState,
+  title,
+  id,
+  switchToNextVideo,
 }) => {
+  const handleClick = useCallback(() => {
+    switchToNextVideo(index)
+  }, [index, switchToNextVideo])
   const isMuted =
     !pageHasFocus ||
     !hasUserInteraction ||
@@ -18,8 +25,8 @@ const VideoItem = ({
   const [video, state, controls] = useVideo(
     <video
       className="object-contain object-center"
-      src={src}
-      poster={poster}
+      src={vimeoUrl}
+      poster={vimeoPosterUrl}
       autoPlay
       playsInline
       loop
@@ -60,14 +67,13 @@ const VideoItem = ({
     controls.play,
   ])
   return (
-    <div className="w-2/6 mb-1">
-      <div
-        className="aspect-w-16 aspect-h-9"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {video}
-      </div>
+    <div
+      className="aspect-w-16 aspect-h-9"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+    >
+      {video}
     </div>
   )
 }

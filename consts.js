@@ -52,3 +52,4 @@ export const CART_ROUTES = ['/cart', '/panier']
 export const SHOP_ROUTES = ['/shop', '/boutique']
 
 export const VIDEO_ITEM_TYPE = 'VideoItem'
+export const VIDEO_BLOCK_TYPE = 'VideoBlock'
