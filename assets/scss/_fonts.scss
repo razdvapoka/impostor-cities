@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Helvetica Neue LT Pro';
-    src: url('../fonts/HelveticaNeueLTPro-Roman.woff2') format('woff2'),
-        url('../fonts/HelveticaNeueLTPro-Roman.woff') format('woff');
+    src: url('/fonts/HelveticaNeueLTPro-Roman.woff2') format('woff2'),
+        url('/fonts/HelveticaNeueLTPro-Roman.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -9,8 +9,8 @@
 
 @font-face {
     font-family: 'Helvetica Neue LT Pro';
-    src: url('../fonts/HelveticaNeueLTPro-It.woff2') format('woff2'),
-        url('../fonts/HelveticaNeueLTPro-It.woff') format('woff');
+    src: url('/fonts/HelveticaNeueLTPro-It.woff2') format('woff2'),
+        url('/fonts/HelveticaNeueLTPro-It.woff') format('woff');
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -18,8 +18,8 @@
 
 @font-face {
     font-family: 'Helvetica Neue LT Pro';
-    src: url('../fonts/HelveticaNeueLTPro-Bd.woff2') format('woff2'),
-        url('../fonts/HelveticaNeueLTPro-Bd.woff') format('woff');
+    src: url('/fonts/HelveticaNeueLTPro-Bd.woff2') format('woff2'),
+        url('/fonts/HelveticaNeueLTPro-Bd.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
