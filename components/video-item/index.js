@@ -6,21 +6,32 @@ const VideoItem = ({
   vimeoPosterUrl,
   unmutedVideoIndex,
   setUnmutedVideoIndex,
+  unmutedBlockVideoIndex,
+  setUnmutedBlockVideoIndex,
   index,
   hasUserInteraction,
   stopOnHover,
   pageHasFocus,
-  transitionState,
-  title,
-  id,
   switchToNextVideo,
+  isTakeover,
+  indexInBlock,
 }) => {
-  const handleClick = useCallback(() => {
+  const switchToNext = useCallback(() => {
     switchToNextVideo(index)
   }, [index, switchToNextVideo])
+
+  const handlePlay = useCallback(() => {
+    console.log('handlePlay', isTakeover, indexInBlock, unmutedBlockVideoIndex)
+    if (unmutedBlockVideoIndex === null && isTakeover) {
+      console.log('setUnmutedBlockVideoIndex', indexInBlock)
+      setUnmutedBlockVideoIndex(indexInBlock)
+    }
+  }, [indexInBlock, unmutedBlockVideoIndex, setUnmutedBlockVideoIndex])
+
   const isMuted =
     !pageHasFocus ||
     !hasUserInteraction ||
+    (isTakeover && unmutedBlockVideoIndex !== indexInBlock) ||
     (unmutedVideoIndex !== null && index !== unmutedVideoIndex)
   const [video, state, controls] = useVideo(
     <video
@@ -29,8 +40,9 @@ const VideoItem = ({
       poster={vimeoPosterUrl}
       autoPlay
       playsInline
-      loop
       muted={isMuted}
+      onEnded={switchToNext}
+      onPlaying={handlePlay}
     />
   )
   const handleMouseEnter = useCallback(() => {
@@ -38,7 +50,10 @@ const VideoItem = ({
       if (!state.paused) {
         controls.pause()
       }
-    } else if (index !== unmutedVideoIndex) {
+    } else if (
+      index !== unmutedVideoIndex &&
+      (!isTakeover || (isTakeover && indexInBlock === unmutedBlockVideoIndex))
+    ) {
       setUnmutedVideoIndex(index)
     }
   }, [
@@ -71,7 +86,7 @@ const VideoItem = ({
       className="aspect-w-16 aspect-h-9"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
+      onClick={switchToNext}
     >
       {video}
     </div>

@@ -3,19 +3,36 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { arrayShuffle } from '@adriantombu/array-shuffle'
 import { VideoItem } from '@/components'
 import { VIDEO_BLOCK_TYPE } from '@/consts'
+import { insertAt } from '@/lib/utils'
 import styles from './styles.module.scss'
 
-const groupVideosById = (videos, blockId) => {
-  return videos.reduce((map, video) => {
+const BLOCK_INDICIES = [
+  [0, 1, 3, 4],
+  [1, 2, 4, 5],
+  [3, 4, 6, 7],
+  [4, 5, 7, 8],
+]
+
+const groupVideosById = (videos, blockId, isTakeover) => {
+  return videos.reduce((map, video, videoIndex) => {
     const isBlock = video.__typename === VIDEO_BLOCK_TYPE
     return isBlock
       ? {
           ...map,
-          ...groupVideosById(video.itemsCollection.items, video.sys.id),
+          ...groupVideosById(
+            video.itemsCollection.items,
+            video.sys.id,
+            video.isTakeover
+          ),
         }
       : {
           ...map,
-          [video.sys.id]: { ...video, blockId },
+          [video.sys.id]: {
+            ...video,
+            blockId,
+            isTakeover,
+            indexInBlock: blockId ? videoIndex : null,
+          },
         }
   }, {})
 }
@@ -25,26 +42,61 @@ const randomItem = (array) => array[Math.floor(Math.random() * array.length)]
 const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const videoMap = useMemo(() => groupVideosById(videos), [videos])
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
+  const [unmutedBlockVideoIndex, setUnmutedBlockVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
 
   useEffect(() => {
     setCurrentVideos(
-      arrayShuffle(Object.values(videoMap).filter((video) => !video.blockId))
+      arrayShuffle(
+        Object.values(videoMap).filter((video) => !video.blockId)
+      ).slice(0, 9)
     )
   }, [videoMap])
 
   const switchToNextVideo = useCallback(
     (index) => {
-      const nextVideo = randomItem(
-        Object.values(videoMap).filter(
-          (v) => !currentVideos.find((cv) => cv.sys.id === v.sys.id)
-        )
+      const prevVideo = currentVideos[index]
+      const hiddenVideos = Object.values(videoMap).filter(
+        (v) => !currentVideos.find((cv) => cv.sys.id === v.sys.id)
       )
-      setCurrentVideos([
-        ...currentVideos.slice(0, index),
-        nextVideo,
-        ...currentVideos.slice(index + 1),
-      ])
+      const nextVideo = randomItem(hiddenVideos)
+
+      if (prevVideo.isTakeover) {
+        const indiciesToReplace = []
+        currentVideos.forEach((v, i) => {
+          if (v.blockId === prevVideo.blockId) {
+            indiciesToReplace.push(i)
+          }
+        })
+
+        const newVideos = arrayShuffle(
+          hiddenVideos.filter((v) => !v.isTakeover)
+        ).slice(0, indiciesToReplace.length)
+
+        const newCurrentVideos = indiciesToReplace.reduce(
+          (items, indexToReplace, itemIndex) =>
+            insertAt(items, newVideos[itemIndex], indexToReplace),
+          currentVideos
+        )
+        setCurrentVideos(newCurrentVideos)
+        setUnmutedBlockVideoIndex(null)
+      } else if (nextVideo.isTakeover) {
+        const videoBlock = videos.find((v) => v.sys.id === nextVideo.blockId)
+        const startIndex = Math.floor(Math.random() * 4)
+        const indicies = BLOCK_INDICIES[startIndex]
+        const newVideos = videoBlock.itemsCollection.items.reduce(
+          (items, item, itemIndex) =>
+            insertAt(items, videoMap[item.sys.id], indicies[itemIndex]),
+          currentVideos
+        )
+        setCurrentVideos(newVideos)
+      } else {
+        setCurrentVideos([
+          ...currentVideos.slice(0, index),
+          nextVideo,
+          ...currentVideos.slice(index + 1),
+        ])
+      }
     },
     [currentVideos, setCurrentVideos, videoMap]
   )
@@ -53,7 +105,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     <div className="py-20 my-grid">
       {currentVideos.slice(0, 9).map((video, videoIndex) => (
         <div className="w-2/6 mb-1" key={videoIndex}>
-          <TransitionGroup className="aspect-w-16 aspect-h-9 overflow-hidden">
+          <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
             <CSSTransition
               key={video.sys.id}
               timeout={1000}
@@ -69,6 +121,8 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
                   hasUserInteraction={hasUserInteraction}
                   pageHasFocus={pageHasFocus}
                   switchToNextVideo={switchToNextVideo}
+                  unmutedBlockVideoIndex={unmutedBlockVideoIndex}
+                  setUnmutedBlockVideoIndex={setUnmutedBlockVideoIndex}
                   {...video}
                 />
               </div>
