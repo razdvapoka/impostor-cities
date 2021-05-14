@@ -50,6 +50,7 @@ export const REVEAL_DELAY_MS = 500
 export const BOTTOM_BORDER_WIDTH = 2
 export const CART_ROUTES = ['/cart', '/panier']
 export const SHOP_ROUTES = ['/shop', '/boutique']
+export const THREE_COLUMN_ROUTES = ['/']
 
 export const VIDEO_ITEM_TYPE = 'VideoItem'
 export const VIDEO_BLOCK_TYPE = 'VideoBlock'

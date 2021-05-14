@@ -14,28 +14,33 @@ import {
   SHOP_ROUTES,
 } from '@/consts'
 
-const HeaderMain = ({ open }) => {
+const HeaderMain = ({ open, isThreeColumnHeader }) => {
   return (
     <div className="pb-4 cursor-pointer my-grid text-ts1B" onClick={open}>
-      <div className="w-2/8">
+      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
         <div className={cn('bg-white ml-1', styles.logo)} />
       </div>
-      <div className="w-2/8">
+      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
         Impostor
         <br />
         Cities
       </div>
-      <div className="w-2/8">
+      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
         Édifices
         <br />
         et artifice
       </div>
-      <div className="w-1/8">
+      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-1/8'}>
         Inganni
         <br />
         Urbani
       </div>
-      <div className="flex justify-end w-1/8">
+      <div
+        className={cn(
+          'flex justify-end',
+          isThreeColumnHeader ? 'w-2/6' : 'w-1/8'
+        )}
+      >
         <div className="flex mr-2">
           <div className={cn('mr-1 text-tsC', styles.dot)}>•</div>
           <div className="mr-6">
@@ -122,18 +127,24 @@ const SocialMediaLinks = ({ isOpen }) => {
   )
 }
 
-const HeaderNav = ({ isOpen, route, isCart }) => {
+const HeaderNav = ({ isOpen, route, isCart, isThreeColumnHeader }) => {
   return (
     <div>
       <div className="pb-6 my-grid">
-        <div className="w-2/8" />
-        <div className="w-2/8 text-ts2">
+        <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'} />
+        <div
+          className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts2')}
+        >
           <Nav lang="en" isOpen={isOpen} route={route} isCart={isCart} />
         </div>
-        <div className="w-2/8 text-ts2">
+        <div
+          className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts2')}
+        >
           <Nav lang="fr" isOpen={isOpen} route={route} isCart={isCart} />
         </div>
-        <div className="w-2/8 text-ts1B">
+        <div
+          className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts1B')}
+        >
           <SocialMediaLinks isOpen={isOpen} />
         </div>
       </div>
@@ -143,10 +154,10 @@ const HeaderNav = ({ isOpen, route, isCart }) => {
 
 const INFO_TRANSITION_DELAY = 1000
 
-const HeaderInfoColumn = ({ isOpen, children }) => {
+const HeaderInfoColumn = ({ isOpen, isThreeColumnHeader, children }) => {
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
   return (
-    <div className="w-2/8">
+    <div className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8')}>
       <LineReveal isRevealed={isOpen} transitionDelayMs={delay} />
       <div className="mt-1">{children}</div>
     </div>
@@ -159,7 +170,7 @@ const Lift = ({ isUp, children }) => {
   )
 }
 
-const HeaderInfo = ({ isOpen }) => {
+const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
   return (
     <div className={styles.headerInfo}>
@@ -170,16 +181,24 @@ const HeaderInfo = ({ isOpen }) => {
           { [styles.headerInfoContentOpened]: isOpen }
         )}
       >
-        <HeaderInfoColumn isOpen={isOpen}>
-          <Lift isUp={isOpen}>
-            <div className="text-ts2">
-              <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                22.05-21.11 2021
-              </TextReveal>
-            </div>
-          </Lift>
+        <HeaderInfoColumn
+          isOpen={isOpen}
+          isThreeColumnHeader={isThreeColumnHeader}
+        >
+          {!isThreeColumnHeader && (
+            <Lift isUp={isOpen}>
+              <div className="text-ts2">
+                <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+                  22.05-21.11 2021
+                </TextReveal>
+              </div>
+            </Lift>
+          )}
         </HeaderInfoColumn>
-        <HeaderInfoColumn isOpen={isOpen}>
+        <HeaderInfoColumn
+          isOpen={isOpen}
+          isThreeColumnHeader={isThreeColumnHeader}
+        >
           <Lift isUp={isOpen}>
             <div className="text-ts1B">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
@@ -204,7 +223,10 @@ const HeaderInfo = ({ isOpen }) => {
             </TextReveal>
           </div>
         </HeaderInfoColumn>
-        <HeaderInfoColumn isOpen={isOpen}>
+        <HeaderInfoColumn
+          isOpen={isOpen}
+          isThreeColumnHeader={isThreeColumnHeader}
+        >
           <Lift isUp={isOpen}>
             <div className="text-ts1B">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
@@ -229,7 +251,10 @@ const HeaderInfo = ({ isOpen }) => {
             </TextReveal>
           </div>
         </HeaderInfoColumn>
-        <HeaderInfoColumn isOpen={isOpen}>
+        <HeaderInfoColumn
+          isOpen={isOpen}
+          isThreeColumnHeader={isThreeColumnHeader}
+        >
           <div className="flex justify-between">
             <Lift isUp={isOpen}>
               <div className="text-ts1B">
@@ -245,6 +270,7 @@ const HeaderInfo = ({ isOpen }) => {
             <div
               className={cn('mt-2 mr-3', styles.headerInfoLogo, {
                 [styles.headerInfoLogoOpened]: isOpen,
+                hidden: isThreeColumnHeader,
               })}
               style={{
                 backgroundImage: 'url(/images/biennale-logo.svg)',
@@ -254,12 +280,43 @@ const HeaderInfo = ({ isOpen }) => {
             />
           </div>
         </HeaderInfoColumn>
+        {isThreeColumnHeader && (
+          <>
+            <HeaderInfoColumn
+              isOpen={isOpen}
+              isThreeColumnHeader={isThreeColumnHeader}
+            >
+              <div className="text-ts1B">
+                <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+                  22.05-21.11 2021
+                </TextReveal>
+              </div>
+            </HeaderInfoColumn>
+            <HeaderInfoColumn
+              isOpen={isOpen}
+              isThreeColumnHeader={isThreeColumnHeader}
+            >
+              <div className="flex justify-end">
+                <div
+                  className={cn('mt-2 mr-3', styles.headerInfoLogo, {
+                    [styles.headerInfoLogoOpened]: isOpen,
+                  })}
+                  style={{
+                    backgroundImage: 'url(/images/biennale-logo.svg)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              </div>
+            </HeaderInfoColumn>
+          </>
+        )}
       </div>
     </div>
   )
 }
 
-const Header = ({ isOpenByDefault = false }) => {
+const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
   const [isOpen, toggleOpen] = useToggle(isOpenByDefault)
   const ref = useRef(null)
   useClickAway(ref, () => {
@@ -289,7 +346,7 @@ const Header = ({ isOpenByDefault = false }) => {
         z-30
       `}
     >
-      <HeaderMain open={toggleOpen} />
+      <HeaderMain open={toggleOpen} isThreeColumnHeader={isThreeColumnHeader} />
       <div
         className={cn('h-0 overflow-hidden', styles.expand)}
         style={{ height: menuHeight }}
@@ -303,9 +360,13 @@ const Header = ({ isOpenByDefault = false }) => {
               isOpen={isOpen || isCart}
               route={route}
               isCart={isCart}
+              isThreeColumnHeader={isThreeColumnHeader}
             />
           </div>
-          <HeaderInfo isOpen={isOpen} />
+          <HeaderInfo
+            isOpen={isOpen}
+            isThreeColumnHeader={isThreeColumnHeader}
+          />
         </div>
       </div>
     </header>
