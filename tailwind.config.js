@@ -58,6 +58,7 @@ module.exports = {
       black: '#000000',
       grey: '#6D6E71',
       purple: '#B456FF',
+      green: '#0AA753',
       transparent: 'rgba(0,0,0,0)',
     },
     spacing,

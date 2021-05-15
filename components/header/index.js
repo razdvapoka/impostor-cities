@@ -41,14 +41,9 @@ const HeaderMain = ({ open, isThreeColumnHeader }) => {
           isThreeColumnHeader ? 'w-2/6' : 'w-1/8'
         )}
       >
-        <div className="flex mr-2">
-          <div className={cn('mr-1 text-tsC', styles.dot)}>•</div>
-          <div className="mr-6">
-            <div>Cart</div>
-            <div>| 0 |</div>
-          </div>
-          <div>Panier</div>
-        </div>
+        <button
+          className={cn('mr-1 rounded-full bg-green', styles.cartButton)}
+        />
       </div>
     </div>
   )

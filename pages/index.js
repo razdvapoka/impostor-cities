@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Layout, VideoGrid } from '@/components'
+import { HeadphonesAlert, Layout, VideoGrid } from '@/components'
 import { getVideos } from '@/lib/contentful'
 import { withCommonData } from '@/lib/utils'
 
@@ -45,6 +45,7 @@ const HomePage = ({ commonData, videos }) => {
         hasUserInteraction={hasUserInteraction}
         pageHasFocus={pageHasFocus}
       />
+      {!hasUserInteraction && <HeadphonesAlert />}
     </Layout>
   )
 }
