@@ -44,6 +44,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
   const [takeover, setTakeover] = useState(null)
+  const [takeoverTO, setTakeoverTO] = useState(null)
 
   useEffect(() => {
     setCurrentVideos(
@@ -62,6 +63,10 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
       const nextVideo = randomItem(hiddenVideos)
 
       if (prevVideo.isTakeover) {
+        if (takeoverTO) {
+          takeoverTO.update({ velocity: 0 })
+          setTakeoverTO(null)
+        }
         const indiciesToReplace = []
         currentVideos.forEach((v, i) => {
           if (v.blockId === prevVideo.blockId) {
@@ -102,7 +107,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
         ])
       }
     },
-    [currentVideos, setCurrentVideos, videoMap]
+    [currentVideos, setCurrentVideos, videoMap, takeoverTO, setTakeoverTO]
   )
 
   useEffect(() => {
@@ -113,6 +118,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           const to = new window.TIMINGSRC.TimingObject({ range: [0, 100] })
           takeover.refs.forEach((ref) => window.MCorp.mediaSync(ref, to))
           to.update({ velocity: 1.0 })
+          setTakeoverTO(to)
         }
       }
       const handleCPT = () => {
