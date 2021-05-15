@@ -60,6 +60,8 @@ module.exports = {
       purple: '#B456FF',
       green: '#0AA753',
       transparent: 'rgba(0,0,0,0)',
+      darkGrey: '#231F20',
+      lightGrey: '#BBBDBF',
     },
     spacing,
     opacity: {

@@ -3,7 +3,7 @@ import cn from 'classnames'
 
 export const HeadphonesAlert = () => {
   return (
-    <div className="fixed top-0 left-0 flex items-center w-screen h-screen px-1 cursor-pointer z-50">
+    <div className="fixed top-0 left-0 flex items-center w-screen h-screen px-1 cursor-pointer z-40">
       <div className={cn('my-grid w-full', styles.headphonesAlertGrid)}>
         <div className="w-1/6" />
         <div className="w-4/6">
