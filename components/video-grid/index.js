@@ -108,16 +108,25 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   useEffect(() => {
     if (takeover && takeover.videoCount === takeover.refs.length) {
       let cptCount = 0
+      const launchTakeover = () => {
+        if (cptCount === takeover.videoCount) {
+          const to = new window.TIMINGSRC.TimingObject({ range: [0, 100] })
+          takeover.refs.forEach((ref) => window.MCorp.mediaSync(ref, to))
+          to.update({ velocity: 1.0 })
+        }
+      }
+      const handleCPT = () => {
+        cptCount++
+        launchTakeover()
+      }
       takeover.refs.forEach((r) => {
-        r.addEventListener('canplaythrough', () => {
+        if (r.readyState >= 4) {
           cptCount++
-          if (cptCount === takeover.videoCount) {
-            const to = new window.TIMINGSRC.TimingObject({ range: [0, 100] })
-            takeover.refs.forEach((ref) => window.MCorp.mediaSync(ref, to))
-            to.update({ velocity: 1.0 })
-          }
-        })
-        r.load()
+          launchTakeover()
+        } else {
+          r.addEventListener('canplaythrough', handleCPT)
+          r.load()
+        }
       })
     }
   }, [takeover])
