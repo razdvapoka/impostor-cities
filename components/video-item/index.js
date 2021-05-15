@@ -20,6 +20,7 @@ const VideoItem = ({
   switchToNextVideo,
   isTakeover,
   setTakeover,
+  defaultVideoTime = 0,
 }) => {
   const switchToNext = useCallback(() => {
     switchToNextVideo(index)
@@ -92,7 +93,7 @@ const VideoItem = ({
         stopOnHover={stopOnHover}
         captionEn={captionEn}
         captionFr={captionFr}
-        videoTime={state.time}
+        videoTime={state.time + defaultVideoTime}
         isTakeover={isTakeover}
         indexInBlock={indexInBlock}
         cameraNumber={cameraNumber}

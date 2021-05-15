@@ -9,9 +9,12 @@ const TZ = 'Europe/Rome'
 
 const formatVideoTime = (s) => {
   const minutes = Math.floor(s / 60)
+  const minutesStr = minutes > 9 ? minutes : `0${minutes}`
   const seconds = Math.floor(s - minutes * 60)
   const secondsStr = seconds > 9 ? seconds : `0${seconds}`
-  return `00 : 00 : 0${minutes} : ${secondsStr}`
+  const ms = Math.round((s % 1) * 10)
+  const msStr = ms > 9 ? ms : `0${ms}`
+  return `00:${minutesStr}:${secondsStr}:${msStr}`
 }
 
 const Volume = ({ isTopVideo, isBottomVideo }) => {
@@ -27,13 +30,20 @@ const Volume = ({ isTopVideo, isBottomVideo }) => {
   )
 }
 
-const Camera = ({ number }) => {
+const Camera = ({ number, isTopVideo, isBottomVideo }) => {
   return (
-    <div className="relative">
+    <div
+      className={cn('relative', {
+        [styles.cameraIconTop]: isTopVideo,
+        [styles.cameraIconBottom]: isBottomVideo,
+      })}
+    >
       <div className={styles.cameraIcon}>
         <CamIcon />
       </div>
-      <div className={cn('absolute', styles.cameraIconText)}>{number}</div>
+      <div className={cn('absolute text-tsMono', styles.cameraIconText)}>
+        {number}
+      </div>
     </div>
   )
 }
@@ -68,7 +78,7 @@ const TopLine = ({
 }) => {
   const localTimeString = format(
     utcToZonedTime(Date.now(), TZ),
-    `K:mm:ssaaa HH'h'mm:ss O`,
+    `K:mm:ssaaa HH'h'mm:ss`,
     {
       timeZone: TZ,
     }
@@ -87,7 +97,7 @@ const TopLine = ({
           <div className="text-tsMono">{localTimeString}</div>
         )}
       </div>
-      {isTopVideo && <Camera number={indexInBlock + 1} />}
+      {isTopVideo && <Camera number={indexInBlock + 1} isTopVideo />}
     </div>
   )
 }
@@ -123,7 +133,7 @@ const BottomLine = ({
           </div>
         )}
       </div>
-      {isBottomVideo && <Camera number={indexInBlock + 1} />}
+      {isBottomVideo && <Camera number={indexInBlock + 1} isBottomVideo />}
     </div>
   )
 }
@@ -146,7 +156,7 @@ const Overlay = ({
   return (
     <div
       className={cn(
-        'overlay py-1 px-2 flex flex-col justify-between',
+        'overlay flex flex-col justify-between',
         styles.videoOverlay
       )}
     >

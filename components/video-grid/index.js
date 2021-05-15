@@ -13,7 +13,7 @@ const BLOCK_INDICIES = [
   [4, 5, 7, 8],
 ]
 
-const groupVideosById = (videos, blockId, isTakeover) => {
+const groupVideosById = (videos, blockId, isTakeover, defaultVideoTime) => {
   return videos.reduce((map, video, videoIndex) => {
     const isBlock = video.__typename === VIDEO_BLOCK_TYPE
     return isBlock
@@ -22,7 +22,8 @@ const groupVideosById = (videos, blockId, isTakeover) => {
           ...groupVideosById(
             video.itemsCollection.items,
             video.sys.id,
-            video.isTakeover
+            video.isTakeover,
+            video.defaultVideoTime
           ),
         }
       : {
@@ -33,6 +34,7 @@ const groupVideosById = (videos, blockId, isTakeover) => {
             isTakeover,
             indexInBlock: blockId ? videoIndex : null,
             blockCount: blockId ? videos.length : null,
+            defaultVideoTime: defaultVideoTime || video.defaultVideoTime,
           },
         }
   }, {})

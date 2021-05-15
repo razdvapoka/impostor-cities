@@ -23,6 +23,7 @@
 }
 
 .videoOverlay {
+  padding: 6px;
   opacity: 0;
   transition: opacity 0.2s ease;
   &:hover {
@@ -32,17 +33,23 @@
 
 .videoOverlay:hover .volumeIcon {
   animation-name: blink;
-  animation-duration: 300ms;
+  animation-duration: 0.5s;
   animation-iteration-count: 2;
   animation-direction: alternate;
 }
 
 .cameraIcon {
-  width: 38px;
+  width: 30px;
   height: 17px;
   &Text {
-    top: 3px;
-    left: 11px;
+    top: 1px;
+    left: 6px;
+  }
+  &Top {
+    transform: translateY(-1px);
+  }
+  &Bottom {
+    transform: translateY(0);
   }
 }
 
