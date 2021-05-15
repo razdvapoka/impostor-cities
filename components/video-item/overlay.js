@@ -8,13 +8,15 @@ import styles from './styles.module.scss'
 const TZ = 'Europe/Rome'
 
 const formatVideoTime = (s) => {
-  const minutes = Math.floor(s / 60)
+  const hours = Math.floor(s / 3600)
+  const hoursStr = hours > 9 ? hours : `0${hours}`
+  const minutes = Math.floor((s - hours * 3600) / 60)
   const minutesStr = minutes > 9 ? minutes : `0${minutes}`
-  const seconds = Math.floor(s - minutes * 60)
+  const seconds = Math.floor(s - hours * 3600 - minutes * 60)
   const secondsStr = seconds > 9 ? seconds : `0${seconds}`
   const ms = Math.round((s % 1) * 10)
   const msStr = ms > 9 ? ms : `0${ms}`
-  return `00:${minutesStr}:${secondsStr}:${msStr}`
+  return `${hoursStr}:${minutesStr}:${secondsStr}:${msStr}`
 }
 
 const Volume = ({ isTopVideo, isBottomVideo }) => {
