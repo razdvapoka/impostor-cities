@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useVideo } from 'react-use'
 
 const VideoItem = ({
@@ -6,8 +6,6 @@ const VideoItem = ({
   vimeoPosterUrl,
   unmutedVideoIndex,
   setUnmutedVideoIndex,
-  unmutedBlockVideoIndex,
-  setUnmutedBlockVideoIndex,
   index,
   hasUserInteraction,
   stopOnHover,
@@ -15,45 +13,41 @@ const VideoItem = ({
   switchToNextVideo,
   isTakeover,
   indexInBlock,
+  setTakeover,
 }) => {
   const switchToNext = useCallback(() => {
     switchToNextVideo(index)
   }, [index, switchToNextVideo])
 
-  const handlePlay = useCallback(() => {
-    console.log('handlePlay', isTakeover, indexInBlock, unmutedBlockVideoIndex)
-    if (unmutedBlockVideoIndex === null && isTakeover) {
-      console.log('setUnmutedBlockVideoIndex', indexInBlock)
-      setUnmutedBlockVideoIndex(indexInBlock)
-    }
-  }, [indexInBlock, unmutedBlockVideoIndex, setUnmutedBlockVideoIndex])
-
   const isMuted =
     !pageHasFocus ||
     !hasUserInteraction ||
-    (isTakeover && unmutedBlockVideoIndex !== indexInBlock) ||
     (unmutedVideoIndex !== null && index !== unmutedVideoIndex)
-  const [video, state, controls] = useVideo(
+  const [video, state, controls, ref] = useVideo(
     <video
       className="object-contain object-center"
       src={vimeoUrl}
       poster={vimeoPosterUrl}
-      autoPlay
+      autoPlay={!isTakeover}
       playsInline
       muted={isMuted}
       onEnded={switchToNext}
-      onPlaying={handlePlay}
     />
   )
+  useEffect(() => {
+    if (ref && ref.current && isTakeover) {
+      setTakeover((takeover) => ({
+        ...takeover,
+        refs: [...takeover.refs, ref.current],
+      }))
+    }
+  }, [ref])
   const handleMouseEnter = useCallback(() => {
     if (stopOnHover) {
       if (!state.paused) {
         controls.pause()
       }
-    } else if (
-      index !== unmutedVideoIndex &&
-      (!isTakeover || (isTakeover && indexInBlock === unmutedBlockVideoIndex))
-    ) {
+    } else if (index !== unmutedVideoIndex) {
       setUnmutedVideoIndex(index)
     }
   }, [

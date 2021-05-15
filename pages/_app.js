@@ -25,6 +25,8 @@ function MyApp({ Component, pageProps }) {
     <div>
       <Head>
         <script dangerouslySetInnerHTML={{ __html: touchEventsDetector }} />
+        <script text="javascript" src="/mediasync/timingsrc-v2-min.js" />
+        <script text="javascript" src="/mediasync/mediasync-min.js" />
       </Head>
       <CartProvider>
         <div className="flex flex-col min-h-screen">

@@ -42,8 +42,8 @@ const randomItem = (array) => array[Math.floor(Math.random() * array.length)]
 const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const videoMap = useMemo(() => groupVideosById(videos), [videos])
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
-  const [unmutedBlockVideoIndex, setUnmutedBlockVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
+  const [takeover, setTakeover] = useState(null)
 
   useEffect(() => {
     setCurrentVideos(
@@ -79,17 +79,21 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           currentVideos
         )
         setCurrentVideos(newCurrentVideos)
-        setUnmutedBlockVideoIndex(null)
       } else if (nextVideo.isTakeover) {
         const videoBlock = videos.find((v) => v.sys.id === nextVideo.blockId)
-        const startIndex = Math.floor(Math.random() * 4)
-        const indicies = BLOCK_INDICIES[startIndex]
+        const indicies = randomItem(
+          BLOCK_INDICIES.filter((i) => i.indexOf(index) !== -1)
+        )
         const newVideos = videoBlock.itemsCollection.items.reduce(
           (items, item, itemIndex) =>
             insertAt(items, videoMap[item.sys.id], indicies[itemIndex]),
           currentVideos
         )
         setCurrentVideos(newVideos)
+        setTakeover({
+          videoCount: videoBlock.itemsCollection.items.length,
+          refs: [],
+        })
       } else {
         setCurrentVideos([
           ...currentVideos.slice(0, index),
@@ -100,6 +104,14 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     },
     [currentVideos, setCurrentVideos, videoMap]
   )
+
+  useEffect(() => {
+    if (takeover && takeover.videoCount === takeover.refs.length) {
+      const to = new window.TIMINGSRC.TimingObject({ range: [0, 100] })
+      takeover.refs.forEach((ref) => window.MCorp.mediaSync(ref, to))
+      to.update({ velocity: 1.0 })
+    }
+  }, [takeover])
 
   return (
     <div className="py-20 my-grid">
@@ -121,8 +133,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
                   hasUserInteraction={hasUserInteraction}
                   pageHasFocus={pageHasFocus}
                   switchToNextVideo={switchToNextVideo}
-                  unmutedBlockVideoIndex={unmutedBlockVideoIndex}
-                  setUnmutedBlockVideoIndex={setUnmutedBlockVideoIndex}
+                  setTakeover={setTakeover}
                   {...video}
                 />
               </div>
