@@ -12,7 +12,6 @@ const VideoItem = ({
   pageHasFocus,
   switchToNextVideo,
   isTakeover,
-  indexInBlock,
   setTakeover,
 }) => {
   const switchToNext = useCallback(() => {
