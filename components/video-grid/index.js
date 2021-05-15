@@ -107,9 +107,18 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
 
   useEffect(() => {
     if (takeover && takeover.videoCount === takeover.refs.length) {
-      const to = new window.TIMINGSRC.TimingObject({ range: [0, 100] })
-      takeover.refs.forEach((ref) => window.MCorp.mediaSync(ref, to))
-      to.update({ velocity: 1.0 })
+      let cptCount = 0
+      takeover.refs.forEach((r) => {
+        r.addEventListener('canplaythrough', () => {
+          cptCount++
+          if (cptCount === takeover.videoCount) {
+            const to = new window.TIMINGSRC.TimingObject({ range: [0, 100] })
+            takeover.refs.forEach((ref) => window.MCorp.mediaSync(ref, to))
+            to.update({ velocity: 1.0 })
+          }
+        })
+        r.load()
+      })
     }
   }, [takeover])
 
