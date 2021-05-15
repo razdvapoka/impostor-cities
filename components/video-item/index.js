@@ -1,12 +1,19 @@
 import { useCallback, useEffect } from 'react'
 import { useVideo } from 'react-use'
+import Overlay from './overlay'
 
 const VideoItem = ({
   vimeoUrl,
   vimeoPosterUrl,
+  person,
+  captionEn,
+  captionFr,
+  cameraNumber,
   unmutedVideoIndex,
   setUnmutedVideoIndex,
   index,
+  blockCount,
+  indexInBlock,
   hasUserInteraction,
   stopOnHover,
   pageHasFocus,
@@ -79,9 +86,20 @@ const VideoItem = ({
       className="aspect-w-16 aspect-h-9"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={switchToNext}
     >
       {video}
+      <Overlay
+        stopOnHover={stopOnHover}
+        captionEn={captionEn}
+        captionFr={captionFr}
+        videoTime={state.time}
+        isTakeover={isTakeover}
+        indexInBlock={indexInBlock}
+        cameraNumber={cameraNumber}
+        person={person}
+        switchToNext={switchToNext}
+        blockCount={blockCount}
+      />
     </div>
   )
 }

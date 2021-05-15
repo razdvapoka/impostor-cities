@@ -1,4 +1,5 @@
 $ff-helvetica: 'Helvetica Neue LT Pro', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+$ff-helvetica-mono: 'Helvetica Monospaced, monospace';
 
 $screens: (
   desktop: (
@@ -55,6 +56,13 @@ $font-styles: (
     font-weight: bold,
     line-height: 32.57 / 28,
     letter-spacing: (-23em/1000)
+  ),
+  tsMono: (
+    font-family: $ff-helvetica-mono,
+    font-size: 14px,
+    font-weight: bold,
+    line-height: 15 / 14,
+    letter-spacing: (-15em/1000)
   )
 );
 

@@ -1,0 +1,72 @@
+.volumeIcon {
+  width: 28px;
+  height: 35px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  &Top {
+    top: calc(75px + (100% - 75px) / 2)
+  }
+  &Bottom {
+    top: calc((100% - 75px) / 2)
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.videoOverlay {
+  // opacity: 0;
+  // transition: opacity 0.2s ease;
+  // &:hover {
+  //   opacity: 1;
+  // }
+}
+
+.videoOverlay:hover .volumeIcon {
+  animation-name: blink;
+  animation-duration: 300ms;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+
+.cameraIcon {
+  width: 38px;
+  height: 17px;
+  &Text {
+    top: 3px;
+    left: 11px;
+  }
+}
+
+.forwardButton {
+  left: 50%;
+  cursor: pointer;
+  height: 100%;
+  &Top {
+    top: 75px;
+    height: calc(100% - 75px);
+  }
+  &Bottom {
+    bottom: 75px;
+    height: calc(100% - 75px);
+  }
+}
+
+.forwardIcon {
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.forwardButton:hover .forwardIcon {
+  opacity: 1;
+}

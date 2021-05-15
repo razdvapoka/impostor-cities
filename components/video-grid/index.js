@@ -32,6 +32,7 @@ const groupVideosById = (videos, blockId, isTakeover) => {
             blockId,
             isTakeover,
             indexInBlock: blockId ? videoIndex : null,
+            blockCount: blockId ? videos.length : null,
           },
         }
   }, {})

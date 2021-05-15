@@ -25,4 +25,12 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Helvetica Monospaced';
+    src: url('/fonts/HelveticaMonospacedW06-Bd.woff2') format('woff2'),
+        url('/fonts/HelveticaMonospacedW06-Bd.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
 

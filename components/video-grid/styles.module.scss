@@ -2,13 +2,28 @@
   transform: translateX(-100%);
 }
 
+.enter :global(.overlay) {
+  opacity: 0;
+}
+
 .enterActive {
   transform: translateX(0);
   transition: transform 1s ease;
 }
 
+.enterActive :global(.overlay) {
+  transition: opacity 0.1s linear 0.9s;
+  opacity: 1;
+}
+
 .exit {
   transform: translateX(0);
+}
+
+.exit :global(.overlay),
+.exitActive :global(.overlay) {
+  opacity: 0;
+  transition: opacity 0.1s ease;
 }
 
 .exitActive {
