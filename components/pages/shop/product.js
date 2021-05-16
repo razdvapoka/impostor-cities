@@ -137,12 +137,7 @@ const ProductInfo = ({
   )
 }
 
-const ProductButtons = ({
-  addVariantToCart,
-  isVariantSelected,
-  locale,
-  disabled,
-}) => {
+const ProductButtons = ({ addVariantToCart, locale, disabled }) => {
   const { value: t } = useAsync(async () => {
     const tr = await getT(locale, 'common')
     return tr
@@ -151,19 +146,13 @@ const ProductButtons = ({
     <div className="pt-2 border-t-2 border-white border-solid">
       {t && (
         <div>
-          {isVariantSelected ? (
-            <Link href={`/${t('cart')}`} locale={locale}>
-              <a className="block text-ts2">{t('goToCart')}</a>
-            </Link>
-          ) : (
-            <button
-              className="text-ts2 hover:text-grey transition-colors disabled:pointer-events-none"
-              onClick={addVariantToCart}
-              disabled={disabled}
-            >
-              {t('addToCart')}
-            </button>
-          )}
+          <button
+            className="text-ts2 hover:text-grey transition-colors disabled:pointer-events-none"
+            onClick={addVariantToCart}
+            disabled={disabled}
+          >
+            {t('addToCart')}
+          </button>
         </div>
       )}
     </div>
@@ -179,16 +168,26 @@ const Product = ({ commonData, product }) => {
   )
   const [cart, setCart] = useCart()
 
-  const isVariantSelected = cart[productId]?.find(
-    (v) => v.variantId === selectedVariantId
-  )
-  // const isProductSelected = cart[productId] && cart[productId].length > 0
-
   const addVariantToCart = useCallback(() => {
     const variant = { count: 1, variantId: selectedVariantId }
+    const addedProductVariants = cart[productId]
+    const variantIndex = addedProductVariants
+      ? addedProductVariants.findIndex((v) => v.variantId === selectedVariantId)
+      : -1
+    if (variantIndex !== -1) {
+      variant.count = addedProductVariants[variantIndex].count + 1
+    }
     setCart({
       ...cart,
-      [productId]: cart[productId] ? [...cart[productId], variant] : [variant],
+      [productId]: addedProductVariants
+        ? variantIndex === -1
+          ? [...addedProductVariants, variant]
+          : [
+              ...addedProductVariants.slice(0, variantIndex),
+              variant,
+              ...addedProductVariants.slice(variantIndex + 1),
+            ]
+        : [variant],
     })
 
     setSelectedVariantId(variantsExist ? null : en.variants[0].id)
@@ -230,22 +229,24 @@ const Product = ({ commonData, product }) => {
             {...fr}
           />
         </div>
-        <div className="w-4/8" />
-        <div className="w-2/8">
-          <ProductButtons
-            addVariantToCart={addVariantToCart}
-            isVariantSelected={isVariantSelected}
-            disabled={selectedVariantId === null}
-            locale="en"
-          />
-        </div>
-        <div className="w-2/8">
-          <ProductButtons
-            addVariantToCart={addVariantToCart}
-            isVariantSelected={isVariantSelected}
-            disabled={selectedVariantId === null}
-            locale="fr"
-          />
+        <div className="fixed bottom-0 left-0 w-screen px-1">
+          <div className="my-grid">
+            <div className="w-4/8" />
+            <div className="w-2/8">
+              <ProductButtons
+                addVariantToCart={addVariantToCart}
+                disabled={selectedVariantId === null}
+                locale="en"
+              />
+            </div>
+            <div className="w-2/8">
+              <ProductButtons
+                addVariantToCart={addVariantToCart}
+                disabled={selectedVariantId === null}
+                locale="fr"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

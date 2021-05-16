@@ -1,6 +1,33 @@
 .logo {
   width: 46px;
   height: 25px;
+  position: relative;
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: calc(50% + 1px);
+    position: absolute;
+    left: 0;
+    background-color: color(white);
+    transition: height 0.3s ease;
+  }
+  &::before {
+    top: 0;
+  }
+  &::after {
+    bottom: 0;
+  }
+  &Open::before,
+  &Open::after {
+    height: 2px;
+  }
+}
+
+.headerMain:hover .logo::before,
+.headerMain:hover .logo::after {
+  height: 2px;
 }
 
 .dot {
