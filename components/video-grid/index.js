@@ -47,6 +47,14 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
   const [takeover, setTakeover] = useState(null)
+  const [syncBlocks, setSyncBlocks] = useState({})
+
+  const setSyncBlock = (blockId, ref) => {
+    setSyncBlocks((prevSyncBlocks) => ({
+      ...prevSyncBlocks,
+      [blockId]: ref,
+    }))
+  }
 
   useEffect(() => {
     setCurrentVideos(
@@ -59,10 +67,10 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const switchToNextVideo = useCallback(
     (index) => {
       const prevVideo = currentVideos[index]
-      const hiddenVideos = Object.values(videoMap).filter(
+      const nextVideoCandidates = Object.values(videoMap).filter(
         (v) => !currentVideos.find((cv) => cv.sys.id === v.sys.id)
       )
-      const nextVideo = randomItem(hiddenVideos)
+      const nextVideo = randomItem(nextVideoCandidates)
 
       if (prevVideo.isTakeover) {
         const indiciesToReplace = []
@@ -73,7 +81,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
         })
 
         const newVideos = arrayShuffle(
-          hiddenVideos.filter((v) => !v.isTakeover)
+          nextVideoCandidates.filter((v) => !v.isTakeover)
         ).slice(0, indiciesToReplace.length)
 
         const newCurrentVideos = indiciesToReplace.reduce(
@@ -153,6 +161,8 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
                   pageHasFocus={pageHasFocus}
                   switchToNextVideo={switchToNextVideo}
                   setTakeover={setTakeover}
+                  syncBlocks={syncBlocks}
+                  setSyncBlock={setSyncBlock}
                   {...video}
                 />
               </div>

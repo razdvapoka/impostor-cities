@@ -12,6 +12,9 @@ const VideoItem = ({
   unmutedVideoIndex,
   setUnmutedVideoIndex,
   index,
+  syncBlocks,
+  setSyncBlock,
+  blockId,
   blockCount,
   indexInBlock,
   hasUserInteraction,
@@ -26,6 +29,13 @@ const VideoItem = ({
     switchToNextVideo(index)
   }, [index, switchToNextVideo])
 
+  const handleEnded = useCallback(() => {
+    if (blockId && !isTakeover) {
+      setSyncBlock(blockId, null)
+    }
+    switchToNext()
+  }, [switchToNext, blockId, isTakeover, setSyncBlock])
+
   const isMuted =
     !pageHasFocus ||
     !hasUserInteraction ||
@@ -38,17 +48,26 @@ const VideoItem = ({
       autoPlay={!isTakeover}
       playsInline
       muted={isMuted}
-      onEnded={switchToNext}
+      onEnded={handleEnded}
     />
   )
+
   useEffect(() => {
-    if (ref && ref.current && isTakeover) {
-      setTakeover((takeover) => ({
-        ...takeover,
-        refs: [...takeover.refs, ref.current],
-      }))
+    if (ref && ref.current) {
+      if (isTakeover) {
+        setTakeover((takeover) => ({
+          ...takeover,
+          refs: [...takeover.refs, ref.current],
+        }))
+      } else if (blockId) {
+        if (syncBlocks[blockId]) {
+          ref.current.currentTime = syncBlocks[blockId].currentTime
+        }
+        setSyncBlock(blockId, ref.current)
+      }
     }
   }, [ref])
+
   const handleMouseEnter = useCallback(() => {
     if (stopOnHover) {
       if (!state.paused) {
@@ -66,6 +85,7 @@ const VideoItem = ({
     state.paused,
     controls.pause,
   ])
+
   const handleMouseLeave = useCallback(() => {
     if (stopOnHover) {
       if (state.paused) {
