@@ -14,9 +14,9 @@ const formatVideoTime = (s) => {
   const minutesStr = minutes > 9 ? minutes : `0${minutes}`
   const seconds = Math.floor(s - hours * 3600 - minutes * 60)
   const secondsStr = seconds > 9 ? seconds : `0${seconds}`
-  const ms = Math.round((s % 1) * 10)
-  const msStr = ms > 9 ? ms : `0${ms}`
-  return `${hoursStr}:${minutesStr}:${secondsStr}:${msStr}`
+  // const ms = Math.round((s % 1) * 10)
+  // const msStr = ms > 9 ? ms : `0${ms}`
+  return `00:${hoursStr}:${minutesStr}:${secondsStr}`
 }
 
 const Volume = ({ isTopVideo, isBottomVideo }) => {
@@ -159,7 +159,8 @@ const Overlay = ({
     <div
       className={cn(
         'overlay flex flex-col justify-between',
-        styles.videoOverlay
+        styles.videoOverlay,
+        { [styles.videoOverlayHidden]: !isTakeover }
       )}
     >
       {!stopOnHover && (
