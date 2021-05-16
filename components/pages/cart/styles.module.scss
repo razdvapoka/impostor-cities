@@ -11,3 +11,19 @@
   width: 1px;
   background-color: color(grey);
 }
+
+.deleteButton {
+  width: 20px;
+  height: 14px;
+}
+
+.incButton,
+.decButton {
+  width: 18px;
+  height: 14px;
+  margin-top: -2px;
+}
+
+.incButton {
+  margin-left: -2px;
+}
