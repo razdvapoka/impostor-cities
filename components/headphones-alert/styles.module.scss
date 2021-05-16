@@ -1,8 +1,10 @@
-.headphonesAlertGrid {
-  height: calc(560 / 1015 * 100vh);
-  min-height: 250px;
-}
-
-.headphonesAlertContent {
+.headphonesAlert {
   background-color: rgba(0,0,0, 0.85);
+  &Grid {
+    height: calc(560 / 1015 * 100vh);
+    min-height: 250px;
+  }
+  &Content {
+    background-color: rgba(0,0,0, 0.85);
+  }
 }
