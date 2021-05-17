@@ -23,7 +23,7 @@ const width = {
   ...grid(16),
 }
 
-const spacing = range(30).reduce(
+const spacing = range(31).reduce(
   (acc, step) => ({
     ...acc,
     [step]: `${step * 4}px`,

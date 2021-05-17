@@ -1,39 +1,24 @@
-import React from 'react'
-import { Markdown, Layout } from '@/components'
+import React, { useRef } from 'react'
+import { useIntersection } from 'react-use'
+import { Markdown, Layout, LineReveal } from '@/components'
 import cn from 'classnames'
 import styles from './styles.module.scss'
-
-// const PressColumn = ({
-//   locale,
-//   assets,
-//   inquiries,
-//   inquiriesTitle,
-//   inquiriesUrl,
-// }) => {
-//   return (
-//     <div>
-//       <Markdown className="text-ts2" locale={locale}>
-//         {assets}
-//       </Markdown>
-//       <div className="mt-12">
-//         <div className="text-ts3">{inquiriesTitle}</div>
-//         <a
-//           className="text-ts3B transition-colors hover:text-grey"
-//           href={`mailto:${inquiriesUrl}`}
-//         >
-//           <Markdown className="inline-block" locale={locale}>
-//             {inquiries}
-//           </Markdown>
-//         </a>
-//       </div>
-//     </div>
-//   )
-// }
+import CouncilLogo from '../../../assets/icons/council-logo.svg'
+import SponsorSajo from '../../../assets/icons/sponsor-sajo.svg'
+import SponsorMcGill from '../../../assets/icons/sponsor-mcgill.svg'
+import SponsorUDM from '../../../assets/icons/sponsor-udm.svg'
+import SponsorOAA from '../../../assets/icons/sponsor-oaa.svg'
+import SponsorPanasonic from '../../../assets/icons/sponsor-panasonic.svg'
+import SponsorFrog from '../../../assets/icons/sponsor-frog.svg'
+import SponsorMRX from '../../../assets/icons/sponsor-mrx.svg'
+import SponsorZebulon from '../../../assets/icons/sponsor-zebulon.svg'
+import SponsorHabitations from '../../../assets/icons/sponsor-habitations.svg'
+import SponsorSpencer from '../../../assets/icons/sponsor-spencer.svg'
 
 const SectionHeader = ({ headerEn, headerFr, top, bottom }) => {
   return (
     <div
-      className={cn('sticky bg-black', styles.sectionHeader)}
+      className={cn('sticky bg-black z-10', styles.sectionHeader)}
       style={{ top, bottom }}
     >
       <div className="my-grid">
@@ -49,123 +34,187 @@ const SectionHeader = ({ headerEn, headerFr, top, bottom }) => {
   )
 }
 
-const AboutSection = ({ headerEn, headerFr }) => {
+const AboutSection = ({ itemsCollection: { items } }) => {
   return (
-    <div className="my-grid">
+    <div className="space-y-20 mb-30">
+      {items.map((item, itemIndex) => (
+        <div key={itemIndex} className="my-grid">
+          <div className="w-2/8" />
+          <div className="w-2/8">
+            <div className={cn({ 'pr-5': itemIndex !== 0 })}>
+              <Markdown locale="en-US">{item.textEn}</Markdown>
+            </div>
+          </div>
+          <div className="w-2/8">
+            <div className={cn({ 'pr-5': itemIndex !== 0 })}>
+              <Markdown locale="fr">{item.textFr}</Markdown>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const VisitorSection = ({ itemsCollection: { items } }) => {
+  return (
+    <div className="my-grid mb-30">
       <div className="w-2/8" />
       <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
+        <Markdown locale="en-US">{items[0].textEn}</Markdown>
       </div>
       <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
+        <Markdown locale="fr">{items[0].textFr}</Markdown>
       </div>
     </div>
   )
 }
 
-const VisitorSection = ({ headerEn, headerFr }) => {
+const TeamSectionItem = ({ text, index }) => {
+  const intersectionRef = useRef(null)
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: '0px 0px -200px 0px',
+  })
+  return (
+    <>
+      {index === 0 && <div className="w-2/8" />}
+      <div className="w-2/8" ref={intersectionRef}>
+        <div className="pb-20">
+          <LineReveal
+            isRevealed={intersection && intersection.isIntersecting}
+          />
+          <Markdown className="mt-1" locale="en-US">
+            {text}
+          </Markdown>
+          {index === 0 && (
+            <div className={cn(styles.councilLogo, 'mt-4')}>
+              <CouncilLogo />
+            </div>
+          )}
+        </div>
+      </div>
+      {index === 0 && <div className="w-4/8" />}
+    </>
+  )
+}
+
+const TeamSection = ({ itemsCollection: { items } }) => {
   return (
     <div className="my-grid">
-      <div className="w-2/8" />
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
-      </div>
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
-      </div>
+      {items.map(({ textEn }, itemIndex) => (
+        <TeamSectionItem key={itemIndex} text={textEn} index={itemIndex} />
+      ))}
     </div>
   )
 }
 
-const TeamSection = ({ headerEn, headerFr }) => {
+const SponsorsItem = ({ text, index }) => {
+  const intersectionRef = useRef(null)
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: '0px 0px -200px 0px',
+  })
   return (
-    <div className="my-grid">
-      <div className="w-2/8" />
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
+    <>
+      {(index === 0 || index === 1 || index === 3) && <div className="w-2/8" />}
+      <div className={index === 3 ? 'w-6/8' : 'w-2/8'} ref={intersectionRef}>
+        <div className="pb-20">
+          <LineReveal
+            isRevealed={intersection && intersection.isIntersecting}
+          />
+          <Markdown className="mt-1" locale="en-US">
+            {text}
+          </Markdown>
+          <div className="mt-10">
+            {index === 0 ? (
+              <div className={styles.sajo}>
+                <SponsorSajo />
+              </div>
+            ) : index === 1 ? (
+              <div className="flex items-end space-x-18">
+                <div className={styles.mcgill}>
+                  <SponsorMcGill />
+                </div>
+                <div className={styles.udm}>
+                  <SponsorUDM />
+                </div>
+              </div>
+            ) : index === 2 ? (
+              <div className={styles.oaa}>
+                <SponsorOAA />
+              </div>
+            ) : (
+              <div className="flex items-center w-full">
+                <div className={styles.panasonic}>
+                  <SponsorPanasonic />
+                </div>
+                <div className={styles.frog}>
+                  <SponsorFrog />
+                </div>
+                <div className={styles.mrx}>
+                  <SponsorMRX />
+                </div>
+                <div className={styles.zebulon}>
+                  <SponsorZebulon />
+                </div>
+                <div className={styles.habitations}>
+                  <SponsorHabitations />
+                </div>
+                <div className={styles.spencer}>
+                  <SponsorSpencer />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
-      </div>
+      {index === 0 && <div className="w-4/8" />}
+      {index === 2 && <div className="w-2/8" />}
+    </>
+  )
+}
+
+const SponsorsSection = ({ itemsCollection: { items } }) => {
+  return (
+    <div className="my-grid mb-10">
+      {items.map(({ textEn }, itemIndex) => (
+        <SponsorsItem key={itemIndex} text={textEn} index={itemIndex} />
+      ))}
     </div>
   )
 }
 
-const SponsorsSection = ({ headerEn, headerFr }) => {
+const ContactSection = ({
+  itemsCollection: {
+    items: [{ textEn, textFr }],
+  },
+}) => {
   return (
-    <div className="my-grid">
-      <div className="w-2/8" />
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
+    <>
+      <div className="my-grid">
+        <div className="w-2/8" />
+        <div className="w-2/8">
+          <Markdown locale="en-US">{textEn}</Markdown>
+        </div>
+        <div className="w-2/8">
+          <Markdown locale="fr">{textFr}</Markdown>
         </div>
       </div>
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
+      <div className={cn('my-grid', styles.copyright)}>
+        <div className="w-2/8" />
+        <div className="w-2/8 text-ts1B">
+          ©2021 Impostor Cities
+          <br />
+          All rights reserved
+        </div>
+        <div className="w-2/8 text-ts1B">
+          ©2021 Édifices et artifice
+          <br />
+          Tous droits réservés
         </div>
       </div>
-    </div>
-  )
-}
-
-const ContactSection = ({ headerEn, headerFr }) => {
-  return (
-    <div className="my-grid">
-      <div className="w-2/8" />
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
-      </div>
-      <div className="w-2/8">
-        <div className="pr-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-          fugiat vel itaque minima ad quasi neque facilis veritatis tempora
-          accusantium suscipit culpa. Dignissimos quis sed qui fuga ad debitis
-          veritatis.
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 
@@ -196,11 +245,17 @@ const Project = ({ commonData, data }) => {
                 top={index * HEADER_HEIGHT}
                 bottom={(data.length - 1 - index) * HEADER_HEIGHT}
               />
-              <div className={cn(styles.sectionBox, 'pt-8')}>
+              <div className={cn(styles.sectionBox, 'pt-16')}>
                 <Section {...section} />
               </div>
             </React.Fragment>
           ))}
+          <div
+            className={cn(
+              'absolute left-0 bottom-0 w-full pointer-events-none',
+              styles.gradient
+            )}
+          />
         </div>
       </div>
     </Layout>

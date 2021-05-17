@@ -6,4 +6,18 @@
   a:hover {
     color: color(grey);
   }
+
+  @include font-style(ts3);
+
+  em {
+    @include font-style(ts3I);
+  }
+
+  strong {
+    @include font-style(ts3B);
+  }
+
+  h3 {
+    @include font-style(ts2);
+  }
 }

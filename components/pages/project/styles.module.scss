@@ -7,5 +7,76 @@
 }
 
 .sectionBox {
-  min-height: calc(100vh - 268px);
+  // min-height: calc(100vh - 268px);
+}
+
+.gradient {
+  height: 280px;
+  background: linear-gradient(transparent, black 40%);
+}
+
+.councilLogo {
+  width: 257px;
+  height: 45px;
+}
+
+.sajo {
+  width: 80px;
+  height: 22px;
+}
+
+.mcgill {
+  width: 111px;
+  height: 26px;
+}
+
+.udm {
+  width: 103px;
+  height: 39px;
+}
+
+.oaa {
+  width: 148px;
+  height: 33px;
+}
+
+.panasonic {
+  width: 118px;
+  height: 18px;
+  margin-right: 98px;
+}
+
+.frog {
+  width: 70px;
+  height: 38px;
+  margin-right: 85px;
+}
+
+.mrx {
+  width: 71px;
+  height: 35px;
+  margin-right: 78px;
+}
+
+.zebulon {
+  width: 156px;
+  height: 14px;
+  margin-right: 68px;
+}
+
+.habitations {
+  width: 121px;
+  height: 25px;
+  margin-right: 60px;
+}
+
+.spencer {
+  width: 150px;
+  height: 10px;
+  margin-right: 24px;
+}
+
+.copyright {
+  margin-top: 280px;
+  margin-bottom: 280px;
 }
