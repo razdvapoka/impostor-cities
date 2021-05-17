@@ -40,6 +40,12 @@ module.exports = withPlugins([nextTranslate], {
         locale: false,
         permanent: true,
       },
+      {
+        source: '/en/projet',
+        destination: '/fr/projet',
+        locale: false,
+        permanent: true,
+      },
     ]
   },
 })
