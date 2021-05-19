@@ -1,6 +1,12 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
-import { useToggle, useMeasure, useClickAway, useAsync } from 'react-use'
+import {
+  useUnmount,
+  useToggle,
+  useMeasure,
+  useClickAway,
+  useAsync,
+} from 'react-use'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
 import cn from 'classnames'
@@ -8,6 +14,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { TextReveal, LineReveal } from '@/components'
 import getT from 'next-translate/getT'
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from 'body-scroll-lock'
 import {
   NAV_ITEMS,
   BOTTOM_BORDER_WIDTH,
@@ -388,6 +399,18 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
     : isOpen
     ? 'calc(100vh - 54px)'
     : 0
+
+  useEffect(() => {
+    if (ref.current) {
+      if (isOpen) {
+        disableBodyScroll(ref.current)
+      } else {
+        enableBodyScroll(ref.current)
+      }
+    }
+  }, [isOpen])
+
+  useUnmount(clearAllBodyScrollLocks)
 
   return (
     <header
