@@ -1,9 +1,15 @@
 .sectionHeader {
   bottom: 0;
+  h2 {
+    transform: translateY(7px);
+  }
 }
 
 .sections {
   height: calc(100vh - 96px);
+  &Box {
+    transform: translateY(-7px);
+  }
 }
 
 .sectionBox {

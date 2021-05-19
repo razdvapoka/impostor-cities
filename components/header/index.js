@@ -272,7 +272,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
             <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
               17th International
               <br />
-              Architecture Exhibition
+              Architecture Exhibition of
               <br />
               La Biennale di Venezia
             </TextReveal>
@@ -300,7 +300,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
             <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
               17e exposition internationale
               <br />
-              d’architecture
+              d’architecture de
               <br />
               La Biennale di Venezia
             </TextReveal>
@@ -329,7 +329,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
                 Padiglione Canada
                 <br />
-                Giardini di Castello
+                Giardini della Biennale
                 <br />
                 Venezia
               </TextReveal>

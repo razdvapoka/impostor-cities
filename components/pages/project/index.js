@@ -15,11 +15,11 @@ import SponsorZebulon from '../../../assets/icons/sponsor-zebulon.svg'
 import SponsorHabitations from '../../../assets/icons/sponsor-habitations.svg'
 import SponsorSpencer from '../../../assets/icons/sponsor-spencer.svg'
 
-const SectionHeader = ({ headerEn, headerFr, top, bottom }) => {
+const SectionHeader = ({ headerEn, headerFr, top, bottom, zIndex }) => {
   return (
     <div
       className={cn('sticky bg-black z-10', styles.sectionHeader)}
-      style={{ top, bottom }}
+      style={{ top, bottom, zIndex }}
     >
       <div className="my-grid">
         <div className="w-2/8" />
@@ -236,7 +236,7 @@ const HEADER_HEIGHT = 35
 const Project = ({ commonData, data }) => {
   return (
     <Layout {...commonData}>
-      <div className="pt-22">
+      <div className={cn('pt-22', styles.sectionsBox)}>
         <div className={cn('overflow-auto px-1', styles.sections)}>
           {data.map((section, index) => (
             <React.Fragment key={section.type}>
@@ -244,6 +244,7 @@ const Project = ({ commonData, data }) => {
                 {...section}
                 top={index * HEADER_HEIGHT}
                 bottom={(data.length - 1 - index) * HEADER_HEIGHT}
+                zIndex={data.length - 1 - index}
               />
               <div className={cn(styles.sectionBox, 'pt-16')}>
                 <Section {...section} />
