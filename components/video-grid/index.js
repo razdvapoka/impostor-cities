@@ -67,10 +67,11 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const switchToNextVideo = useCallback(
     (index) => {
       const prevVideo = currentVideos[index]
+      const isAlreadyTakenOver = currentVideos.some((v) => v.isTakeover)
       const nextVideoCandidates = Object.values(videoMap).filter(
         (v) =>
           !currentVideos.find((cv) => cv.sys.id === v.sys.id) &&
-          (!prevVideo.isTakeover || !v.isTakeover)
+          (!isAlreadyTakenOver || !v.isTakeover)
       )
       const nextVideo = randomItem(nextVideoCandidates)
 
