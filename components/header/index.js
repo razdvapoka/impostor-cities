@@ -76,23 +76,25 @@ const HeaderMain = ({ isOpen, isCart, isThreeColumnHeader, toggleOpen }) => {
         <br />
         Urbani
       </div>
-      <div
-        className={cn(
-          'flex justify-end',
-          isThreeColumnHeader ? 'w-2/6' : 'w-1/8'
-        )}
-      >
-        {cartItemCount > 0 && (
-          <span className="text-green text-ts1B">{`| ${cartItemCount} |`}</span>
-        )}
+      <div className={cn(isThreeColumnHeader ? 'w-2/6' : 'w-1/8')}>
         <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
           <a
             className={cn(
-              'block ml-2 mr-1 rounded-full bg-green',
-              styles.cartButton
+              'flex justify-end text-green hover:text-white transition-colors h-full',
+              styles.cartBox
             )}
-            onClick={closeMenu}
-          />
+          >
+            {cartItemCount > 0 && (
+              <span className="text-ts1B">{`| ${cartItemCount} |`}</span>
+            )}
+            <span
+              className={cn(
+                'block ml-2 mr-1 rounded-full bg-green transition-colors',
+                styles.cartButton
+              )}
+              onClick={closeMenu}
+            />
+          </a>
         </Link>
       </div>
     </div>
