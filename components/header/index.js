@@ -16,7 +16,7 @@ import {
   SHOP_ROUTES,
 } from '@/consts'
 
-const HeaderMain = ({ open, isOpen, isThreeColumnHeader, toggleOpen }) => {
+const HeaderMain = ({ isOpen, isCart, isThreeColumnHeader, toggleOpen }) => {
   const { t } = useTranslation('common')
   const [cart] = useCart()
   const cartItemCount = Object.values(cart).reduce(
@@ -40,17 +40,15 @@ const HeaderMain = ({ open, isOpen, isThreeColumnHeader, toggleOpen }) => {
   return (
     <div
       className={cn('pb-4 cursor-pointer my-grid text-ts1B', styles.headerMain)}
-      onClick={open}
+      onClick={isCart ? null : toggleOpen}
     >
       <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
-        <Link href="/">
-          <a
-            className={cn('block ml-1', styles.logo, {
-              [styles.logoOpen]: isOpen,
-            })}
-            onClick={closeMenu}
-          />
-        </Link>
+        <div
+          className={cn('block ml-1', styles.logo, {
+            [styles.logoOpen]: isOpen,
+          })}
+          onClick={isCart ? null : closeMenu}
+        />
       </div>
       <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
         Impostor
@@ -76,7 +74,7 @@ const HeaderMain = ({ open, isOpen, isThreeColumnHeader, toggleOpen }) => {
         {cartItemCount > 0 && (
           <span className="text-green text-ts1B">{`| ${cartItemCount} |`}</span>
         )}
-        <Link href={`/${t('cart')}`}>
+        <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
           <a
             className={cn(
               'block ml-2 mr-1 rounded-full bg-green',
@@ -221,9 +219,11 @@ const INFO_TRANSITION_DELAY = 1000
 const HeaderInfoColumn = ({ isOpen, isThreeColumnHeader, children }) => {
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
   return (
-    <div className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8')}>
+    <div
+      className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'flex flex-col')}
+    >
       <LineReveal isRevealed={isOpen} transitionDelayMs={delay} />
-      <div className="mt-1">{children}</div>
+      <div className="flex flex-col flex-1 mt-1">{children}</div>
     </div>
   )
 }
@@ -237,145 +237,137 @@ const Lift = ({ isUp, children }) => {
 const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
   return (
-    <div className={styles.headerInfo}>
-      <div
-        className={cn(
-          'pb-1 border-b-2 border-solid my-grid',
-          styles.headerInfoContent,
-          { [styles.headerInfoContentOpened]: isOpen }
-        )}
+    <div className={cn('pb-1 my-grid flex-1', styles.headerInfoContent)}>
+      <HeaderInfoColumn
+        isOpen={isOpen}
+        isThreeColumnHeader={isThreeColumnHeader}
       >
-        <HeaderInfoColumn
-          isOpen={isOpen}
-          isThreeColumnHeader={isThreeColumnHeader}
-        >
-          {!isThreeColumnHeader && (
-            <Lift isUp={isOpen}>
-              <div className="text-ts2">
-                <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                  22.05-21.11 2021
-                </TextReveal>
-              </div>
-            </Lift>
-          )}
-        </HeaderInfoColumn>
-        <HeaderInfoColumn
-          isOpen={isOpen}
-          isThreeColumnHeader={isThreeColumnHeader}
-        >
+        {!isThreeColumnHeader && (
           <Lift isUp={isOpen}>
-            <div className="text-ts1B">
+            <div className="text-ts2">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                17th International
-                <br />
-                Architecture Exhibition
-                <br />
-                La Biennale di Venezia
-              </TextReveal>
-              <br />
-              <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                Canada’s Official <br />
-                Representation
+                22.05-21.11 2021
               </TextReveal>
             </div>
           </Lift>
-          <div className="mt-20 text-ts3">
-            <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-              ©2021 Impostor Cities
-              <br />
-              All rights reserved
-            </TextReveal>
-          </div>
-        </HeaderInfoColumn>
-        <HeaderInfoColumn
-          isOpen={isOpen}
-          isThreeColumnHeader={isThreeColumnHeader}
-        >
-          <Lift isUp={isOpen}>
-            <div className="text-ts1B">
-              <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                17e exposition internationale
-                <br />
-                d’architecture
-                <br />
-                La Biennale di Venezia
-              </TextReveal>
-              <br />
-              <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                Représentation <br />
-                officielle du Canada
-              </TextReveal>
-            </div>
-          </Lift>
-          <div className="mt-20 text-ts1">
-            <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-              ©2021 Édifices et artifice
-              <br />
-              Tous droits réservés
-            </TextReveal>
-          </div>
-        </HeaderInfoColumn>
-        <HeaderInfoColumn
-          isOpen={isOpen}
-          isThreeColumnHeader={isThreeColumnHeader}
-        >
-          <div className="flex justify-between">
-            <Lift isUp={isOpen}>
-              <div className="text-ts1B">
-                <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                  Padiglione Canada
-                  <br />
-                  Giardini di Castello
-                  <br />
-                  Venezia
-                </TextReveal>
-              </div>
-            </Lift>
-            <div
-              className={cn('mt-2 mr-3', styles.headerInfoLogo, {
-                [styles.headerInfoLogoOpened]: isOpen,
-                hidden: isThreeColumnHeader,
-              })}
-              style={{
-                backgroundImage: 'url(/images/biennale-logo.svg)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
-          </div>
-        </HeaderInfoColumn>
-        {isThreeColumnHeader && (
-          <>
-            <HeaderInfoColumn
-              isOpen={isOpen}
-              isThreeColumnHeader={isThreeColumnHeader}
-            >
-              <div className="text-ts1B">
-                <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                  22.05-21.11 2021
-                </TextReveal>
-              </div>
-            </HeaderInfoColumn>
-            <HeaderInfoColumn
-              isOpen={isOpen}
-              isThreeColumnHeader={isThreeColumnHeader}
-            >
-              <div className="flex justify-end">
-                <div
-                  className={cn('mt-2 mr-3', styles.headerInfoLogo, {
-                    [styles.headerInfoLogoOpened]: isOpen,
-                  })}
-                  style={{
-                    backgroundImage: 'url(/images/biennale-logo.svg)',
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                />
-              </div>
-            </HeaderInfoColumn>
-          </>
         )}
-      </div>
+      </HeaderInfoColumn>
+      <HeaderInfoColumn
+        isOpen={isOpen}
+        isThreeColumnHeader={isThreeColumnHeader}
+      >
+        <Lift isUp={isOpen}>
+          <div className="text-ts1B">
+            <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+              17th International
+              <br />
+              Architecture Exhibition
+              <br />
+              La Biennale di Venezia
+            </TextReveal>
+            <br />
+            <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+              Canada’s Official <br />
+              Representation
+            </TextReveal>
+          </div>
+        </Lift>
+        <div className="mt-auto text-ts3">
+          <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+            ©2021 Impostor Cities
+            <br />
+            All rights reserved
+          </TextReveal>
+        </div>
+      </HeaderInfoColumn>
+      <HeaderInfoColumn
+        isOpen={isOpen}
+        isThreeColumnHeader={isThreeColumnHeader}
+      >
+        <Lift isUp={isOpen}>
+          <div className="text-ts1B">
+            <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+              17e exposition internationale
+              <br />
+              d’architecture
+              <br />
+              La Biennale di Venezia
+            </TextReveal>
+            <br />
+            <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+              Représentation <br />
+              officielle du Canada
+            </TextReveal>
+          </div>
+        </Lift>
+        <div className="mt-auto text-ts1">
+          <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+            ©2021 Édifices et artifice
+            <br />
+            Tous droits réservés
+          </TextReveal>
+        </div>
+      </HeaderInfoColumn>
+      <HeaderInfoColumn
+        isOpen={isOpen}
+        isThreeColumnHeader={isThreeColumnHeader}
+      >
+        <div className="flex justify-between">
+          <Lift isUp={isOpen}>
+            <div className="text-ts1B">
+              <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+                Padiglione Canada
+                <br />
+                Giardini di Castello
+                <br />
+                Venezia
+              </TextReveal>
+            </div>
+          </Lift>
+          <div
+            className={cn('mt-2 mr-3', styles.headerInfoLogo, {
+              [styles.headerInfoLogoOpened]: isOpen,
+              hidden: isThreeColumnHeader,
+            })}
+            style={{
+              backgroundImage: 'url(/images/biennale-logo.svg)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+        </div>
+      </HeaderInfoColumn>
+      {isThreeColumnHeader && (
+        <>
+          <HeaderInfoColumn
+            isOpen={isOpen}
+            isThreeColumnHeader={isThreeColumnHeader}
+          >
+            <div className="text-ts1B">
+              <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
+                22.05-21.11 2021
+              </TextReveal>
+            </div>
+          </HeaderInfoColumn>
+          <HeaderInfoColumn
+            isOpen={isOpen}
+            isThreeColumnHeader={isThreeColumnHeader}
+          >
+            <div className="flex justify-end">
+              <div
+                className={cn('mt-2 mr-3', styles.headerInfoLogo, {
+                  [styles.headerInfoLogoOpened]: isOpen,
+                })}
+                style={{
+                  backgroundImage: 'url(/images/biennale-logo.svg)',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                }}
+              />
+            </div>
+          </HeaderInfoColumn>
+        </>
+      )}
     </div>
   )
 }
@@ -388,14 +380,13 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
       toggleOpen()
     }
   })
-  const [expandRef, { height }] = useMeasure()
   const [navRef, { height: navHeight }] = useMeasure()
   const { route } = useRouter()
   const isCart = CART_ROUTES.indexOf(route) !== -1
   const menuHeight = isCart
     ? navHeight + BOTTOM_BORDER_WIDTH
     : isOpen
-    ? height
+    ? 'calc(100vh - 54px)'
     : 0
 
   return (
@@ -411,33 +402,30 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
       `}
     >
       <HeaderMain
-        open={toggleOpen}
         isOpen={isOpen}
+        isCart={isCart}
         isThreeColumnHeader={isThreeColumnHeader}
         toggleOpen={toggleOpen}
       />
       <div
-        className={cn('h-0 overflow-hidden', styles.expand)}
+        className={cn('h-0 overflow-hidden flex flex-col', styles.expand, {
+          [styles.expandOpened]: isOpen,
+        })}
         style={{ height: menuHeight }}
       >
-        <div ref={expandRef}>
-          <div
-            ref={navRef}
-            className={cn({ 'border-b-2 border-solid border-white': isCart })}
-          >
-            <HeaderNav
-              isOpen={isOpen || isCart}
-              route={route}
-              isCart={isCart}
-              isThreeColumnHeader={isThreeColumnHeader}
-              toggleOpen={toggleOpen}
-            />
-          </div>
-          <HeaderInfo
-            isOpen={isOpen}
+        <div
+          ref={navRef}
+          className={cn({ 'border-b-2 border-solid border-white': isCart })}
+        >
+          <HeaderNav
+            isOpen={isOpen || isCart}
+            route={route}
+            isCart={isCart}
             isThreeColumnHeader={isThreeColumnHeader}
+            toggleOpen={toggleOpen}
           />
         </div>
+        <HeaderInfo isOpen={isOpen} isThreeColumnHeader={isThreeColumnHeader} />
       </div>
     </header>
   )

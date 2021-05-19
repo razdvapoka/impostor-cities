@@ -51,7 +51,7 @@ module.exports = {
   },
   theme: {
     screens: {
-      desktop: { min: '1024px' },
+      mobile: { max: '750px' },
     },
     colors: {
       white: '#ffffff',
