@@ -5,5 +5,7 @@
   "goToCart": "Passé au panier",
   "cart": "panier",
   "cartUC": "Panier",
-  "shop": "boutique"
+  "shop": "boutique",
+  "comingSoon": "Disponible  bientôt",
+  "soldOut": "Vendu"
 }

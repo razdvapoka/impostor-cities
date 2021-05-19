@@ -2,7 +2,6 @@ import { useState, useRef, useCallback } from 'react'
 import { useMouse, useAsync } from 'react-use'
 import { Layout } from '@/components'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useEmblaCarousel } from 'embla-carousel/react'
 import cn from 'classnames'
 import styles from './styles.module.scss'
@@ -137,7 +136,13 @@ const ProductInfo = ({
   )
 }
 
-const ProductButtons = ({ addVariantToCart, locale, disabled }) => {
+const ProductButtons = ({
+  addVariantToCart,
+  locale,
+  disabled,
+  isAvailable,
+  isComingSoon,
+}) => {
   const { value: t } = useAsync(async () => {
     const tr = await getT(locale, 'common')
     return tr
@@ -149,9 +154,13 @@ const ProductButtons = ({ addVariantToCart, locale, disabled }) => {
           <button
             className="text-ts2 hover:text-grey transition-colors disabled:pointer-events-none"
             onClick={addVariantToCart}
-            disabled={disabled}
+            disabled={disabled || !isAvailable || isComingSoon}
           >
-            {t('addToCart')}
+            {isComingSoon
+              ? t('comingSoon')
+              : !isAvailable
+              ? t('soldOut')
+              : t('addToCart')}
           </button>
         </div>
       )}
@@ -162,7 +171,11 @@ const ProductButtons = ({ addVariantToCart, locale, disabled }) => {
 const Product = ({ commonData, product }) => {
   const { en, fr } = product
   const productId = en.id
+  const isComingSoon = en.tags.indexOf('comingsoon') !== -1
   const variantsExist = hasVariants(en.variants)
+  const isAvailable = variantsExist
+    ? en.variants.some((v) => v.available)
+    : en.variants.available
   const [selectedVariantId, setSelectedVariantId] = useState(
     variantsExist ? null : en.variants[0].id
   )
@@ -237,6 +250,8 @@ const Product = ({ commonData, product }) => {
                 addVariantToCart={addVariantToCart}
                 disabled={selectedVariantId === null}
                 locale="en"
+                isAvailable={isAvailable}
+                isComingSoon={isComingSoon}
               />
             </div>
             <div className="w-2/8">
@@ -244,6 +259,8 @@ const Product = ({ commonData, product }) => {
                 addVariantToCart={addVariantToCart}
                 disabled={selectedVariantId === null}
                 locale="fr"
+                isAvailable={isAvailable}
+                isComingSoon={isComingSoon}
               />
             </div>
           </div>

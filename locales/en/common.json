@@ -5,5 +5,7 @@
   "goToCart": "Go to Cart",
   "cart": "cart",
   "cartUC": "Cart",
-  "shop": "shop"
+  "shop": "shop",
+  "comingSoon": "Coming soon",
+  "soldOut": "Sold out"
 }

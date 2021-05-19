@@ -1,18 +1,30 @@
 import useTranslation from 'next-translate/useTranslation'
+import getT from 'next-translate/getT'
+import { useAsync } from 'react-use'
 import { Layout } from '@/components'
 import Image from 'next/image'
 import Link from 'next/link'
 import { repeat, getSizeOption, hasVariants } from '@/lib/utils'
 import cn from 'classnames'
 
-const ProductInfo = ({ title, price, variants }) => {
-  const variantsExist = hasVariants(variants)
-
+const ProductInfo = ({
+  title,
+  price,
+  variants,
+  isAvailable,
+  isComingSoon,
+  locale,
+}) => {
+  const { value: t } = useAsync(async () => {
+    const tr = await getT(locale, 'common')
+    return tr
+  }, [])
   return (
     <div>
       <div>{title}</div>
       <div>{price}</div>
-      {variantsExist && (
+      {isComingSoon && t && <div>{t('comingSoon')}</div>}
+      {!isComingSoon && isAvailable && (
         <div className="flex space-x-2">
           {variants.map((variant, variantIndex) => (
             <span
@@ -24,19 +36,26 @@ const ProductInfo = ({ title, price, variants }) => {
           ))}
         </div>
       )}
+      {!isComingSoon && !isAvailable && t && <div>{t('soldOut')}</div>}
     </div>
   )
 }
 
 const ProductCard = ({
-  en: { images, title: titleEn, variants: variantsEn, handle },
+  en: { images, title: titleEn, variants: variantsEn, handle, tags },
   fr: { title: titleFr, variants: variantsFr },
 }) => {
+  const isComingSoon = tags.indexOf('comingsoon') !== -1
   const { price } = variantsEn[0]
   const priceString = `$${price} CDN`
   const titlesDiffer = titleEn !== titleFr
   const { lang } = useTranslation('common')
   const productHref = `/${lang === 'fr' ? 'boutique' : 'shop'}/${handle}`
+  const variantsExist = hasVariants(variantsEn)
+  const isAvailable = variantsExist
+    ? variantsEn.some((v) => v.available)
+    : variantsEn[0].available
+
   return (
     <Link href={productHref}>
       <a className="block mb-9 hover:text-grey transition-colors">
@@ -48,12 +67,20 @@ const ProductCard = ({
             title={titleEn}
             price={priceString}
             variants={variantsEn}
+            variantsExist={variantsExist}
+            isAvailable={isAvailable}
+            isComingSoon={isComingSoon}
+            locale="en"
           />
           {titlesDiffer && (
             <ProductInfo
               title={titleFr}
               price={priceString}
               variants={variantsFr}
+              variantsExist={variantsExist}
+              isAvailable={isAvailable}
+              isComingSoon={isComingSoon}
+              locale="fr"
             />
           )}
         </div>
