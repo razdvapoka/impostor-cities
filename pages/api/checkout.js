@@ -1,4 +1,4 @@
-import Client from 'shopify-buy'
+import Client from 'shopify-buy-with-tags'
 
 const client = Client.buildClient({
   domain: process.env.SHOPIFY_DOMAIN,
