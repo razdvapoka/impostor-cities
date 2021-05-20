@@ -88,3 +88,7 @@
   background-image: url(/images/slider-arrow.svg);
   transform: scaleX(-1);
 }
+
+.disableTransitions * {
+  transition: none !important;
+}

@@ -94,11 +94,11 @@ const Shop = ({ commonData, products }) => {
   return (
     <Layout {...commonData}>
       <div className="mt-22 my-grid">
-        {fakeProducts.map((product, productIndex) => (
+        {/* fakeProducts.map((product, productIndex) => (
           <div key={productIndex} className="w-2/8">
             <ProductCard {...product} />
           </div>
-        ))}
+        )) */}
       </div>
     </Layout>
   )

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Header } from '@/components'
-import { THREE_COLUMN_ROUTES } from '@/consts'
+import { THREE_COLUMN_ROUTES, SHOP_ROUTES } from '@/consts'
 
 import '../assets/css/tailwind.css'
 import '../assets/scss/global.scss'
@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps }) {
   const isThreeColumnHeader = !!THREE_COLUMN_ROUTES.find(
     (route) => route === router.route
   )
+  const isShop = !!SHOP_ROUTES.find((route) => route === router.route)
   return (
     <div>
       <Head>
@@ -30,7 +31,7 @@ function MyApp({ Component, pageProps }) {
       <CartProvider>
         <UserInteractionProvider>
           <div className="flex flex-col min-h-screen">
-            <Header isThreeColumnHeader={isThreeColumnHeader} />
+            <Header isThreeColumnHeader={isThreeColumnHeader} isShop={isShop} />
             <Component {...pageProps} />
           </div>
         </UserInteractionProvider>

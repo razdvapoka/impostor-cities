@@ -1,12 +1,6 @@
-import { useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
-import {
-  useUnmount,
-  useToggle,
-  useMeasure,
-  useClickAway,
-  useAsync,
-} from 'react-use'
+import { useUnmount, useMeasure, useAsync } from 'react-use'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
 import cn from 'classnames'
@@ -27,7 +21,14 @@ import {
   SHOP_ROUTES,
 } from '@/consts'
 
-const HeaderMain = ({ isOpen, isCart, isThreeColumnHeader, toggleOpen }) => {
+const HeaderMain = ({
+  isOpen,
+  isCart,
+  isShop,
+  isThreeColumnHeader,
+  openMenu,
+  closeMenu,
+}) => {
   const { t } = useTranslation('common')
   const [cart] = useCart()
   const cartItemCount = Object.values(cart).reduce(
@@ -39,26 +40,27 @@ const HeaderMain = ({ isOpen, isCart, isThreeColumnHeader, toggleOpen }) => {
       ),
     0
   )
-  const closeMenu = useCallback(
+  const close = useCallback(
     (e) => {
-      e.stopPropagation()
       if (isOpen) {
-        toggleOpen()
+        closeMenu()
+      } else {
+        openMenu()
       }
     },
-    [isOpen, toggleOpen]
+    [isOpen, closeMenu, openMenu]
   )
   return (
     <div
       className={cn('pb-4 cursor-pointer my-grid text-ts1B', styles.headerMain)}
-      onClick={isCart ? null : toggleOpen}
+      onClick={close}
     >
       <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
         <Link href="/">
           <a
             className={cn('block ml-1', styles.logo, {
-              [styles.logoOpen]: isOpen,
-              'pointer-events-none': isOpen,
+              [styles.logoOpen]: isOpen || isCart || isShop,
+              'pointer-events-none': isOpen || isCart || isShop,
             })}
             onClick={(e) => e.stopPropagation()}
           />
@@ -104,7 +106,7 @@ const HeaderMain = ({ isOpen, isCart, isThreeColumnHeader, toggleOpen }) => {
   )
 }
 
-const NavItem = ({ item, route, isCart, isOpen, lang, toggleOpen }) => {
+const NavItem = ({ item, route, isCart, isShop, isOpen, lang, closeMenu }) => {
   const { value: t } = useAsync(async () => {
     const tr = await getT(lang, 'common')
     return tr
@@ -123,8 +125,8 @@ const NavItem = ({ item, route, isCart, isOpen, lang, toggleOpen }) => {
             'pointer-events-none': isActive && !(isShopItem && isCart),
           })}
           onClick={() => {
-            if (isOpen && !isCart) {
-              toggleOpen()
+            if (isOpen && !isShopItem) {
+              closeMenu()
             }
           }}
         >
@@ -138,10 +140,14 @@ const NavItem = ({ item, route, isCart, isOpen, lang, toggleOpen }) => {
   )
 }
 
-const Nav = ({ lang, isOpen, isCart, route, toggleOpen }) => {
+const Nav = ({ lang, isOpen, isCart, isShop, route, closeMenu }) => {
   const items = NAV_ITEMS[lang]
   return (
-    <nav className={cn(styles.nav, { [styles.navOpen]: isOpen })}>
+    <nav
+      className={cn(styles.nav, {
+        [styles.navOpen]: isOpen || isCart || isShop,
+      })}
+    >
       <ul>
         {items.map((item) => (
           <NavItem
@@ -149,9 +155,10 @@ const Nav = ({ lang, isOpen, isCart, route, toggleOpen }) => {
             item={item}
             isOpen={isOpen}
             isCart={isCart}
+            isShop={isShop}
             route={route}
             lang={lang}
-            toggleOpen={toggleOpen}
+            closeMenu={closeMenu}
           />
         ))}
       </ul>
@@ -189,16 +196,17 @@ const SocialMediaLinks = ({ isOpen }) => {
 
 const HeaderNav = ({
   isOpen,
+  isShop,
   route,
   isCart,
   isThreeColumnHeader,
-  toggleOpen,
+  closeMenu,
 }) => {
   const close = useCallback(() => {
-    if (isOpen && !isCart) {
-      toggleOpen()
+    if (isOpen) {
+      closeMenu()
     }
-  }, [isOpen, isCart, toggleOpen])
+  }, [isOpen, closeMenu])
   return (
     <div>
       <div className="pb-6 my-grid">
@@ -217,7 +225,8 @@ const HeaderNav = ({
             isOpen={isOpen}
             route={route}
             isCart={isCart}
-            toggleOpen={toggleOpen}
+            isShop={isShop}
+            closeMenu={closeMenu}
           />
         </div>
         <div
@@ -228,13 +237,14 @@ const HeaderNav = ({
             isOpen={isOpen}
             route={route}
             isCart={isCart}
-            toggleOpen={toggleOpen}
+            isShop={isShop}
+            closeMenu={closeMenu}
           />
         </div>
         <div
           className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts1B')}
         >
-          <SocialMediaLinks isOpen={isOpen} />
+          <SocialMediaLinks isOpen={isOpen || isCart || isShop} />
         </div>
       </div>
     </div>
@@ -261,7 +271,8 @@ const Lift = ({ isUp, children }) => {
   )
 }
 
-const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
+const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
+  const isOpen = isReallyOpen || isShop
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
   return (
     <div className={cn('pb-1 my-grid flex-1', styles.headerInfoContent)}>
@@ -297,6 +308,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
               Canada’s Official <br />
               Representation
             </TextReveal>
+            {isShop && <div className="mt-30 text-ts2">Coming soon</div>}
           </div>
         </Lift>
         <div className="mt-auto text-ts3">
@@ -325,6 +337,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
               Représentation <br />
               officielle du Canada
             </TextReveal>
+            {isShop && <div className="mt-30 text-ts2">À venir</div>}
           </div>
         </Lift>
         <div className="mt-auto text-ts1">
@@ -399,52 +412,58 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
   )
 }
 
-const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
-  const [isOpen, toggleOpen] = useToggle(isOpenByDefault)
+const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
+  const [isOpen, setIsOpen] = useState(isOpenByDefault)
+  const openMenu = () => {
+    setIsOpen(true)
+  }
+  const closeMenu = () => {
+    setIsOpen(false)
+  }
   const ref = useRef(null)
-  useClickAway(ref, () => {
-    if (isOpen) {
-      toggleOpen()
-    }
-  })
   const [navRef, { height: navHeight }] = useMeasure()
   const { route } = useRouter()
   const isCart = CART_ROUTES.indexOf(route) !== -1
   const menuHeight = isCart
     ? navHeight + BOTTOM_BORDER_WIDTH
-    : isOpen
+    : isOpen || isShop
     ? 'calc(100vh - 54px)'
     : 0
 
   useEffect(() => {
     if (ref.current) {
-      if (isOpen) {
+      if (isOpen || isShop) {
         disableBodyScroll(ref.current)
       } else {
         enableBodyScroll(ref.current)
       }
     }
-  }, [isOpen])
+  }, [isOpen, isShop])
 
   useUnmount(clearAllBodyScrollLocks)
 
   return (
     <header
       ref={ref}
-      className={`
+      className={cn(
+        `
         fixed top-0 left-0
         w-screen
         pt-2
         px-1
         bg-black
         z-30
-      `}
+      `,
+        { [styles.disableTransitions]: isShop }
+      )}
     >
       <HeaderMain
         isOpen={isOpen}
         isCart={isCart}
+        isShop={isShop}
         isThreeColumnHeader={isThreeColumnHeader}
-        toggleOpen={toggleOpen}
+        openMenu={openMenu}
+        closeMenu={closeMenu}
       />
       <div
         className={cn('h-0 overflow-hidden flex flex-col', styles.expand, {
@@ -457,14 +476,19 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
           className={cn({ 'border-b-2 border-solid border-white': isCart })}
         >
           <HeaderNav
-            isOpen={isOpen || isCart}
             route={route}
+            isOpen={isOpen}
             isCart={isCart}
+            isShop={isShop}
             isThreeColumnHeader={isThreeColumnHeader}
-            toggleOpen={toggleOpen}
+            closeMenu={closeMenu}
           />
         </div>
-        <HeaderInfo isOpen={isOpen} isThreeColumnHeader={isThreeColumnHeader} />
+        <HeaderInfo
+          isOpen={isOpen}
+          isShop={isShop}
+          isThreeColumnHeader={isThreeColumnHeader}
+        />
       </div>
     </header>
   )
