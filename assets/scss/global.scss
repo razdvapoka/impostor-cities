@@ -74,9 +74,9 @@ button {
 }
 
 .hyphenate {
-  hyphens: auto;
-  @include mediaQuery(desktop) {
-    hyphens: none;
+  hyphens: none;
+  @include mediaQuery(mobile) {
+    hyphens: auto;
   }
 }
 

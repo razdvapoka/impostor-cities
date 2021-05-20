@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback } from 'react'
-import { useLocalStorage, useTimeoutFn } from 'react-use'
-import { CookieBanner } from '@/components'
+import { useWindowSize, useLocalStorage, useTimeoutFn } from 'react-use'
+import { CookieBanner, Dummy } from '@/components'
 import { useUserInteraction } from '@/contexts/user-interaction'
 
 const Layout = ({ children }) => {
+  const [isMobile, setIsMobile] = useState(false)
+  const { width } = useWindowSize()
   const [userInteraction, setUserInteraction] = useUserInteraction()
   const [cookiesAccepted] = useLocalStorage('cookiesAccepted')
   const [cookieBannerVisible, setCookieBannerVisible] = useState(false)
@@ -27,9 +29,12 @@ const Layout = ({ children }) => {
       window.removeEventListener('click', handleClick)
     }
   }, [])
+  useEffect(() => {
+    setIsMobile(width < 750)
+  }, [width])
   return (
-    <main className="flex-1 p-1">
-      {children}
+    <main className="flex-1 p-1 mobile:p-2 mobile:flex mobile:flex-col">
+      {isMobile ? <Dummy /> : children}
       {/* cookieBannerVisible && <CookieBanner close={closeCookieBanner} /> */}
     </main>
   )

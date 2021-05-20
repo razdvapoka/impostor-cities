@@ -32,7 +32,7 @@ const PressColumn = ({
 const Press = ({ commonData, data: { en, fr } }) => {
   return (
     <Layout {...commonData}>
-      <div className="mt-22 my-grid">
+      <div className="mt-22 my-grid mobile:mt-0">
         <div className="w-2/8" />
         <div className="w-2/8">
           <PressColumn locale="en-US" {...en} />

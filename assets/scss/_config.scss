@@ -2,12 +2,12 @@ $ff-helvetica: 'Helvetica Neue LT Pro', 'Helvetica Neue', 'Helvetica', Arial, sa
 $ff-helvetica-mono: 'Helvetica Monospaced, monospace';
 
 $screens: (
-  desktop: (
-    min: 1024px,
+  mobile: (
+    max: 750px,
   ),
 );
 
-$style-system-screens: (desktop);
+$style-system-screens: (mobile);
 
 $font-styles: (
   ts1: (

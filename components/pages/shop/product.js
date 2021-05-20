@@ -212,7 +212,7 @@ const Product = ({ commonData, product }) => {
 
   return (
     <Layout {...commonData}>
-      <div className="mt-22 my-grid">
+      <div className="mt-22 my-grid mobile:mt-0">
         <div className="w-4/8">
           {en.images.length > 1 ? (
             <Slider>

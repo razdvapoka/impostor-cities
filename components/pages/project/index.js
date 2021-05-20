@@ -277,7 +277,7 @@ const Project = ({ commonData, data }) => {
   }
   return (
     <Layout {...commonData}>
-      <div className={cn('pt-22', styles.sectionsBox)}>
+      <div className={cn('pt-22 mobile:pt-0', styles.sectionsBox)}>
         <div
           ref={sectionsRef}
           className={cn('overflow-auto px-1', styles.sections)}

@@ -93,7 +93,7 @@ const Shop = ({ commonData, products }) => {
   const fakeProducts = repeat(products, 5).flat()
   return (
     <Layout {...commonData}>
-      <div className="mt-22 my-grid">
+      <div className="mt-22 my-grid mobile:mt-0">
         {/* fakeProducts.map((product, productIndex) => (
           <div key={productIndex} className="w-2/8">
             <ProductCard {...product} />

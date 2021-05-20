@@ -51,11 +51,10 @@ const HeaderMain = ({
     [isOpen, closeMenu, openMenu]
   )
   return (
-    <div
-      className={cn('pb-4 cursor-pointer my-grid text-ts1B', styles.headerMain)}
-      onClick={close}
-    >
-      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
+    <div className="pb-4 cursor-pointer my-grid text-ts1B" onClick={close}>
+      <div
+        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
+      >
         <Link href="/">
           <a
             className={cn('block ml-1', styles.logo, {
@@ -66,22 +65,30 @@ const HeaderMain = ({
           />
         </Link>
       </div>
-      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
+      <div
+        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
+      >
         Impostor
         <br />
         Cities
       </div>
-      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
+      <div
+        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
+      >
         Édifices
         <br />
         et artifice
       </div>
-      <div className={isThreeColumnHeader ? 'w-1/6' : 'w-1/8'}>
+      <div
+        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-1/8', 'mobile:hidden')}
+      >
         Inganni
         <br />
         Urbani
       </div>
-      <div className={cn(isThreeColumnHeader ? 'w-2/6' : 'w-1/8')}>
+      <div
+        className={cn(isThreeColumnHeader ? 'w-2/6' : 'w-1/8', 'mobile:hidden')}
+      >
         <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
           <a
             className={cn(
@@ -369,11 +376,6 @@ const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
               [styles.headerInfoLogoOpened]: isOpen,
               hidden: isThreeColumnHeader,
             })}
-            style={{
-              backgroundImage: 'url(/images/biennale-logo.svg)',
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-            }}
           />
         </div>
       </HeaderInfoColumn>
@@ -453,6 +455,7 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         px-1
         bg-black
         z-30
+        mobile:pointer-events-none
       `,
         { [styles.disableTransitions]: isShop }
       )}
@@ -466,9 +469,13 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         closeMenu={closeMenu}
       />
       <div
-        className={cn('h-0 overflow-hidden flex flex-col', styles.expand, {
-          [styles.expandOpened]: isOpen,
-        })}
+        className={cn(
+          'h-0 overflow-hidden flex flex-col mobile:hidden',
+          styles.expand,
+          {
+            [styles.expandOpened]: isOpen,
+          }
+        )}
         style={{ height: menuHeight }}
       >
         <div

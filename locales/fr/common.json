@@ -7,5 +7,7 @@
   "cartUC": "Panier",
   "shop": "boutique",
   "comingSoon": "Disponible  bientôt",
-  "soldOut": "Vendu"
+  "soldOut": "Vendu",
+  "en": "English",
+  "fr": "French"
 }

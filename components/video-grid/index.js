@@ -155,7 +155,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   }, [takeover])
 
   return (
-    <div className="py-20 my-grid">
+    <div className="py-20 my-grid mobile:py-0">
       {currentVideos.slice(0, 9).map((video, videoIndex) => (
         <div className="w-2/6 mb-1" key={videoIndex}>
           <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
