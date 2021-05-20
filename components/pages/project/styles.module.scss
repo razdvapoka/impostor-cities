@@ -7,6 +7,7 @@
 
 .sections {
   height: calc(100vh - 96px);
+  padding-bottom: 4px;
   &Box {
     transform: translateY(-7px);
   }

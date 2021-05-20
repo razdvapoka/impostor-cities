@@ -18,7 +18,7 @@ const TextReveal = ({
         className={cn('absolute left-0 top-0 w-full', styles.textOverlayBox)}
       >
         <span
-          className={cn(styles.textOverlay, {
+          className={cn('', styles.textOverlay, {
             [styles.textOverlayHidden]: isRevealed,
           })}
           style={{

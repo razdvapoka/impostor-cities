@@ -42,7 +42,7 @@ export const NAV_ITEMS = {
     {
       href: '/fr/presse',
       route: '/presse',
-      title: 'Presse',
+      title: 'Médias',
     },
   ],
 }

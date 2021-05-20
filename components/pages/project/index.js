@@ -244,7 +244,7 @@ const Project = ({ commonData, data }) => {
                 {...section}
                 top={index * HEADER_HEIGHT}
                 bottom={(data.length - 1 - index) * HEADER_HEIGHT}
-                zIndex={data.length - 1 - index}
+                zIndex={data.length - index}
               />
               <div className={cn(styles.sectionBox, 'pt-16')}>
                 <Section {...section} />

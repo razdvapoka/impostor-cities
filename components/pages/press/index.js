@@ -9,9 +9,10 @@ const PressColumn = ({
 }) => {
   return (
     <div>
-      <Markdown className="text-ts2" locale={locale}>
-        {assets}
+      <Markdown className="text-ts3" locale={locale}>
+        {inquiries}
       </Markdown>
+      {/*
       <div className="mt-12">
         <div className="text-ts3">{inquiriesTitle}</div>
         <a
@@ -23,6 +24,7 @@ const PressColumn = ({
           </Markdown>
         </a>
       </div>
+      */}
     </div>
   )
 }
