@@ -1,4 +1,5 @@
-import React, { useRef } from 'react'
+import React, { useRef, useCallback } from 'react'
+import smoothscroll from 'smoothscroll-polyfill'
 import { useIntersection } from 'react-use'
 import { Markdown, Layout, LineReveal } from '@/components'
 import cn from 'classnames'
@@ -15,7 +16,22 @@ import SponsorZebulon from '../../../assets/icons/sponsor-zebulon.svg'
 import SponsorHabitations from '../../../assets/icons/sponsor-habitations.svg'
 import SponsorSpencer from '../../../assets/icons/sponsor-spencer.svg'
 
-const SectionHeader = ({ headerEn, headerFr, top, bottom, zIndex }) => {
+if (typeof window !== 'undefined') {
+  smoothscroll.polyfill()
+}
+
+const SectionHeader = ({
+  headerEn,
+  headerFr,
+  top,
+  bottom,
+  zIndex,
+  type,
+  scrollToSection,
+}) => {
+  const handleClick = useCallback(() => {
+    scrollToSection(type)
+  }, [scrollToSection, type])
   return (
     <div
       className={cn('sticky bg-black z-10', styles.sectionHeader)}
@@ -24,10 +40,20 @@ const SectionHeader = ({ headerEn, headerFr, top, bottom, zIndex }) => {
       <div className="my-grid">
         <div className="w-2/8" />
         <div className="w-2/8">
-          <h2 className="text-ts2">{headerEn}</h2>
+          <button
+            className="hover:text-grey transition-colors"
+            onClick={handleClick}
+          >
+            <h2 className="text-ts2">{headerEn}</h2>
+          </button>
         </div>
         <div className="w-2/8">
-          <h2 className="text-ts2">{headerFr}</h2>
+          <button
+            className="hover:text-grey transition-colors"
+            onClick={handleClick}
+          >
+            <h2 className="text-ts2">{headerFr}</h2>
+          </button>
         </div>
       </div>
     </div>
@@ -242,19 +268,37 @@ const Section = ({ type, ...rest }) => {
 const HEADER_HEIGHT = 35
 
 const Project = ({ commonData, data }) => {
+  const sectionsRef = useRef(null)
+  const scrollToSection = (type) => {
+    const sectionEl = document.querySelector(`#${type}`)
+    sectionEl.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
   return (
     <Layout {...commonData}>
       <div className={cn('pt-22', styles.sectionsBox)}>
-        <div className={cn('overflow-auto px-1', styles.sections)}>
+        <div
+          ref={sectionsRef}
+          className={cn('overflow-auto px-1', styles.sections)}
+        >
           {data.map((section, index) => (
             <React.Fragment key={section.type}>
               <SectionHeader
                 {...section}
+                scrollToSection={scrollToSection}
                 top={index * HEADER_HEIGHT}
                 bottom={(data.length - 1 - index) * HEADER_HEIGHT}
                 zIndex={data.length - index}
               />
-              <div className={cn(styles.sectionBox, 'pt-16')}>
+              <div className={cn(styles.sectionBox, 'pt-16 relative')}>
+                <div
+                  id={section.type}
+                  className="absolute left-0"
+                  style={{
+                    top: -(index + 1) * HEADER_HEIGHT,
+                  }}
+                />
                 <Section {...section} />
               </div>
             </React.Fragment>
