@@ -61,10 +61,14 @@ const VisitorSection = ({ itemsCollection: { items } }) => {
     <div className="my-grid mb-30">
       <div className="w-2/8" />
       <div className="w-2/8">
-        <Markdown locale="en-US">{items[0].textEn}</Markdown>
+        <div className="pr-5">
+          <Markdown locale="en-US">{items[0].textEn}</Markdown>
+        </div>
       </div>
       <div className="w-2/8">
-        <Markdown locale="fr">{items[0].textFr}</Markdown>
+        <div className="pr-5">
+          <Markdown locale="fr">{items[0].textFr}</Markdown>
+        </div>
       </div>
     </div>
   )
@@ -177,7 +181,7 @@ const SponsorsItem = ({ text, index }) => {
 
 const SponsorsSection = ({ itemsCollection: { items } }) => {
   return (
-    <div className="my-grid mb-10">
+    <div className="mb-10 my-grid">
       {items.map(({ textEn }, itemIndex) => (
         <SponsorsItem key={itemIndex} text={textEn} index={itemIndex} />
       ))}
@@ -195,10 +199,14 @@ const ContactSection = ({
       <div className="my-grid">
         <div className="w-2/8" />
         <div className="w-2/8">
-          <Markdown locale="en-US">{textEn}</Markdown>
+          <div className="pr-5">
+            <Markdown locale="en-US">{textEn}</Markdown>
+          </div>
         </div>
         <div className="w-2/8">
-          <Markdown locale="fr">{textFr}</Markdown>
+          <div className="pr-5">
+            <Markdown locale="fr">{textFr}</Markdown>
+          </div>
         </div>
       </div>
       <div className={cn('my-grid', styles.copyright)}>
