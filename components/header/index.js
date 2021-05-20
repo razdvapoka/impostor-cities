@@ -191,10 +191,21 @@ const HeaderNav = ({
   isThreeColumnHeader,
   toggleOpen,
 }) => {
+  const close = useCallback(() => {
+    if (isOpen && !isCart) {
+      toggleOpen()
+    }
+  }, [isOpen, isCart, toggleOpen])
   return (
     <div>
       <div className="pb-6 my-grid">
-        <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'} />
+        <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
+          <div className="flex items-end h-full pl-1">
+            <Link href="/">
+              <a className={cn(styles.homeButton, 'block')} onClick={close} />
+            </Link>
+          </div>
+        </div>
         <div
           className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts2')}
         >

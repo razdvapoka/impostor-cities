@@ -78,3 +78,13 @@
 .cartBox:hover .cartButton {
   background-color: white;
 }
+
+.homeButton {
+  width: 43px;
+  height: 35px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(/images/slider-arrow.svg);
+  transform: scaleX(-1);
+}

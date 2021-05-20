@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { HeadphonesAlert, Layout, VideoGrid } from '@/components'
 import { getVideos } from '@/lib/contentful'
 import { withCommonData } from '@/lib/utils'
+import { useUserInteraction } from '@/contexts/user-interaction'
 
 export const getStaticProps = async (context) => {
   const { commonData, data: videos } = await withCommonData(getVideos)(context)
@@ -15,13 +16,9 @@ export const getStaticProps = async (context) => {
 }
 
 const HomePage = ({ commonData, videos }) => {
-  const [hasUserInteraction, setHasUserInteraction] = useState(false)
+  const [userInteraction] = useUserInteraction()
+  console.log(userInteraction)
   const [pageHasFocus, setPageHasFocus] = useState(true)
-  const handleClick = useCallback(() => {
-    if (!hasUserInteraction) {
-      setHasUserInteraction(true)
-    }
-  }, [hasUserInteraction, setHasUserInteraction])
   const handlePageLostFocus = useCallback(() => {
     setPageHasFocus(false)
   }, [setPageHasFocus])
@@ -29,11 +26,9 @@ const HomePage = ({ commonData, videos }) => {
     setPageHasFocus(true)
   }, [setPageHasFocus])
   useEffect(() => {
-    window.addEventListener('click', handleClick)
     window.addEventListener('blur', handlePageLostFocus)
     window.addEventListener('focus', handlePageGotFocus)
     return () => {
-      window.removeEventListener('click', handleClick)
       window.removeEventListener('blur', handlePageLostFocus)
       window.removeEventListener('focus', handlePageGotFocus)
     }
@@ -42,10 +37,10 @@ const HomePage = ({ commonData, videos }) => {
     <Layout {...commonData}>
       <VideoGrid
         videos={videos}
-        hasUserInteraction={hasUserInteraction}
+        hasUserInteraction={userInteraction}
         pageHasFocus={pageHasFocus}
       />
-      {!hasUserInteraction && <HeadphonesAlert />}
+      {!userInteraction && <HeadphonesAlert />}
     </Layout>
   )
 }

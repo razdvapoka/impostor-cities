@@ -38,19 +38,23 @@ const OverlayButton = ({ disabled, handleClick, className, isReversed }) => {
 }
 
 const Slider = ({ children }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
   const scrollNext = () => {
     if (emblaApi.canScrollNext()) {
       emblaApi.scrollNext()
-      setCurrentSlideIndex(currentSlideIndex + 1)
+      const slideCount = emblaApi.slideNodes().length
+      setCurrentSlideIndex((currentSlideIndex + 1) % slideCount)
     }
   }
   const scrollPrev = () => {
     if (emblaApi.canScrollPrev()) {
       emblaApi.scrollPrev()
-      setCurrentSlideIndex(currentSlideIndex - 1)
+      const slideCount = emblaApi.slideNodes().length
+      setCurrentSlideIndex(
+        currentSlideIndex - 1 < 0 ? slideCount - 1 : currentSlideIndex - 1
+      )
     }
   }
 

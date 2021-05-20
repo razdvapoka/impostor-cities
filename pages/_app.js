@@ -6,6 +6,7 @@ import { THREE_COLUMN_ROUTES } from '@/consts'
 import '../assets/css/tailwind.css'
 import '../assets/scss/global.scss'
 import { CartProvider } from '@/contexts/cart'
+import { UserInteractionProvider } from '@/contexts/user-interaction'
 
 const touchEventsDetector = `
     if ('ontouchstart' in window || (window.DocumentTouch && document instanceof DocumentTouch)) {
@@ -27,10 +28,12 @@ function MyApp({ Component, pageProps }) {
         <script dangerouslySetInnerHTML={{ __html: touchEventsDetector }} />
       </Head>
       <CartProvider>
-        <div className="flex flex-col min-h-screen">
-          <Header isThreeColumnHeader={isThreeColumnHeader} />
-          <Component {...pageProps} />
-        </div>
+        <UserInteractionProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header isThreeColumnHeader={isThreeColumnHeader} />
+            <Component {...pageProps} />
+          </div>
+        </UserInteractionProvider>
       </CartProvider>
     </div>
   )
