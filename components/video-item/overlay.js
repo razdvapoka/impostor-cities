@@ -123,8 +123,10 @@ const BottomLine = ({
       <div>
         {isLocation || (isTakeover && indexInBlock === 2) ? (
           <div className="flex text-ts1B">
-            <div className="mr-5">{blockCount}-Ch. Sequence</div>
-            <div>Séquence {blockCount}-Ca.</div>
+            <div className="mr-5">
+              {captionEn || `${blockCount}-Ch. Sequence`}
+            </div>
+            <div>{captionFr || `Séquence ${blockCount}-Ca.`}</div>
           </div>
         ) : isInBlock ? (
           <div />
