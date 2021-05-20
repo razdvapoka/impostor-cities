@@ -17,7 +17,6 @@ export const getStaticProps = async (context) => {
 
 const HomePage = ({ commonData, videos }) => {
   const [userInteraction] = useUserInteraction()
-  console.log(userInteraction)
   const [pageHasFocus, setPageHasFocus] = useState(true)
   const handlePageLostFocus = useCallback(() => {
     setPageHasFocus(false)
