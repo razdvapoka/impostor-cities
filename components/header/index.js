@@ -54,12 +54,15 @@ const HeaderMain = ({ isOpen, isCart, isThreeColumnHeader, toggleOpen }) => {
       onClick={isCart ? null : toggleOpen}
     >
       <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
-        <div
-          className={cn('block ml-1', styles.logo, {
-            [styles.logoOpen]: isOpen,
-          })}
-          onClick={isCart ? null : closeMenu}
-        />
+        <Link href="/">
+          <a
+            className={cn('block ml-1', styles.logo, {
+              [styles.logoOpen]: isOpen,
+              'pointer-events-none': isOpen,
+            })}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </Link>
       </div>
       <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
         Impostor
