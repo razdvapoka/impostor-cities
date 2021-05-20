@@ -1,5 +1,6 @@
 import styles from './styles.module.scss'
 import cn from 'classnames'
+import { Markdown } from '@/components'
 
 export const HeadphonesAlert = () => {
   return (
@@ -19,19 +20,19 @@ export const HeadphonesAlert = () => {
             )}
           >
             <div className="flex flex-col justify-between flex-1">
-              <div>
-                Use headphones for
-                <br />
-                the best experience
-              </div>
+              <Markdown className="text-ts2" locale="en-US">
+                {`This site is best viewed on a computer.\\
+                Use headphones for the
+                best experience.`}
+              </Markdown>
               <div>Close</div>
             </div>
             <div className="flex flex-col justify-between flex-1 ml-1">
-              <div>
-                Utiliser des écouteurs
-                <br />
-                pour la meilleure expérience
-              </div>
+              <Markdown className="text-ts2" locale="fr">
+                {`Ce site est optimisé sur un ordinateur.\\
+                Utiliser les écouteurs
+                pour la meilleure expérience.`}
+              </Markdown>
               <div>Fermer</div>
             </div>
           </div>
