@@ -162,19 +162,19 @@ const SocialMediaLinks = ({ isOpen }) => {
       <li>
         <TextReveal isRevealed={isOpen}>
           <a
-            href="https://example.com"
+            href="https://www.instagram.com/impostorcities"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-grey"
+            className={cn('transition-colors hover:text-grey')}
           >
             Instagram
           </a>
           <br />
           <a
-            href="https://example.com"
+            href="https://www.facebook.com/impostorcities"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-grey"
+            className={cn('transition-colors hover:text-grey')}
           >
             Facebook
           </a>

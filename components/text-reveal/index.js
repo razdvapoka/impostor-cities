@@ -15,7 +15,10 @@ const TextReveal = ({
         <span>{children}</span>
       </div>
       <div
-        className={cn('absolute left-0 top-0 w-full', styles.textOverlayBox)}
+        className={cn(
+          'absolute left-0 top-0 w-full pointer-events-none',
+          styles.textOverlayBox
+        )}
       >
         <span
           className={cn('', styles.textOverlay, {
