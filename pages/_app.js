@@ -27,6 +27,18 @@ function MyApp({ Component, pageProps }) {
     <div>
       <Head>
         <script dangerouslySetInnerHTML={{ __html: touchEventsDetector }} />
+        <meta
+          property="og:title"
+          content="The world we live in together is the global generic city we experience together onscreen."
+        />
+        <meta
+          property="og:description"
+          content="The Impostor Cities exhibition exists onsite at the Canada Pavilion in Venice and online."
+        />
+        <meta
+          property="og:image"
+          content="https://impostor-cities.vercel.app/preview.png"
+        />
       </Head>
       <CartProvider>
         <UserInteractionProvider>
