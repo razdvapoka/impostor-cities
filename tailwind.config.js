@@ -33,7 +33,7 @@ const spacing = range(31).reduce(
 
 module.exports = {
   future: {
-    purgeLayersByDefault: true,
+    // purgeLayersByDefault: true,
     removeDeprecatedGapUtilities: true,
   },
   purge: {
@@ -46,7 +46,7 @@ module.exports = {
       './pages/**/*.js',
     ],
     options: {
-      safelist: [/^desktop:col-start/, /^desktop:col-span/, /^w-/],
+      safelist: [/^desktop:col-start/, /^desktop:col-span/, /^w-/, /mt-30/],
     },
   },
   theme: {
