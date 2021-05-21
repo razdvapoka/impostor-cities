@@ -61,7 +61,7 @@ const ForwardButton = ({ isTopVideo, isBottomVideo, switchToNext }) => {
           [styles.forwardButtonBottom]: isBottomVideo,
         }
       )}
-      onClick={switchToNext}
+      onClick={() => switchToNext(true)}
     >
       <div className={cn(styles.forwardIcon)}>
         <ForwardIcon />

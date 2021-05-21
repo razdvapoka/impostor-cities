@@ -13,6 +13,8 @@ const BLOCK_INDICIES = [
   [4, 5, 7, 8],
 ]
 
+const TRANSITION_DURATION = 1000
+
 const groupVideosById = (
   videos,
   blockId,
@@ -76,13 +78,16 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   }, [videoMap])
 
   const switchToNextVideo = useCallback(
-    (index) => {
+    (index, isManual) => {
       const prevVideo = currentVideos[index]
       const isAlreadyTakenOver = currentVideos.some((v) => v.isTakeover)
       const nextVideoCandidates = Object.values(videoMap).filter(
         (v) =>
+          // don't choose a video that's already on the grid
           !currentVideos.find((cv) => cv.sys.id === v.sys.id) &&
-          (!isAlreadyTakenOver || !v.isTakeover)
+          // don't choose a takeover if there already is one on the grid
+          // or the switch wasn't initiated by click
+          ((!isAlreadyTakenOver && isManual) || !v.isTakeover)
       )
       const nextVideo = randomItem(nextVideoCandidates)
 
@@ -130,6 +135,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     [currentVideos, setCurrentVideos, videoMap]
   )
 
+  // preload takeover videos to synchronize them
   useEffect(() => {
     if (takeover && takeover.videoCount === takeover.refs.length) {
       let cptCount = 0
@@ -161,7 +167,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
             <CSSTransition
               key={video.sys.id}
-              timeout={1000}
+              timeout={TRANSITION_DURATION}
               classNames={{ ...styles }}
             >
               <div>

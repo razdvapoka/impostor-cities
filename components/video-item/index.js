@@ -25,9 +25,12 @@ const VideoItem = ({
   setTakeover,
   defaultVideoTime = 0,
 }) => {
-  const switchToNext = useCallback(() => {
-    switchToNextVideo(index)
-  }, [index, switchToNextVideo])
+  const switchToNext = useCallback(
+    (isManual) => {
+      switchToNextVideo(index, isManual)
+    },
+    [index, switchToNextVideo]
+  )
 
   const handleEnded = useCallback(() => {
     if (blockId && !isTakeover) {
