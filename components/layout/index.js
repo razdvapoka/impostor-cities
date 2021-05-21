@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
     setIsMobile(width < 750)
   }, [width])
   return (
-    <main className="flex-1 p-1 mobile:p-2 mobile:flex mobile:flex-col">
+    <main className="flex-1 p-1 mobile:p-2 mobile:flex mobile:flex-col mobile:hidden">
       {isMobile ? <Dummy /> : children}
       {/* cookieBannerVisible && <CookieBanner close={closeCookieBanner} /> */}
     </main>

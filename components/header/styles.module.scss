@@ -22,9 +22,6 @@
   &Open::before,
   &Open::after {
     height: 2px;
-    @include mediaQuery(mobile) {
-      height: calc(50% + 1px);
-    }
   }
 }
 
@@ -37,6 +34,9 @@
   transition: height 0.1s ease;
   &Opened {
     transition: height 0.3s ease;
+    @include mediaQuery(mobile) {
+      height: calc(100vh - 58px) !important;
+    }
   }
 }
 
@@ -95,6 +95,26 @@
   transform: scaleX(-1);
 }
 
+.biennaleLogo {
+  width: 109px;
+  height: 100px;
+  background-image: url(/images/biennale-logo.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  @include mediaQuery(mobile) {
+    transform: translateY(-100%);
+    transition: transform 0.1s ease;
+    &Open {
+      transition: transform 0.3s ease;
+      transform: none;
+    }
+  }
+}
+
 .disableTransitions * {
   transition: none !important;
+}
+
+.projectItemExpand {
+  transition: height 0.2s ease;
 }

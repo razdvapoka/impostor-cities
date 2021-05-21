@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useMemo, useState, useRef, useCallback, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import { useUnmount, useMeasure, useAsync } from 'react-use'
 import { useCart } from '@/contexts/cart'
@@ -6,8 +6,9 @@ import styles from './styles.module.scss'
 import cn from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { TextReveal, LineReveal } from '@/components'
+import { TextReveal, LineReveal, LangSwitcher } from '@/components'
 import getT from 'next-translate/getT'
+import { enOnly, frOnly } from '@/lib/utils'
 import {
   disableBodyScroll,
   enableBodyScroll,
@@ -19,7 +20,44 @@ import {
   CART_ROUTES,
   ROUTE_MAP,
   SHOP_ROUTES,
+  PROJECT_ROUTES,
 } from '@/consts'
+
+const CartButton = ({ t, cartItemCount, closeMenu }) => {
+  return (
+    <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
+      <a
+        className={cn(
+          'flex text-green hover:text-white transition-colors',
+          styles.cartBox
+        )}
+      >
+        {cartItemCount > 0 && (
+          <span className="text-ts1B">{`| ${cartItemCount} |`}</span>
+        )}
+        <span
+          className={cn(
+            'block ml-2 mr-1 mobile:mr-0 rounded-full bg-green transition-colors',
+            styles.cartButton
+          )}
+          onClick={closeMenu}
+        />
+      </a>
+    </Link>
+  )
+}
+
+const getCartItemCount = (cart) => {
+  return Object.values(cart).reduce(
+    (cartCount, itemVariants) =>
+      cartCount +
+      itemVariants.reduce(
+        (itemCount, itemVariant) => itemCount + itemVariant.count,
+        0
+      ),
+    0
+  )
+}
 
 const HeaderMain = ({
   isOpen,
@@ -31,27 +69,19 @@ const HeaderMain = ({
 }) => {
   const { t } = useTranslation('common')
   const [cart] = useCart()
-  const cartItemCount = Object.values(cart).reduce(
-    (cartCount, itemVariants) =>
-      cartCount +
-      itemVariants.reduce(
-        (itemCount, itemVariant) => itemCount + itemVariant.count,
-        0
-      ),
-    0
-  )
-  const close = useCallback(
-    (e) => {
-      if (isOpen) {
-        closeMenu()
-      } else {
-        openMenu()
-      }
-    },
-    [isOpen, closeMenu, openMenu]
-  )
+  const cartItemCount = useMemo(() => getCartItemCount(cart), [cart])
+  const toggle = useCallback(() => {
+    if (isOpen) {
+      closeMenu()
+    } else {
+      openMenu()
+    }
+  }, [isOpen, closeMenu, openMenu])
   return (
-    <div className="pb-4 cursor-pointer my-grid text-ts1B" onClick={close}>
+    <div
+      className="pb-4 cursor-pointer mobile:pb-5 my-grid text-ts1B"
+      onClick={toggle}
+    >
       <div
         className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
       >
@@ -87,38 +117,68 @@ const HeaderMain = ({
         Urbani
       </div>
       <div
-        className={cn(isThreeColumnHeader ? 'w-2/6' : 'w-1/8', 'mobile:hidden')}
+        className={cn(isThreeColumnHeader ? 'w-2/6' : 'w-1/8', 'mobile:w-2/8')}
       >
-        <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
-          <a
-            className={cn(
-              'flex justify-end text-green hover:text-white transition-colors h-full',
-              styles.cartBox
-            )}
-          >
-            {cartItemCount > 0 && (
-              <span className="text-ts1B">{`| ${cartItemCount} |`}</span>
-            )}
-            <span
-              className={cn(
-                'block ml-2 mr-1 rounded-full bg-green transition-colors',
-                styles.cartButton
-              )}
-              onClick={closeMenu}
-            />
-          </a>
-        </Link>
+        <div className="flex justify-end h-full">
+          <CartButton
+            t={t}
+            cartItemCount={cartItemCount}
+            closeMenu={closeMenu}
+          />
+        </div>
       </div>
     </div>
   )
 }
 
-const NavItem = ({ item, route, isCart, isShop, isOpen, lang, closeMenu }) => {
+const PROJECT_ITEM_SECTIONS = [
+  'about',
+  'visitor',
+  'team',
+  'partners',
+  'contact',
+]
+
+const ProjectItem = ({ closeMenu }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const toggle = () => setIsOpen(!isOpen)
+  const { t, lang } = useTranslation('common')
+  const [ref, { height }] = useMeasure()
+  return (
+    <div className="hidden mobile:block">
+      <button onClick={toggle} className="text-ts2">
+        {t('project')}
+      </button>
+      <div
+        className={cn('overflow-hidden', styles.projectItemExpand)}
+        style={{
+          height: isOpen ? height : 0,
+        }}
+      >
+        <ul className="text-altGrey" ref={ref}>
+          {PROJECT_ITEM_SECTIONS.map((section) => (
+            <li key={section}>
+              <Link
+                href={`${lang === 'en' ? '/project' : '/projet'}#${section}`}
+                locale={lang}
+              >
+                <a onClick={closeMenu}>{t(section)}</a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
   const { value: t } = useAsync(async () => {
     const tr = await getT(lang, 'common')
     return tr
   }, [])
   const isShopItem = SHOP_ROUTES.indexOf(item.route) !== -1
+  const isProjectItem = PROJECT_ROUTES.indexOf(item.route) !== -1
   const isActive =
     item.route === route ||
     ROUTE_MAP[item.route] === route ||
@@ -130,6 +190,7 @@ const NavItem = ({ item, route, isCart, isShop, isOpen, lang, closeMenu }) => {
           className={cn('transition-colors hover:text-grey', {
             'text-grey': isActive,
             'pointer-events-none': isActive && !(isShopItem && isCart),
+            'mobile:hidden': isProjectItem,
           })}
           onClick={() => {
             if (isOpen && !isShopItem) {
@@ -143,6 +204,7 @@ const NavItem = ({ item, route, isCart, isShop, isOpen, lang, closeMenu }) => {
       {isCart && isShopItem && t && (
         <span className="text-grey">{` | ${t('cartUC')}`}</span>
       )}
+      {isProjectItem && <ProjectItem closeMenu={closeMenu} />}
     </li>
   )
 }
@@ -155,7 +217,13 @@ const Nav = ({ lang, isOpen, isCart, isShop, route, closeMenu }) => {
         [styles.navOpen]: isOpen || isCart || isShop,
       })}
     >
-      <ul>
+      <Link href="/">
+        <a
+          className={cn(styles.homeButton, 'mt-1 mb-9 hidden mobile:block')}
+          onClick={closeMenu}
+        />
+      </Link>
+      <ul className="mobile:space-y-7">
         {items.map((item) => (
           <NavItem
             key={item.href}
@@ -209,15 +277,21 @@ const HeaderNav = ({
   isThreeColumnHeader,
   closeMenu,
 }) => {
+  const { lang } = useTranslation('common')
   const close = useCallback(() => {
     if (isOpen) {
       closeMenu()
     }
   }, [isOpen, closeMenu])
   return (
-    <div>
-      <div className="pb-6 my-grid">
-        <div className={isThreeColumnHeader ? 'w-1/6' : 'w-2/8'}>
+    <div className="mobile:flex-1 mobile:flex mobile:flex-col">
+      <div className="pb-6 my-grid mobile:flex-1 mobile:pb-2">
+        <div
+          className={cn(
+            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+            'mobile:hidden'
+          )}
+        >
           <div className="flex items-end h-full pl-1">
             <Link href="/">
               <a className={cn(styles.homeButton, 'block')} onClick={close} />
@@ -225,7 +299,11 @@ const HeaderNav = ({
           </div>
         </div>
         <div
-          className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts2')}
+          className={cn(
+            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+            'text-ts2 mobile:w-4/8 mobile:flex mobile:flex-col mobile:justify-between',
+            enOnly(lang)
+          )}
         >
           <Nav
             lang="en"
@@ -235,9 +313,33 @@ const HeaderNav = ({
             isShop={isShop}
             closeMenu={closeMenu}
           />
+          <div className={cn(styles.navBottom, 'pb-10 hidden mobile:block')}>
+            <div className="mb-7 text-altGrey">
+              <a
+                href="https://www.instagram.com/impostorcities"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
+              <br />
+              <a
+                href="https://www.facebook.com/impostorcities"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Facebook
+              </a>
+            </div>
+            <LangSwitcher longName className="text-altGrey" />
+          </div>
         </div>
         <div
-          className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts2')}
+          className={cn(
+            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+            'text-ts2',
+            frOnly(lang)
+          )}
         >
           <Nav
             lang="fr"
@@ -248,8 +350,19 @@ const HeaderNav = ({
             closeMenu={closeMenu}
           />
         </div>
+        <div className="justify-end hidden mobile:flex w-4/8">
+          <div
+            className={cn(styles.biennaleLogo, {
+              [styles.biennaleLogoOpen]: isOpen,
+            })}
+          />
+        </div>
         <div
-          className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'text-ts1B')}
+          className={cn(
+            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+            'text-ts1B',
+            'mobile:hidden'
+          )}
         >
           <SocialMediaLinks isOpen={isOpen || isCart || isShop} />
         </div>
@@ -416,14 +529,17 @@ const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
 
 const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
   const [isOpen, setIsOpen] = useState(isOpenByDefault)
-  const openMenu = () => {
+  const openMenu = useCallback(() => {
     setIsOpen(true)
-  }
-  const closeMenu = () => {
+  }, [setIsOpen])
+  const closeMenu = useCallback(() => {
     setIsOpen(false)
-  }
+  }, [setIsOpen])
+
   const ref = useRef(null)
+
   const [navRef, { height: navHeight }] = useMeasure()
+
   const { route } = useRouter()
   const isCart = CART_ROUTES.indexOf(route) !== -1
   const menuHeight = isCart
@@ -452,10 +568,9 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         fixed top-0 left-0
         w-screen
         pt-2
-        px-1
+        px-1 mobile:px-2
         bg-black
         z-30
-        mobile:pointer-events-none
       `,
         { [styles.disableTransitions]: isShop }
       )}
@@ -469,18 +584,17 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         closeMenu={closeMenu}
       />
       <div
-        className={cn(
-          'h-0 overflow-hidden flex flex-col mobile:hidden',
-          styles.expand,
-          {
-            [styles.expandOpened]: isOpen,
-          }
-        )}
+        className={cn('h-0 overflow-hidden flex flex-col', styles.expand, {
+          [styles.expandOpened]: isOpen,
+        })}
         style={{ height: menuHeight }}
       >
         <div
           ref={navRef}
-          className={cn({ 'border-b-2 border-solid border-white': isCart })}
+          className={cn(
+            { 'border-b-2 border-solid border-white': isCart },
+            'mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
+          )}
         >
           <HeaderNav
             route={route}
@@ -491,11 +605,13 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
             closeMenu={closeMenu}
           />
         </div>
-        <HeaderInfo
-          isOpen={isOpen}
-          isShop={isShop}
-          isThreeColumnHeader={isThreeColumnHeader}
-        />
+        <div className="flex flex-col flex-1 mobile:hidden">
+          <HeaderInfo
+            isOpen={isOpen}
+            isShop={isShop}
+            isThreeColumnHeader={isThreeColumnHeader}
+          />
+        </div>
       </div>
     </header>
   )

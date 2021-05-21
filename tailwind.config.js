@@ -62,6 +62,7 @@ module.exports = {
       transparent: 'rgba(0,0,0,0)',
       darkGrey: '#231F20',
       lightGrey: '#BBBDBF',
+      altGrey: '#7F7F7F',
     },
     spacing,
     opacity: {

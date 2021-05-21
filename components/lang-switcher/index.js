@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ROUTE_MAP } from '@/consts'
 
-const LangSwitcher = ({ longName }) => {
+const LangSwitcher = ({ longName, className }) => {
   const { lang, t } = useTranslation('common')
   const { asPath } = useRouter()
 
@@ -13,7 +13,7 @@ const LangSwitcher = ({ longName }) => {
       {locales.map((lng) =>
         lng === lang ? null : (
           <Link href={ROUTE_MAP[asPath]} locale={lng} key={lng}>
-            {longName ? t(lng) : lng}
+            <a className={className}>{longName ? t(lng) : lng}</a>
           </Link>
         )
       )}
