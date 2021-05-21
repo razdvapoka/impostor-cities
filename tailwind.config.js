@@ -46,7 +46,13 @@ module.exports = {
       './pages/**/*.js',
     ],
     options: {
-      safelist: [/^desktop:col-start/, /^desktop:col-span/, /^w-/, /mt-30/],
+      safelist: [
+        /^desktop:col-start/,
+        /^desktop:col-span/,
+        /^w-/,
+        /mt-30/,
+        /^mobile:w-/,
+      ],
     },
   },
   theme: {
