@@ -1,6 +1,8 @@
 export const ROUTE_MAP = {
   '/shop': '/boutique',
+  '/shop/[handle]': '/boutique/[handle]',
   '/boutique': '/shop',
+  '/boutique/[handle]': '/shop/[handle]',
   '/presse': '/press',
   '/press': '/presse',
   '/cart': '/panier',

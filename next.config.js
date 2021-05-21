@@ -35,6 +35,12 @@ module.exports = withPlugins([nextTranslate], {
         permanent: true,
       },
       {
+        source: '/en/boutique/:handle',
+        destination: '/fr/boutique/:handle',
+        locale: false,
+        permanent: true,
+      },
+      {
         source: '/en/panier',
         destination: '/fr/panier',
         locale: false,

@@ -269,6 +269,31 @@ const SocialMediaLinks = ({ isOpen }) => {
   )
 }
 
+const NavBottom = () => {
+  return (
+    <div className={cn(styles.navBottom, 'pb-10 hidden mobile:block')}>
+      <div className="mb-7 text-altGrey">
+        <a
+          href="https://www.instagram.com/impostorcities"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram
+        </a>
+        <br />
+        <a
+          href="https://www.facebook.com/impostorcities"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Facebook
+        </a>
+      </div>
+      <LangSwitcher longName className="text-altGrey" />
+    </div>
+  )
+}
+
 const HeaderNav = ({
   isOpen,
   isShop,
@@ -313,31 +338,12 @@ const HeaderNav = ({
             isShop={isShop}
             closeMenu={closeMenu}
           />
-          <div className={cn(styles.navBottom, 'pb-10 hidden mobile:block')}>
-            <div className="mb-7 text-altGrey">
-              <a
-                href="https://www.instagram.com/impostorcities"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram
-              </a>
-              <br />
-              <a
-                href="https://www.facebook.com/impostorcities"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Facebook
-              </a>
-            </div>
-            <LangSwitcher longName className="text-altGrey" />
-          </div>
+          <NavBottom />
         </div>
         <div
           className={cn(
             isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
-            'text-ts2',
+            'text-ts2 mobile:w-4/8 mobile:flex mobile:flex-col mobile:justify-between',
             frOnly(lang)
           )}
         >
@@ -349,6 +355,7 @@ const HeaderNav = ({
             isShop={isShop}
             closeMenu={closeMenu}
           />
+          <NavBottom />
         </div>
         <div className="justify-end hidden mobile:flex w-4/8">
           <div
