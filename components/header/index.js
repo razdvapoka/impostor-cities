@@ -355,7 +355,7 @@ const HeaderNav = ({
             isShop={isShop}
             closeMenu={closeMenu}
           />
-          <NavBottom />
+          <NavBottom closeMenu={closeMenu} />
         </div>
         <div className="absolute top-0 right-0 justify-end hidden pointer-events-none mobile:flex w-4/8">
           <div
