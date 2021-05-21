@@ -1,6 +1,6 @@
 // import useTranslation from 'next-translate/useTranslation'
 import { useCallback, useMemo } from 'react'
-import { Layout } from '@/components'
+import { Dummy, Layout } from '@/components'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
 import { getPriceString, getSizeOption, getColorOption } from '@/lib/utils'
@@ -193,56 +193,61 @@ const Cart = ({ commonData, products }) => {
 
   return (
     <Layout {...commonData}>
-      <div className={cn('', styles.cart)}>
-        <CartHeader />
-        <div className="border-b-2 border-white border-solid pb-15">
-          {Object.keys(cart).map((key) => {
-            const product = productMap[key]
-            const selectedVariants = cart[key]
-            return (
-              <div key={key}>
-                {selectedVariants.map((variant) => (
-                  <CartProduct
-                    key={variant.variantId}
-                    product={product}
-                    variant={variant}
-                    cart={cart}
-                    setCart={setCart}
-                  />
-                ))}
-              </div>
-            )
-          })}
-        </div>
-        <div className="pt-2 my-grid">
-          <div className="w-6/8" />
-          <div className="w-1/16 text-ts1B">Total</div>
-          <div className="w-1/16 text-ts1B">Totale</div>
-        </div>
-        <div className="pt-2 pb-20 border-b-2 border-white border-solid my-grid">
-          <div className="w-6/8" />
-          <div className="w-2/8 text-ts2">{getPriceString(cartTotal)}</div>
-        </div>
-        <div className="pt-2 my-grid">
-          <div className="w-4/8" />
-          <div className="w-2/8">
-            <div className="text-ts1B">
-              Shipping & taxes <br />
-              calculated at checkout
-            </div>
-            <button onClick={handleCheckout} className="mt-8 text-ts2">
-              Checkout
-            </button>
+      <div className="hidden mobile:block">
+        <Dummy />
+      </div>
+      <div className="mobile:hidden">
+        <div className={cn('', styles.cart)}>
+          <CartHeader />
+          <div className="border-b-2 border-white border-solid pb-15">
+            {Object.keys(cart).map((key) => {
+              const product = productMap[key]
+              const selectedVariants = cart[key]
+              return (
+                <div key={key}>
+                  {selectedVariants.map((variant) => (
+                    <CartProduct
+                      key={variant.variantId}
+                      product={product}
+                      variant={variant}
+                      cart={cart}
+                      setCart={setCart}
+                    />
+                  ))}
+                </div>
+              )
+            })}
           </div>
-          <div className="w-2/8">
-            <div className="text-ts1B">
-              Expédition et taxes
-              <br />
-              calculé à la caisse
+          <div className="pt-2 my-grid">
+            <div className="w-6/8" />
+            <div className="w-1/16 text-ts1B">Total</div>
+            <div className="w-1/16 text-ts1B">Totale</div>
+          </div>
+          <div className="pt-2 pb-20 border-b-2 border-white border-solid my-grid">
+            <div className="w-6/8" />
+            <div className="w-2/8 text-ts2">{getPriceString(cartTotal)}</div>
+          </div>
+          <div className="pt-2 my-grid">
+            <div className="w-4/8" />
+            <div className="w-2/8">
+              <div className="text-ts1B">
+                Shipping & taxes <br />
+                calculated at checkout
+              </div>
+              <button onClick={handleCheckout} className="mt-8 text-ts2">
+                Checkout
+              </button>
             </div>
-            <button onClick={handleCheckout} className="mt-8 text-ts2">
-              Passer à la caisse
-            </button>
+            <div className="w-2/8">
+              <div className="text-ts1B">
+                Expédition et taxes
+                <br />
+                calculé à la caisse
+              </div>
+              <button onClick={handleCheckout} className="mt-8 text-ts2">
+                Passer à la caisse
+              </button>
+            </div>
           </div>
         </div>
       </div>

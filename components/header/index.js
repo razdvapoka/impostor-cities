@@ -135,7 +135,7 @@ const PROJECT_ITEM_SECTIONS = [
   'about',
   'visitor',
   'team',
-  'partners',
+  'sponsors',
   'contact',
 ]
 
@@ -269,7 +269,7 @@ const SocialMediaLinks = ({ isOpen }) => {
   )
 }
 
-const NavBottom = () => {
+const NavBottom = ({ closeMenu }) => {
   return (
     <div className={cn(styles.navBottom, 'pb-10 hidden mobile:block')}>
       <div className="mb-7 text-altGrey">
@@ -289,7 +289,7 @@ const NavBottom = () => {
           Facebook
         </a>
       </div>
-      <LangSwitcher longName className="text-altGrey" />
+      <LangSwitcher longName className="text-altGrey" onClick={closeMenu} />
     </div>
   )
 }
@@ -338,7 +338,7 @@ const HeaderNav = ({
             isShop={isShop}
             closeMenu={closeMenu}
           />
-          <NavBottom />
+          <NavBottom closeMenu={closeMenu} />
         </div>
         <div
           className={cn(

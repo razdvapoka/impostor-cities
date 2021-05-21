@@ -6,4 +6,7 @@
   &Revealed {
     transform: scaleX(1)
   }
+  @include mediaQuery(mobile) {
+    height: 1px;
+  }
 }

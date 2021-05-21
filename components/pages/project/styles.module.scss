@@ -2,6 +2,9 @@
   bottom: 0;
   h2 {
     transform: translateY(7px);
+    @include mediaQuery(mobile) {
+      transform: none;
+    }
   }
 }
 
@@ -10,6 +13,12 @@
   padding-bottom: 4px;
   &Box {
     transform: translateY(-7px);
+  }
+  @include mediaQuery(mobile) {
+    height: auto;
+    &Box {
+      transform: none;
+    }
   }
 }
 
@@ -25,65 +34,132 @@
 .councilLogo {
   width: 257px;
   height: 45px;
+  @include mediaQuery(mobile) {
+    width: 50%;
+    height: auto;
+    margin-bottom: 16px;
+  }
 }
 
 .sajo {
   width: 80px;
   height: 22px;
+  @include mediaQuery(mobile) {
+    width: 21%;
+    height: auto;
+  }
 }
 
 .mcgill {
   width: 111px;
   height: 26px;
+  @include mediaQuery(mobile) {
+    width: 30%;
+    height: auto;
+  }
 }
 
 .udm {
   width: 103px;
   height: 39px;
+  @include mediaQuery(mobile) {
+    width: 27%;
+    height: auto;
+  }
 }
 
 .oaa {
   width: 148px;
   height: 33px;
+  @include mediaQuery(mobile) {
+    width: 40%;
+    height: auto;
+  }
 }
 
 .panasonic {
   width: 118px;
   height: 18px;
   margin-right: 98px;
+  @include mediaQuery(mobile) {
+    margin-right: 0;
+    width: 31%;
+    height: auto;
+  }
 }
 
 .frog {
   width: 70px;
   height: 38px;
   margin-right: 85px;
+  @include mediaQuery(mobile) {
+    margin-right: 0;
+    width: 19%;
+    height: auto;
+  }
 }
 
 .mrx {
   width: 71px;
   height: 35px;
   margin-right: 78px;
+  @include mediaQuery(mobile) {
+    margin-right: 0;
+    width: 17%;
+    height: auto;
+  }
 }
 
 .zebulon {
   width: 156px;
   height: 14px;
   margin-right: 68px;
+  @include mediaQuery(mobile) {
+    margin-right: 0;
+    width: 42%;
+    height: auto;
+  }
 }
 
 .habitations {
   width: 121px;
   height: 25px;
   margin-right: 60px;
+  @include mediaQuery(mobile) {
+    margin-right: 0;
+    width: 32%;
+    height: auto;
+  }
 }
 
 .spencer {
   width: 150px;
   height: 10px;
   margin-right: 24px;
+  @include mediaQuery(mobile) {
+    margin-right: 0;
+    width: 40%;
+    height: auto;
+  }
 }
 
 .copyright {
   margin-top: 280px;
   margin-bottom: 280px;
+  @include mediaQuery(mobile) {
+    margin-top: 154px;
+    margin-bottom: 80px;
+  }
+}
+
+.sponsorsRow {
+  @include mediaQuery(mobile) {
+    height: 102px;
+  }
+}
+
+.anchor {
+  @include mediaQuery(mobile) {
+    top: -180px !important;
+  }
 }

@@ -1,7 +1,9 @@
 import React, { useRef, useCallback } from 'react'
+import useTranslation from 'next-translate/useTranslation'
 import smoothscroll from 'smoothscroll-polyfill'
 import { useIntersection } from 'react-use'
 import { Markdown, Layout, LineReveal } from '@/components'
+import { enOnly, frOnly } from '@/lib/utils'
 import cn from 'classnames'
 import styles from './styles.module.scss'
 import CouncilLogo from '../../../assets/icons/council-logo.svg'
@@ -28,18 +30,23 @@ const SectionHeader = ({
   zIndex,
   type,
   scrollToSection,
+  lang,
 }) => {
   const handleClick = useCallback(() => {
     scrollToSection(type)
   }, [scrollToSection, type])
   return (
     <div
-      className={cn('sticky bg-black z-10', styles.sectionHeader)}
+      className={cn(
+        'sticky bg-black z-10 mobile:block',
+        styles.sectionHeader,
+        'mobile:border-t-1 mobile:border-white mobile:border-solid mobile:pt-2'
+      )}
       style={{ top, bottom, zIndex }}
     >
       <div className="my-grid">
-        <div className="w-2/8" />
-        <div className="w-2/8">
+        <div className="w-2/8 mobile:hidden" />
+        <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
           <button
             className="hover:text-grey transition-colors"
             onClick={handleClick}
@@ -47,7 +54,7 @@ const SectionHeader = ({
             <h2 className="text-ts2">{headerEn}</h2>
           </button>
         </div>
-        <div className="w-2/8">
+        <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
           <button
             className="hover:text-grey transition-colors"
             onClick={handleClick}
@@ -60,19 +67,19 @@ const SectionHeader = ({
   )
 }
 
-const AboutSection = ({ itemsCollection: { items } }) => {
+const AboutSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div className="space-y-20 mb-30">
+    <div className="space-y-20 mobile:space-y-3 mb-30 mobile:mb-19 mobile:mt-11">
       {items.map((item, itemIndex) => (
         <div key={itemIndex} className="my-grid">
-          <div className="w-2/8" />
-          <div className="w-2/8">
-            <div className={cn({ 'pr-5': itemIndex !== 0 })}>
+          <div className="w-2/8 mobile:hidden" />
+          <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
+            <div className={cn({ 'pr-5 mobile:p3-3': itemIndex !== 0 })}>
               <Markdown locale="en-US">{item.textEn}</Markdown>
             </div>
           </div>
-          <div className="w-2/8">
-            <div className={cn({ 'pr-5': itemIndex !== 0 })}>
+          <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
+            <div className={cn({ 'pr-5 mobile:pr-3': itemIndex !== 0 })}>
               <Markdown locale="fr">{item.textFr}</Markdown>
             </div>
           </div>
@@ -82,17 +89,17 @@ const AboutSection = ({ itemsCollection: { items } }) => {
   )
 }
 
-const VisitorSection = ({ itemsCollection: { items } }) => {
+const VisitorSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div className="my-grid mb-30">
-      <div className="w-2/8" />
-      <div className="w-2/8">
-        <div className="pr-5">
+    <div className="my-grid mb-19 mobile:mt-11">
+      <div className="w-2/8 mobile:hidden" />
+      <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
+        <div className="pr-5 mobilde:pr-3">
           <Markdown locale="en-US">{items[0].textEn}</Markdown>
         </div>
       </div>
-      <div className="w-2/8">
-        <div className="pr-5">
+      <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
+        <div className="pr-5 mobilde:pr-3">
           <Markdown locale="fr">{items[0].textFr}</Markdown>
         </div>
       </div>
@@ -100,7 +107,7 @@ const VisitorSection = ({ itemsCollection: { items } }) => {
   )
 }
 
-const TeamSectionItem = ({ text, index }) => {
+const TeamSectionItem = ({ textEn, textMEn, textMFr, index, lang }) => {
   const intersectionRef = useRef(null)
   const intersection = useIntersection(intersectionRef, {
     root: null,
@@ -108,15 +115,23 @@ const TeamSectionItem = ({ text, index }) => {
   })
   return (
     <>
-      {index === 0 && <div className="w-2/8" />}
-      <div className="w-2/8" ref={intersectionRef}>
-        <div className="pb-20">
+      {index === 0 && <div className="w-2/8 mobile:hidden" />}
+      <div className={cn('w-2/8 mobile:w-full')} ref={intersectionRef}>
+        <div className="pb-20 mobile:pb-4">
           <LineReveal
             isRevealed={intersection && intersection.isIntersecting}
           />
-          <Markdown className="mt-1" locale="en-US">
-            {text}
+          <Markdown className="mt-1 mobile:hidden" locale="en-US">
+            {textEn}
           </Markdown>
+          <div className="hidden mobile:block">
+            <Markdown className={cn('mt-1', enOnly(lang))} locale="en-US">
+              {textMEn}
+            </Markdown>
+            <Markdown className={cn('mt-1', frOnly(lang))} locale="fr">
+              {textMFr}
+            </Markdown>
+          </div>
           {index === 0 && (
             <div className={cn(styles.councilLogo, 'mt-4')}>
               <CouncilLogo />
@@ -124,22 +139,27 @@ const TeamSectionItem = ({ text, index }) => {
           )}
         </div>
       </div>
-      {index === 0 && <div className="w-4/8" />}
+      {index === 0 && <div className="w-4/8 mobile:hidden" />}
     </>
   )
 }
 
-const TeamSection = ({ itemsCollection: { items } }) => {
+const TeamSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div className="my-grid">
-      {items.map(({ textEn }, itemIndex) => (
-        <TeamSectionItem key={itemIndex} text={textEn} index={itemIndex} />
+    <div className="my-grid mobile:mt-8 mobile:mb-13">
+      {items.map((item, itemIndex) => (
+        <TeamSectionItem
+          key={itemIndex}
+          index={itemIndex}
+          lang={lang}
+          {...item}
+        />
       ))}
     </div>
   )
 }
 
-const SponsorsItem = ({ text, index }) => {
+const SponsorsItem = ({ textEn, textMEn, textMFr, index, lang }) => {
   const intersectionRef = useRef(null)
   const intersection = useIntersection(intersectionRef, {
     root: null,
@@ -147,22 +167,35 @@ const SponsorsItem = ({ text, index }) => {
   })
   return (
     <>
-      {(index === 0 || index === 1 || index === 3) && <div className="w-2/8" />}
-      <div className={index === 3 ? 'w-6/8' : 'w-2/8'} ref={intersectionRef}>
-        <div className="pb-20">
+      {(index === 0 || index === 1 || index === 3) && (
+        <div className="w-2/8 mobile:hidden" />
+      )}
+      <div
+        className={cn(index === 3 ? 'w-6/8' : 'w-2/8', 'mobile:w-full')}
+        ref={intersectionRef}
+      >
+        <div className="pb-20 mobile:pb-8">
           <LineReveal
             isRevealed={intersection && intersection.isIntersecting}
           />
-          <Markdown className="mt-1" locale="en-US">
-            {text}
+          <Markdown className="mt-1 mobile:hidden" locale="en-US">
+            {textEn}
           </Markdown>
-          <div className="mt-10">
+          <div className="hidden mobile:block">
+            <Markdown className={cn('mt-1', enOnly(lang))} locale="en-US">
+              {textMEn}
+            </Markdown>
+            <Markdown className={cn('mt-1', frOnly(lang))} locale="fr">
+              {textMFr}
+            </Markdown>
+          </div>
+          <div className="mt-10 mobile:mt-6">
             {index === 0 ? (
               <div className={styles.sajo}>
                 <SponsorSajo />
               </div>
             ) : index === 1 ? (
-              <div className="flex items-end space-x-18">
+              <div className="flex items-end space-x-18 mobile:items-center mobile:justify-between">
                 <div className={styles.mcgill}>
                   <SponsorMcGill />
                 </div>
@@ -175,26 +208,75 @@ const SponsorsItem = ({ text, index }) => {
                 <SponsorOAA />
               </div>
             ) : (
-              <div className="flex items-center w-full">
-                <div className={styles.panasonic}>
-                  <SponsorPanasonic />
+              <>
+                <div className="flex items-center w-full mobile:hidden">
+                  <div className={styles.panasonic}>
+                    <SponsorPanasonic />
+                  </div>
+                  <div className={styles.frog}>
+                    <SponsorFrog />
+                  </div>
+                  <div className={styles.mrx}>
+                    <SponsorMRX />
+                  </div>
+                  <div className={styles.zebulon}>
+                    <SponsorZebulon />
+                  </div>
+                  <div className={styles.habitations}>
+                    <SponsorHabitations />
+                  </div>
+                  <div className={styles.spencer}>
+                    <SponsorSpencer />
+                  </div>
                 </div>
-                <div className={styles.frog}>
-                  <SponsorFrog />
+                <div className="hidden w-full -mt-6 mobile:block">
+                  <div
+                    className={cn(
+                      'flex items-center justify-between',
+                      styles.sponsorsRow
+                    )}
+                  >
+                    <div className={cn(styles.panasonic)}>
+                      <SponsorPanasonic />
+                    </div>
+                    <div className={cn(styles.frog)}>
+                      <SponsorFrog />
+                    </div>
+                  </div>
+                  <LineReveal
+                    isRevealed={intersection && intersection.isIntersecting}
+                  />
+                  <div
+                    className={cn(
+                      'flex items-center justify-between',
+                      styles.sponsorsRow
+                    )}
+                  >
+                    <div className={cn(styles.mrx)}>
+                      <SponsorMRX />
+                    </div>
+                    <div className={cn(styles.zebulon)}>
+                      <SponsorZebulon />
+                    </div>
+                  </div>
+                  <LineReveal
+                    isRevealed={intersection && intersection.isIntersecting}
+                  />
+                  <div
+                    className={cn(
+                      'flex items-center justify-between',
+                      styles.sponsorsRow
+                    )}
+                  >
+                    <div className={cn(styles.habitations)}>
+                      <SponsorHabitations />
+                    </div>
+                    <div className={cn(styles.spencer)}>
+                      <SponsorSpencer />
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.mrx}>
-                  <SponsorMRX />
-                </div>
-                <div className={styles.zebulon}>
-                  <SponsorZebulon />
-                </div>
-                <div className={styles.habitations}>
-                  <SponsorHabitations />
-                </div>
-                <div className={styles.spencer}>
-                  <SponsorSpencer />
-                </div>
-              </div>
+              </>
             )}
           </div>
         </div>
@@ -205,11 +287,11 @@ const SponsorsItem = ({ text, index }) => {
   )
 }
 
-const SponsorsSection = ({ itemsCollection: { items } }) => {
+const SponsorsSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div className="mb-10 my-grid">
-      {items.map(({ textEn }, itemIndex) => (
-        <SponsorsItem key={itemIndex} text={textEn} index={itemIndex} />
+    <div className="mb-10 my-grid mobile:mt-4 mobile:mb-0">
+      {items.map((item, itemIndex) => (
+        <SponsorsItem key={itemIndex} {...item} index={itemIndex} lang={lang} />
       ))}
     </div>
   )
@@ -219,30 +301,43 @@ const ContactSection = ({
   itemsCollection: {
     items: [{ textEn, textFr }],
   },
+  lang,
 }) => {
   return (
     <>
-      <div className="my-grid">
-        <div className="w-2/8" />
-        <div className="w-2/8">
-          <div className="pr-5">
+      <div className="my-grid mobile:mt-6">
+        <div className="w-2/8 mobile:hidden" />
+        <div className={cn('w-2/8 text-ts1 mobile:w-full', enOnly(lang))}>
+          <div className="pr-5 mobile:pr-3">
             <Markdown locale="en-US">{textEn}</Markdown>
           </div>
         </div>
-        <div className="w-2/8">
-          <div className="pr-5">
+        <div className={cn('w-2/8 text-ts1 mobile:w-full', frOnly(lang))}>
+          <div className="pr-5 mobile:pr-3">
             <Markdown locale="fr">{textFr}</Markdown>
           </div>
         </div>
       </div>
       <div className={cn('my-grid', styles.copyright)}>
-        <div className="w-2/8" />
-        <div className="w-2/8 text-ts1B">
+        <div className="w-2/8 mobile:hidden" />
+        <div
+          className={cn(
+            'w-2/8 text-ts1B mobile:w-full',
+            'mobile:border-t-1 mobile:border-solid mobile:border-white mobile:pt-2',
+            enOnly(lang)
+          )}
+        >
           ©2021 Impostor Cities
           <br />
           All rights reserved
         </div>
-        <div className="w-2/8 text-ts1B">
+        <div
+          className={cn(
+            'w-2/8 text-ts1B mobile:w-full',
+            'mobile:border-t-1 mobile:border-solid mobile:border-white mobile:pt-2',
+            frOnly(lang)
+          )}
+        >
           ©2021 Édifices et artifice
           <br />
           Tous droits réservés
@@ -275,9 +370,10 @@ const Project = ({ commonData, data }) => {
       behavior: 'smooth',
     })
   }
+  const { lang } = useTranslation('common')
   return (
     <Layout {...commonData}>
-      <div className={cn('pt-22 mobile:pt-0', styles.sectionsBox)}>
+      <div className={cn('pt-22', styles.sectionsBox)}>
         <div
           ref={sectionsRef}
           className={cn('overflow-auto px-1', styles.sections)}
@@ -290,22 +386,25 @@ const Project = ({ commonData, data }) => {
                 top={index * HEADER_HEIGHT}
                 bottom={(data.length - 1 - index) * HEADER_HEIGHT}
                 zIndex={data.length - index}
+                lang={lang}
               />
-              <div className={cn(styles.sectionBox, 'pt-16 relative')}>
+              <div
+                className={cn(styles.sectionBox, 'pt-16 relative mobile:pt-0')}
+              >
                 <div
                   id={section.type}
-                  className="absolute left-0"
+                  className={cn('absolute left-0', styles.anchor)}
                   style={{
                     top: -(index + 1) * HEADER_HEIGHT,
                   }}
                 />
-                <Section {...section} />
+                <Section lang={lang} {...section} />
               </div>
             </React.Fragment>
           ))}
           <div
             className={cn(
-              'absolute left-0 bottom-0 w-full pointer-events-none',
+              'absolute left-0 bottom-0 w-full pointer-events-none mobile:hidden',
               styles.gradient
             )}
           />

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation'
 import getT from 'next-translate/getT'
 import { useAsync } from 'react-use'
-import { Layout } from '@/components'
+import { Layout, Dummy } from '@/components'
 import Image from 'next/image'
 import Link from 'next/link'
 import { repeat, getSizeOption, hasVariants } from '@/lib/utils'
@@ -93,12 +93,17 @@ const Shop = ({ commonData, products }) => {
   const fakeProducts = repeat(products, 5).flat()
   return (
     <Layout {...commonData}>
-      <div className="mt-22 my-grid mobile:mt-0">
-        {/* fakeProducts.map((product, productIndex) => (
+      <div className="hidden mobile:block">
+        <Dummy />
+      </div>
+      <div className="mobile:hidden">
+        <div className="mt-22 my-grid mobile:mt-0">
+          {/* fakeProducts.map((product, productIndex) => (
           <div key={productIndex} className="w-2/8">
             <ProductCard {...product} />
           </div>
         )) */}
+        </div>
       </div>
     </Layout>
   )

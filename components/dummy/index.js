@@ -68,12 +68,14 @@ const Dummy = () => {
         <div>
           {lang === 'en' ? (
             <div>
+              <br />
               This site is currently only available on desktop.
               <br />
               Stay tuned for the official opening on 22 May.
             </div>
           ) : (
             <div>
+              <br />
               Ce site n'est actuellement disponible que sur
               <br />
               ordinateur. Restez à l’écoute pour l’ouverture

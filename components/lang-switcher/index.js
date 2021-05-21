@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ROUTE_MAP } from '@/consts'
 
-const LangSwitcher = ({ longName, className }) => {
+const LangSwitcher = ({ longName, className, onClick }) => {
   const [isMounted, setIsMounted] = useState(false)
   useMount(() => {
     setIsMounted(true)
@@ -27,7 +27,9 @@ const LangSwitcher = ({ longName, className }) => {
                 locale={lng}
                 key={lng}
               >
-                <a className={className}>{longName ? t(lng) : lng}</a>
+                <a className={className} onClick={onClick}>
+                  {longName ? t(lng) : lng}
+                </a>
               </Link>
             )
           )

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Header } from '@/components'
@@ -29,11 +30,17 @@ const correctVH = `
 `
 
 function MyApp({ Component, pageProps }) {
+  const [isShop, setIsShop] = useState(false)
   const router = useRouter()
   const isThreeColumnHeader = !!THREE_COLUMN_ROUTES.find(
     (route) => route === router.route
   )
-  const isShop = !!SHOP_ROUTES.find((route) => route === router.route)
+  useEffect(() => {
+    setIsShop(
+      !!SHOP_ROUTES.find((route) => route === router.route) &&
+        window.innerWidth > 750
+    )
+  }, [router])
   return (
     <div>
       <Head>

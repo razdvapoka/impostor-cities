@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { HeadphonesAlert, Layout, VideoGrid } from '@/components'
+import { Dummy, HeadphonesAlert, Layout, VideoGrid } from '@/components'
 import { getVideos } from '@/lib/contentful'
 import { withCommonData } from '@/lib/utils'
 import { useUserInteraction } from '@/contexts/user-interaction'
@@ -34,12 +34,17 @@ const HomePage = ({ commonData, videos }) => {
   }, [])
   return (
     <Layout {...commonData}>
-      <VideoGrid
-        videos={videos}
-        hasUserInteraction={userInteraction}
-        pageHasFocus={pageHasFocus}
-      />
-      {!userInteraction && <HeadphonesAlert />}
+      <div className="hidden mobile:block">
+        <Dummy />
+      </div>
+      <div className="mobile:hidden">
+        <VideoGrid
+          videos={videos}
+          hasUserInteraction={userInteraction}
+          pageHasFocus={pageHasFocus}
+        />
+        {!userInteraction && <HeadphonesAlert />}
+      </div>
     </Layout>
   )
 }
