@@ -36,6 +36,7 @@
     transition: height 0.3s ease;
     @include mediaQuery(mobile) {
       height: calc(100vh - 58px) !important;
+      height: calc(var(--vh, 1vh) * 100 - 58px) !important
     }
   }
 }

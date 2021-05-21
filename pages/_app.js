@@ -9,12 +9,23 @@ import { CartProvider } from '@/contexts/cart'
 import { UserInteractionProvider } from '@/contexts/user-interaction'
 
 const touchEventsDetector = `
-    if ('ontouchstart' in window || (window.DocumentTouch && document instanceof DocumentTouch)) {
-      document.documentElement.className += ' touchevents';
-      window.hasTouchEvents = true;
-    } else {
-      document.documentElement.className += ' no-touchevents';
-    }
+  if ('ontouchstart' in window || (window.DocumentTouch && document instanceof DocumentTouch)) {
+    document.documentElement.className += ' touchevents';
+    window.hasTouchEvents = true;
+  } else {
+    document.documentElement.className += ' no-touchevents';
+  }
+`
+
+const correctVH = `
+  function setCorrectVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", vh + 'px');
+  };
+
+  window.addEventListener("resize", setCorrectVh);
+
+  setCorrectVh();
 `
 
 function MyApp({ Component, pageProps }) {
@@ -27,6 +38,7 @@ function MyApp({ Component, pageProps }) {
     <div>
       <Head>
         <script dangerouslySetInnerHTML={{ __html: touchEventsDetector }} />
+        <script dangerouslySetInnerHTML={{ __html: correctVH }} />
         <meta
           property="og:title"
           content="The world we live in together is the global generic city we experience together onscreen."
