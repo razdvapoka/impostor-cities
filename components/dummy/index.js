@@ -8,7 +8,7 @@ const Dummy = () => {
   return (
     <div className="mt-13 flex flex-col flex-1">
       <div className="flex justify-end">
-        <div className={cn(styles.logo, 'mr-3')} />
+        <div className={cn(styles.logo, '')} />
       </div>
       <div className="flex flex-col justify-between flex-1 -mt-3 text-ts1B">
         {lang === 'en' ? (

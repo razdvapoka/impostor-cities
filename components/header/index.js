@@ -326,7 +326,7 @@ const HeaderNav = ({
         <div
           className={cn(
             isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
-            'text-ts2 mobile:w-4/8 mobile:flex mobile:flex-col mobile:justify-between',
+            'text-ts2 mobile:w-full mobile:flex mobile:flex-col mobile:justify-between',
             enOnly(lang)
           )}
         >
@@ -343,7 +343,7 @@ const HeaderNav = ({
         <div
           className={cn(
             isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
-            'text-ts2 mobile:w-4/8 mobile:flex mobile:flex-col mobile:justify-between',
+            'text-ts2 mobile:w-full mobile:flex mobile:flex-col mobile:justify-between',
             frOnly(lang)
           )}
         >
@@ -357,9 +357,9 @@ const HeaderNav = ({
           />
           <NavBottom />
         </div>
-        <div className="justify-end hidden mobile:flex w-4/8">
+        <div className="absolute top-0 right-0 justify-end hidden pointer-events-none mobile:flex w-4/8">
           <div
-            className={cn(styles.biennaleLogo, {
+            className={cn('mt-15 mr-2', styles.biennaleLogo, {
               [styles.biennaleLogoOpen]: isOpen,
             })}
           />
