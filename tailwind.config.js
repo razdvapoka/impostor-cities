@@ -52,6 +52,7 @@ module.exports = {
         /^w-/,
         /mt-30/,
         /^mobile:w-/,
+        /^mobile:bg-/,
       ],
     },
   },
