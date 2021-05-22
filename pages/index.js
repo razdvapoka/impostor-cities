@@ -16,6 +16,10 @@ export const getStaticProps = async (context) => {
 }
 
 const HomePage = ({ commonData, videos }) => {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 750)
+  }, [])
   const [userInteraction] = useUserInteraction()
   const [pageHasFocus, setPageHasFocus] = useState(true)
   const handlePageLostFocus = useCallback(() => {
@@ -34,17 +38,15 @@ const HomePage = ({ commonData, videos }) => {
   }, [])
   return (
     <Layout {...commonData}>
-      <div className="hidden mobile:block">
-        <Dummy />
-      </div>
-      <div className="mobile:hidden">
+      {isMobile && <Dummy />}
+      {!isMobile && (
         <VideoGrid
           videos={videos}
           hasUserInteraction={userInteraction}
           pageHasFocus={pageHasFocus}
         />
-        {!userInteraction && <HeadphonesAlert />}
-      </div>
+      )}
+      {!userInteraction && !isMobile && <HeadphonesAlert />}
     </Layout>
   )
 }
