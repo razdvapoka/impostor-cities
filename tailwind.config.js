@@ -53,6 +53,8 @@ module.exports = {
         /mt-30/,
         /^mobile:w-/,
         /^mobile:bg-/,
+        /^mobile:pt-/,
+        /^mobile:items-stretch$/,
       ],
     },
   },
