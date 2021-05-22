@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { HeadphonesAlert, Layout, VideoGrid } from '@/components'
+import { Dummy, HeadphonesAlert, Layout, VideoGrid } from '@/components'
 import { getVideos } from '@/lib/contentful'
 import { withCommonData } from '@/lib/utils'
 import { useUserInteraction } from '@/contexts/user-interaction'
@@ -16,6 +16,10 @@ export const getStaticProps = async (context) => {
 }
 
 const HomePage = ({ commonData, videos }) => {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 750)
+  }, [])
   const [userInteraction] = useUserInteraction()
   const [pageHasFocus, setPageHasFocus] = useState(true)
   const handlePageLostFocus = useCallback(() => {
@@ -34,12 +38,15 @@ const HomePage = ({ commonData, videos }) => {
   }, [])
   return (
     <Layout {...commonData}>
-      <VideoGrid
-        videos={videos}
-        hasUserInteraction={userInteraction}
-        pageHasFocus={pageHasFocus}
-      />
-      {!userInteraction && <HeadphonesAlert />}
+      {isMobile && <Dummy />}
+      {!isMobile && (
+        <VideoGrid
+          videos={videos}
+          hasUserInteraction={userInteraction}
+          pageHasFocus={pageHasFocus}
+        />
+      )}
+      {!userInteraction && !isMobile && <HeadphonesAlert />}
     </Layout>
   )
 }
