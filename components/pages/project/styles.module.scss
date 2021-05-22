@@ -163,3 +163,16 @@
     top: -180px !important;
   }
 }
+
+.markdown {
+  @include mediaQuery(mobile) {
+    @include font-style(ts3Alt);
+    em {
+      @include font-style(ts3AltI);
+    }
+
+    strong {
+      @include font-style(ts3AltB);
+    }
+  }
+}

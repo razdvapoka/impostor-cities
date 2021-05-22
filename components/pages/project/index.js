@@ -2,7 +2,7 @@ import React, { useRef, useCallback } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import smoothscroll from 'smoothscroll-polyfill'
 import { useIntersection } from 'react-use'
-import { Markdown, Layout, LineReveal } from '@/components'
+import { Markdown as MarkdownBase, Layout, LineReveal } from '@/components'
 import { enOnly, frOnly } from '@/lib/utils'
 import cn from 'classnames'
 import styles from './styles.module.scss'
@@ -20,6 +20,10 @@ import SponsorSpencer from '../../../assets/icons/sponsor-spencer.svg'
 
 if (typeof window !== 'undefined') {
   smoothscroll.polyfill()
+}
+
+const Markdown = ({ className, ...props }) => {
+  return <MarkdownBase className={cn(className, styles.markdown)} {...props} />
 }
 
 const SectionHeader = ({
