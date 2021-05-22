@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import pickRandomWeighted from 'pick-random-weighted'
 import { arrayShuffle } from '@adriantombu/array-shuffle'
 import { VideoItem } from '@/components'
 import { VIDEO_BLOCK_TYPE } from '@/consts'
@@ -62,6 +63,26 @@ const groupVideosById = (
 
 const randomItem = (array) => array[Math.floor(Math.random() * array.length)]
 
+const randomVideoItem = (videos) => {
+  return pickRandomWeighted(
+    videos.map((video) => [video, video.probability || 1])
+  )
+}
+
+const randomVideoItems = (videos, count) => {
+  let candidates = videos.map((video, videoIndex) => [
+    videoIndex,
+    video.probability || 1,
+  ])
+  const pickedVideos = []
+  for (let i = 0; i < count; i++) {
+    const pickedIndex = pickRandomWeighted(candidates)
+    pickedVideos.push(videos[pickedIndex])
+    candidates = candidates.filter(([index]) => index !== pickedIndex)
+  }
+  return pickedVideos
+}
+
 const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const breakpoint = useBreakpoint()
   const isMobile = breakpoint === 'MOBILE'
@@ -80,9 +101,10 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
 
   useEffect(() => {
     setCurrentVideos(
-      arrayShuffle(
-        Object.values(videoMap).filter((video) => !video.blockId)
-      ).slice(0, isMobile ? 6 : 9)
+      randomVideoItems(
+        Object.values(videoMap).filter((video) => !video.isTakeover),
+        isMobile ? 6 : 9
+      )
     )
   }, [videoMap, isMobile])
 
@@ -98,7 +120,11 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           // or the switch wasn't initiated by click
           ((!isAlreadyTakenOver && isManual) || !v.isTakeover)
       )
-      const nextVideo = randomItem(nextVideoCandidates)
+      const nextVideo = prevVideo.nextVideoItem
+        ? nextVideoCandidates.find(
+            (v) => v.sys.id === prevVideo.nextVideoItem.sys.id
+          ) || randomVideoItem(nextVideoCandidates)
+        : randomVideoItem(nextVideoCandidates)
 
       if (prevVideo.isTakeover) {
         const indiciesToReplace = []
@@ -108,9 +134,10 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           }
         })
 
-        const newVideos = arrayShuffle(
-          nextVideoCandidates.filter((v) => !v.isTakeover)
-        ).slice(0, indiciesToReplace.length)
+        const newVideos = randomVideoItems(
+          nextVideoCandidates.filter((v) => !v.isTakeover),
+          indiciesToReplace.length
+        )
 
         const newCurrentVideos = indiciesToReplace.reduce(
           (items, indexToReplace, itemIndex) =>
