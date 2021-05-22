@@ -3,3 +3,11 @@
   height: 20px;
   margin-left: 10px;
 }
+
+.markdown a {
+  transition: color 0.2s ease;
+}
+
+.markdown a:hover {
+  color: color(grey);
+}

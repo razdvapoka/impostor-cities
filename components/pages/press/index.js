@@ -22,13 +22,21 @@ const PressColumn = ({ locale, assets, inquiries }) => {
   return (
     <div>
       <Markdown
-        className="text-ts2 mobile:border-t-1 mobile:border-white mobile:border-solid mobile:pt-2 mb-10"
+        className={cn(
+          'text-ts2 mobile:border-t-1 mobile:border-white mobile:border-solid mobile:pt-2 mb-10',
+          styles.markdown
+        )}
         locale={locale}
         renderers={renderers}
+        override
       >
         {assets}
       </Markdown>
-      <Markdown className="text-ts2 mobile:pt-2" locale={locale}>
+      <Markdown
+        className={cn('text-ts2 mobile:pt-2', styles.markdown)}
+        locale={locale}
+        override
+      >
         {inquiries}
       </Markdown>
       {/*
