@@ -62,13 +62,16 @@
   left: 50%;
   cursor: pointer;
   height: 100%;
+  @include mediaQuery(mobile) {
+    left: 75%;
+  }
   &Top {
-    top: 75px;
-    height: calc(100% - 75px);
+    top: calc(75 / 1440 * 100vw);
+    height: calc(100% - 75 / 1440 * 100vw);
   }
   &Bottom {
-    bottom: 75px;
-    height: calc(100% - 75px);
+    bottom: calc(75 / 1440 * 100vw);
+    height: calc(100% - 75 / 1440 * 100vw);
   }
 }
 

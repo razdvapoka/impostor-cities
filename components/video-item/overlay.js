@@ -54,7 +54,7 @@ const ForwardButton = ({ isTopVideo, isBottomVideo, switchToNext }) => {
   return (
     <button
       className={cn(
-        'absolute w-1/2 flex justify-end items-center pr-2',
+        'absolute w-1/2 mobile:w-2/8 flex justify-end items-center pr-2',
         styles.forwardButton,
         {
           [styles.forwardButtonTop]: isTopVideo,

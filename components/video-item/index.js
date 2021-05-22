@@ -23,6 +23,7 @@ const VideoItem = ({
   switchToNextVideo,
   isTakeover,
   setTakeover,
+  isMobile,
   defaultVideoTime = 0,
 }) => {
   const switchToNext = useCallback(
@@ -71,6 +72,27 @@ const VideoItem = ({
     }
   }, [ref])
 
+  const handleClick = useCallback(() => {
+    if (stopOnHover) {
+      if (state.paused) {
+        controls.play()
+      } else {
+        controls.pause()
+      }
+    } else if (index === unmutedVideoIndex) {
+      setUnmutedVideoIndex(null)
+    } else {
+      setUnmutedVideoIndex(index)
+    }
+  }, [
+    index,
+    unmutedVideoIndex,
+    setUnmutedVideoIndex,
+    stopOnHover,
+    state,
+    controls,
+  ])
+
   const handleMouseEnter = useCallback(() => {
     if (stopOnHover) {
       if (!state.paused) {
@@ -83,7 +105,6 @@ const VideoItem = ({
     index,
     unmutedVideoIndex,
     setUnmutedVideoIndex,
-    hasUserInteraction,
     stopOnHover,
     state.paused,
     controls.pause,
@@ -105,11 +126,16 @@ const VideoItem = ({
     state.paused,
     controls.play,
   ])
+
   return (
     <div
       className="aspect-w-16 aspect-h-9"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      {...(isMobile
+        ? { onClick: handleClick }
+        : {
+            onMouseEnter: handleMouseEnter,
+            onMouseLeave: handleMouseLeave,
+          })}
     >
       {video}
       <Overlay

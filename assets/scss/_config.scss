@@ -68,21 +68,21 @@ $font-styles: (
     font-family: $ff-helvetica,
     font-size: 16px,
     line-height: 20 / 16,
-    letter-spacing: (-15em/1000)
+    letter-spacing: (20em/1000)
   ),
   ts3AltI: (
     font-family: $ff-helvetica,
     font-size: 16px,
     line-height: 20 / 16,
     font-style: italic,
-    letter-spacing: (30em/1000)
+    letter-spacing: (20em/1000)
   ),
   ts3AltB: (
     font-family: $ff-helvetica,
     font-size: 16px,
     line-height: 20 / 16,
     font-weight: bold,
-    letter-spacing: (-15em/1000)
+    letter-spacing: (20em/1000)
   ),
 );
 

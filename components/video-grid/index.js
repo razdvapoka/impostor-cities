@@ -14,6 +14,12 @@ const BLOCK_INDICIES = [
   [4, 5, 7, 8],
 ]
 
+const BLOCK_INDICIES_MOBILE = [
+  [0, 1, 2, 3],
+  [1, 2, 3, 4],
+  [2, 3, 4, 5],
+]
+
 const TRANSITION_DURATION = 1000
 
 const groupVideosById = (
@@ -58,7 +64,7 @@ const randomItem = (array) => array[Math.floor(Math.random() * array.length)]
 
 const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const breakpoint = useBreakpoint()
-  console.log(breakpoint)
+  const isMobile = breakpoint === 'MOBILE'
   const videoMap = useMemo(() => groupVideosById(videos), [videos])
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
@@ -76,9 +82,9 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     setCurrentVideos(
       arrayShuffle(
         Object.values(videoMap).filter((video) => !video.blockId)
-      ).slice(0, 9)
+      ).slice(0, isMobile ? 6 : 9)
     )
-  }, [videoMap])
+  }, [videoMap, isMobile])
 
   const switchToNextVideo = useCallback(
     (index, isManual) => {
@@ -114,8 +120,9 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
         setCurrentVideos(newCurrentVideos)
       } else if (nextVideo.isTakeover) {
         const videoBlock = videos.find((v) => v.sys.id === nextVideo.blockId)
+        const blockIndicies = isMobile ? BLOCK_INDICIES_MOBILE : BLOCK_INDICIES
         const indicies = randomItem(
-          BLOCK_INDICIES.filter((i) => i.indexOf(index) !== -1)
+          blockIndicies.filter((i) => i.indexOf(index) !== -1)
         )
         const newVideos = videoBlock.itemsCollection.items.reduce(
           (items, item, itemIndex) =>
@@ -165,7 +172,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
 
   return (
     <div className="py-20 my-grid mobile:py-13">
-      {currentVideos.slice(0, 9).map((video, videoIndex) => (
+      {currentVideos.slice(0, isMobile ? 6 : 9).map((video, videoIndex) => (
         <div className="w-2/6 mb-1 mobile:w-full" key={videoIndex}>
           <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
             <CSSTransition
@@ -186,6 +193,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
                   setTakeover={setTakeover}
                   syncBlocks={syncBlocks}
                   setSyncBlock={setSyncBlock}
+                  isMobile={isMobile}
                   {...video}
                 />
               </div>
