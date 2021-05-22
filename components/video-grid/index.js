@@ -4,6 +4,7 @@ import { arrayShuffle } from '@adriantombu/array-shuffle'
 import { VideoItem } from '@/components'
 import { VIDEO_BLOCK_TYPE } from '@/consts'
 import { insertAt } from '@/lib/utils'
+import { useBreakpoint } from '@/lib/hooks'
 import styles from './styles.module.scss'
 
 const BLOCK_INDICIES = [
@@ -56,6 +57,8 @@ const groupVideosById = (
 const randomItem = (array) => array[Math.floor(Math.random() * array.length)]
 
 const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
+  const breakpoint = useBreakpoint()
+  console.log(breakpoint)
   const videoMap = useMemo(() => groupVideosById(videos), [videos])
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
@@ -161,9 +164,9 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   }, [takeover])
 
   return (
-    <div className="py-20 my-grid mobile:py-0">
+    <div className="py-20 my-grid mobile:py-13">
       {currentVideos.slice(0, 9).map((video, videoIndex) => (
-        <div className="w-2/6 mb-1" key={videoIndex}>
+        <div className="w-2/6 mb-1 mobile:w-full" key={videoIndex}>
           <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
             <CSSTransition
               key={video.sys.id}
