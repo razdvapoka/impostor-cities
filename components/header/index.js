@@ -23,6 +23,8 @@ import {
   PROJECT_ROUTES,
 } from '@/consts'
 
+const INFO_TRANSITION_DELAY = 1000
+
 const CartButton = ({ t, cartItemCount, closeMenu }) => {
   return (
     <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
@@ -79,7 +81,15 @@ const HeaderMain = ({
   }, [isOpen, closeMenu, openMenu])
   return (
     <div
-      className="pb-4 cursor-pointer mobile:pb-5 my-grid text-ts1B"
+      className={`
+        my-grid
+        pb-4 mobile:pb-5
+        text-ts1B
+        mobile:pt-2 mobile:-mt-2
+        mobile:bg-black
+        mobile:relative mobile:z-10
+        cursor-pointer
+      `}
       onClick={toggle}
     >
       <div
@@ -217,12 +227,6 @@ const Nav = ({ lang, isOpen, isCart, isShop, route, closeMenu }) => {
         [styles.navOpen]: isOpen || isCart || isShop,
       })}
     >
-      <Link href="/">
-        <a
-          className={cn(styles.homeButton, 'mt-1 mb-9 hidden mobile:block')}
-          onClick={closeMenu}
-        />
-      </Link>
       <ul className="mobile:space-y-7">
         {items.map((item) => (
           <NavItem
@@ -294,6 +298,75 @@ const NavBottom = ({ closeMenu }) => {
   )
 }
 
+const HeaderNavTop = ({ closeMenu, isOpen }) => {
+  return (
+    <div className="hidden mobile:block">
+      <div className="my-grid mobile:pb-2">
+        <div className="w-4/8">
+          <Link href="/">
+            <a
+              className={cn(styles.homeButton, 'mt-1 mb-9 hidden mobile:block')}
+              onClick={closeMenu}
+            />
+          </Link>
+        </div>
+        <div className="flex justify-end pointer-events-none w-4/8">
+          <div
+            className={cn(styles.biennaleLogo, {
+              [styles.biennaleLogoOpen]: isOpen,
+            })}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const HeaderNavColumn = ({
+  lang,
+  className,
+  isOpen,
+  isCart,
+  isShop,
+  closeMenu,
+  route,
+  isThreeColumnHeader,
+}) => {
+  return (
+    <div
+      className={cn(
+        isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+        'text-ts2 mobile:w-full mobile:flex mobile:flex-col mobile:justify-between',
+        className
+      )}
+    >
+      <Nav
+        lang={lang}
+        isOpen={isOpen}
+        route={route}
+        isCart={isCart}
+        isShop={isShop}
+        closeMenu={closeMenu}
+      />
+      <NavBottom closeMenu={closeMenu} />
+    </div>
+  )
+}
+
+const HeaderNavHomeColumn = ({ closeMenu, isThreeColumnHeader }) => {
+  return (
+    <div
+      className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:hidden')}
+    >
+      <div className="flex items-end h-full pl-1">
+        <Link href="/">
+          <a className={cn(styles.homeButton, 'block')} onClick={closeMenu} />
+        </Link>
+      </div>
+    </div>
+  )
+}
+
 const HeaderNav = ({
   isOpen,
   isShop,
@@ -303,67 +376,34 @@ const HeaderNav = ({
   closeMenu,
 }) => {
   const { lang } = useTranslation('common')
-  const close = useCallback(() => {
-    if (isOpen) {
-      closeMenu()
-    }
-  }, [isOpen, closeMenu])
   return (
     <div className="mobile:flex-1 mobile:flex mobile:flex-col">
-      <div className="pb-6 my-grid mobile:flex-1 mobile:pb-2">
-        <div
-          className={cn(
-            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
-            'mobile:hidden'
-          )}
-        >
-          <div className="flex items-end h-full pl-1">
-            <Link href="/">
-              <a className={cn(styles.homeButton, 'block')} onClick={close} />
-            </Link>
-          </div>
-        </div>
-        <div
-          className={cn(
-            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
-            'text-ts2 mobile:w-full mobile:flex mobile:flex-col mobile:justify-between',
-            enOnly(lang)
-          )}
-        >
-          <Nav
-            lang="en"
-            isOpen={isOpen}
-            route={route}
-            isCart={isCart}
-            isShop={isShop}
-            closeMenu={closeMenu}
-          />
-          <NavBottom closeMenu={closeMenu} />
-        </div>
-        <div
-          className={cn(
-            isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
-            'text-ts2 mobile:w-full mobile:flex mobile:flex-col mobile:justify-between',
-            frOnly(lang)
-          )}
-        >
-          <Nav
-            lang="fr"
-            isOpen={isOpen}
-            route={route}
-            isCart={isCart}
-            isShop={isShop}
-            closeMenu={closeMenu}
-          />
-          <NavBottom closeMenu={closeMenu} />
-        </div>
-        <div className="absolute top-0 right-0 justify-end hidden pointer-events-none mobile:flex w-4/8">
-          <div
-            className={cn('mt-15 mr-2', styles.biennaleLogo, {
-              [styles.biennaleLogoOpen]: isOpen,
-            })}
-          />
-        </div>
+      <HeaderNavTop isOpen={isOpen} closeMenu={closeMenu} />
+      <div className="pb-6 my-grid mobile:flex-1 mobile:pb-2 mobile:-mt-8">
+        <HeaderNavHomeColumn
+          closeMenu={closeMenu}
+          isThreeColumnHeader={isThreeColumnHeader}
+        />
+        <HeaderNavColumn
+          lang="en"
+          className={enOnly(lang)}
+          isOpen={isOpen}
+          isCart={isCart}
+          isShop={isShop}
+          route={route}
+          isThreeColumnHeader={isThreeColumnHeader}
+          closeMenu={closeMenu}
+        />
+        <HeaderNavColumn
+          lang="fr"
+          className={frOnly(lang)}
+          isOpen={isOpen}
+          isCart={isCart}
+          isShop={isShop}
+          route={route}
+          isThreeColumnHeader={isThreeColumnHeader}
+          closeMenu={closeMenu}
+        />
         <div
           className={cn(
             isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
@@ -377,8 +417,6 @@ const HeaderNav = ({
     </div>
   )
 }
-
-const INFO_TRANSITION_DELAY = 1000
 
 const HeaderInfoColumn = ({ isOpen, isThreeColumnHeader, children }) => {
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
@@ -520,11 +558,6 @@ const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
                 className={cn('mt-2 mr-3', styles.headerInfoLogo, {
                   [styles.headerInfoLogoOpened]: isOpen,
                 })}
-                style={{
-                  backgroundImage: 'url(/images/biennale-logo.svg)',
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                }}
               />
             </div>
           </HeaderInfoColumn>
@@ -579,6 +612,7 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         bg-black
         z-30
       `,
+        styles.header,
         { [styles.disableTransitions]: isShop }
       )}
     >
@@ -591,9 +625,13 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         closeMenu={closeMenu}
       />
       <div
-        className={cn('h-0 overflow-hidden flex flex-col', styles.expand, {
-          [styles.expandOpened]: isOpen,
-        })}
+        className={cn(
+          'h-0 overflow-hidden flex flex-col mobile:bg-black',
+          styles.expand,
+          {
+            [styles.expandOpened]: isOpen,
+          }
+        )}
         style={{ height: menuHeight }}
       >
         <div

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import getT from 'next-translate/getT'
 import { useAsync } from 'react-use'
@@ -91,20 +92,24 @@ const ProductCard = ({
 
 const Shop = ({ commonData, products }) => {
   const fakeProducts = repeat(products, 5).flat()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 750)
+  }, [])
   return (
     <Layout {...commonData}>
-      <div className="hidden mobile:block">
-        <Dummy />
-      </div>
-      <div className="mobile:hidden">
-        <div className="mt-22 my-grid mobile:mt-0">
-          {/* fakeProducts.map((product, productIndex) => (
+      {isMobile && <Dummy />}
+      {!isMobile && (
+        <div className="mobile:hidden">
+          <div className="mt-22 my-grid mobile:mt-0">
+            {/* fakeProducts.map((product, productIndex) => (
           <div key={productIndex} className="w-2/8">
             <ProductCard {...product} />
           </div>
         )) */}
+          </div>
         </div>
-      </div>
+      )}
     </Layout>
   )
 }
