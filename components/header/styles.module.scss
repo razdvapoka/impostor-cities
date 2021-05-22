@@ -36,7 +36,7 @@
     height: calc(100vh - 58px) !important;
     height: calc(var(--vh, 1vh) * 100 - 58px) !important;
     transition: transform 0.1s ease;
-    transform: translateY(-100%);
+    transform: translateY(calc(-100% - 58px));
   }
   &Opened {
     transition: height 0.3s ease;

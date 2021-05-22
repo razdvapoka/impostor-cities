@@ -199,7 +199,6 @@ const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
         <a
           className={cn('transition-colors hover:text-grey', {
             'text-grey': isActive,
-            // 'pointer-events-none': isActive && !(isShopItem && isCart),
             'mobile:hidden': isProjectItem,
           })}
           onClick={() => {
