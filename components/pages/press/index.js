@@ -2,20 +2,33 @@ import { Markdown, Layout } from '@/components'
 import { enOnly, frOnly } from '@/lib/utils'
 import cn from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
+import styles from './styles.module.scss'
+import Arrow from '../../../assets/icons/slider-arrow.svg'
 
-const PressColumn = ({
-  locale,
-  assets,
-  inquiries,
-  inquiriesTitle,
-  inquiriesUrl,
-}) => {
+const renderers = {
+  link: ({ children, ...rest }) => {
+    return (
+      <a {...rest}>
+        {children}
+        <span className={cn('inline-block', styles.arrow)}>
+          <Arrow />
+        </span>
+      </a>
+    )
+  },
+}
+
+const PressColumn = ({ locale, assets, inquiries }) => {
   return (
     <div>
       <Markdown
-        className="text-ts3 mobile:border-t-1 mobile:border-white mobile:border-solid mobile:pt-2"
+        className="text-ts2 mobile:border-t-1 mobile:border-white mobile:border-solid mobile:pt-2 mb-10"
         locale={locale}
+        renderers={renderers}
       >
+        {assets}
+      </Markdown>
+      <Markdown className="text-ts2 mobile:pt-2" locale={locale}>
         {inquiries}
       </Markdown>
       {/*
@@ -44,7 +57,7 @@ const Press = ({ commonData, data: { en, fr } }) => {
         <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
           <PressColumn locale="en-US" {...en} />
         </div>
-        <div className={cn('w-3/8 mobile:w-full', frOnly(lang))}>
+        <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
           <PressColumn locale="fr" {...fr} />
         </div>
       </div>
