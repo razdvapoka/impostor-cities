@@ -1,10 +1,22 @@
 .headphonesAlert {
   background-color: rgba(0,0,0, 0.6);
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  @include mediaQuery(mobile) {
+    background-color: transparent;
+  }
   &Grid {
     height: calc(560 / 1015 * 100vh);
     min-height: 250px;
+    @include mediaQuery(mobile) {
+      height: auto;
+      min-height: 0;
+    }
   }
   &Content {
     background-color: black;
+    @include mediaQuery(mobile) {
+      background-color: rgba(0,0,0, 0.6);
+    }
   }
 }
