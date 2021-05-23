@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import pickRandomWeighted from 'pick-random-weighted'
-import { arrayShuffle } from '@adriantombu/array-shuffle'
 import { VideoItem } from '@/components'
 import { VIDEO_BLOCK_TYPE } from '@/consts'
 import { insertAt } from '@/lib/utils'
@@ -15,11 +14,7 @@ const BLOCK_INDICIES = [
   [4, 5, 7, 8],
 ]
 
-const BLOCK_INDICIES_MOBILE = [
-  [0, 1, 2, 3],
-  [1, 2, 3, 4],
-  [2, 3, 4, 5],
-]
+const BLOCK_INDICIES_MOBILE = [[0, 1, 2, 3]]
 
 const TRANSITION_DURATION = 1000
 
@@ -103,7 +98,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     setCurrentVideos(
       randomVideoItems(
         Object.values(videoMap).filter((video) => !video.isTakeover),
-        isMobile ? 6 : 9
+        isMobile ? 4 : 9
       )
     )
   }, [videoMap, isMobile])
@@ -199,7 +194,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
 
   return (
     <div className="py-20 my-grid mobile:py-13">
-      {currentVideos.slice(0, isMobile ? 6 : 9).map((video, videoIndex) => (
+      {currentVideos.slice(0, isMobile ? 4 : 9).map((video, videoIndex) => (
         <div className="w-2/6 mb-1 mobile:w-full" key={videoIndex}>
           <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
             <CSSTransition

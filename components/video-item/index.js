@@ -149,6 +149,7 @@ const VideoItem = ({
         person={person}
         switchToNext={switchToNext}
         blockCount={blockCount}
+        isMobile={isMobile}
       />
     </div>
   )
