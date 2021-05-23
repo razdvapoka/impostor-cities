@@ -113,6 +113,7 @@ const BottomLine = ({
   captionEn,
   captionFr,
   isInBlock,
+  isMobile,
 }) => {
   return (
     <div
@@ -121,7 +122,7 @@ const BottomLine = ({
       })}
     >
       <div>
-        {isLocation || (isTakeover && indexInBlock === 2) ? (
+        {isLocation || (isTakeover && indexInBlock === (isMobile ? 3 : 2)) ? (
           <div className="flex text-ts1B">
             <div className="mr-5">
               {captionEn || `${blockCount}-Ch. Sequence`}
@@ -152,6 +153,7 @@ const Overlay = ({
   indexInBlock,
   videoTime,
   blockCount,
+  isMobile,
 }) => {
   const isInBlock = indexInBlock != null
   const isLocation = isInBlock && !isTakeover
@@ -184,11 +186,12 @@ const Overlay = ({
             captionEn={captionEn}
             captionFr={captionFr}
             isInBlock={isInBlock}
+            isMobile={isMobile}
           />
           <Volume isTopVideo={isTopVideo} isBottomVideo={isBottomVideo} />
         </>
       )}
-      {!isTakeover && (
+      {(!isTakeover || isMobile) && (
         <ForwardButton
           isTopVideo={isTopVideo}
           isBottomVideo={isBottomVideo}
