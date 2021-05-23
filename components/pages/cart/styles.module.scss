@@ -1,5 +1,8 @@
 .cart {
   margin-top: 184px;
+  @include mediaQuery(mobile) {
+    margin-top: 52px;
+  }
 }
 
 .leftBorder::before {
@@ -10,6 +13,9 @@
   left: -4px;
   width: 1px;
   background-color: color(grey);
+  @include mediaQuery(mobile) {
+    display: none;
+  }
 }
 
 .deleteButton {
