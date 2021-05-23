@@ -28,8 +28,14 @@
   width: 18px;
   height: 14px;
   margin-top: -2px;
+  @include mediaQuery(mobile) {
+    stroke-width: 0.5;
+  }
 }
 
 .incButton {
   margin-left: -2px;
+  @include mediaQuery(mobile) {
+    margin-left: -2.5px;
+  }
 }

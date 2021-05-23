@@ -25,7 +25,7 @@ import {
 
 const INFO_TRANSITION_DELAY = 1000
 
-const CartButton = ({ t, cartItemCount, closeMenu, isCart }) => {
+const CartButton = ({ t, cartItemCount, isCart }) => {
   return (
     <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
       <a
@@ -34,6 +34,7 @@ const CartButton = ({ t, cartItemCount, closeMenu, isCart }) => {
           styles.cartBox,
           { 'pointer-events-none cursor-default': isCart }
         )}
+        onClick={(e) => e.stopPropagation()}
       >
         {cartItemCount > 0 && (
           <span className="text-ts1B">{`| ${cartItemCount} |`}</span>
@@ -44,7 +45,6 @@ const CartButton = ({ t, cartItemCount, closeMenu, isCart }) => {
             styles.cartButton,
             isCart ? 'bg-black border-2 border-solid border-green' : 'bg-green'
           )}
-          onClick={closeMenu}
         />
       </a>
     </Link>

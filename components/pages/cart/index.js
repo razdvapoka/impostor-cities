@@ -27,7 +27,9 @@ const CartProduct = ({
   cart,
   setCart,
 }) => {
+  const { lang } = useTranslation('common')
   const { variantEn, variantFr } = getVariants(product, variantId)
+
   const deleteVariant = useCallback(() => {
     const productId = product.en.id
     setCart({
@@ -35,6 +37,7 @@ const CartProduct = ({
       [productId]: cart[productId].filter((v) => v.variantId !== variantId),
     })
   }, [product, variantId, cart, setCart])
+
   const decreaseNumber = useCallback(() => {
     const productId = product.en.id
     setCart({
@@ -46,6 +49,7 @@ const CartProduct = ({
       ),
     })
   }, [product, variantId, cart, setCart])
+
   const increaseNumber = useCallback(() => {
     const productId = product.en.id
     setCart({
@@ -55,43 +59,55 @@ const CartProduct = ({
       ),
     })
   }, [product, variantId, cart, setCart])
+
   const colorEn = getColorOption(variantEn)?.value
   const colorFr = getColorOption(variantFr)?.value
   const sizeEn = getSizeOption(variantEn)?.value
   const sizeFr = getSizeOption(variantFr)?.value
   return (
     <div className="my-grid text-ts1B">
-      <div className="w-1/8">{product.en.title}</div>
-      <div className="w-1/8">{product.fr.title}</div>
-      <div className="w-1/16">{colorEn || '—'}</div>
-      <div className="w-1/8">{colorFr || '—'}</div>
-      <div className="w-1/16">{sizeEn || '—'}</div>
-      <div className="w-1/8">{sizeFr || '—'}</div>
-      <div className="w-1/8">
-        <div className="flex">
+      <div className={cn('w-1/8 mobile:w-4/8', enOnly(lang))}>
+        <div>{product.en.title}</div>
+        {colorEn && <div>{colorEn}</div>}
+        {sizeEn && <div>{sizeEn}</div>}
+      </div>
+      <div className={cn('w-1/8 mobile:w-4/8', frOnly(lang))}>
+        {product.fr.title}
+        {colorFr && <div>{colorFr}</div>}
+        {sizeFr && <div>{sizeFr}</div>}
+      </div>
+      <div className={cn('w-1/16 mobile:hidden')}>{colorEn || '—'}</div>
+      <div className={cn('w-1/8 mobile:hidden')}>{colorFr || '—'}</div>
+      <div className={cn('w-1/16 mobile:hidden')}>{sizeEn || '—'}</div>
+      <div className={cn('w-1/8 mobile:hidden')}>{sizeFr || '—'}</div>
+      <div className="w-1/8 mobile:order-2 mobile:w-2/8">
+        <div className="flex mobile:justify-between">
           <div>{count}</div>
-          <button
-            className={cn(styles.decButton, 'text-grey ml-3')}
-            onClick={decreaseNumber}
-          >
-            <DecIcon />
-          </button>
-          <button
-            className={cn(styles.incButton, 'text-grey')}
-            onClick={increaseNumber}
-          >
-            <IncIcon />
-          </button>
+          <div className="ml-3">
+            <button
+              className={cn(styles.decButton, 'text-grey')}
+              onClick={decreaseNumber}
+            >
+              <DecIcon />
+            </button>
+            <button
+              className={cn(styles.incButton, 'text-grey')}
+              onClick={increaseNumber}
+            >
+              <IncIcon />
+            </button>
+          </div>
         </div>
       </div>
-      <div className="w-1/8">{getPriceString(variantEn.price)}</div>
-      <div className="w-1/8">
+      <div className="w-1/8 mobile:hidden">
+        {getPriceString(variantEn.price)}
+      </div>
+      <div className="order-1 hidden mobile:block w-2/8">
+        {`$${variantEn.price}`}
+      </div>
+      <div className="w-1/8 mobile:hidden">
         <button
-          className={cn(
-            styles.deleteButton,
-            // 'hover:text-grey transition-colors'
-            'text-grey'
-          )}
+          className={cn(styles.deleteButton, 'text-grey')}
           onClick={deleteVariant}
         >
           <DeleteIcon />
@@ -117,7 +133,7 @@ const TotalHeader = () => {
 }
 const Total = ({ total }) => {
   return (
-    <div className="pt-2 pb-20 border-b-2 border-white mobile:pt-5 mobile:pb-10 mobile:border-b-0 my-grid">
+    <div className="pt-2 pb-20 border-b-2 border-white mobile:pt-5 mobile:pb-8 mobile:border-b-0 my-grid">
       <div className="w-6/8 mobile:w-4/8" />
       <div className="w-2/8 text-ts2 mobile:text-ts3B mobile:w-4/8">
         {getPriceString(total)}
@@ -127,30 +143,48 @@ const Total = ({ total }) => {
 }
 
 const Checkout = ({ handleCheckout }) => {
+  const { t, lang } = useTranslation('common')
   return (
-    <div className="pt-2 my-grid">
-      <div className="w-4/8" />
-      <div className="w-2/8">
-        <div className="text-ts1B">
-          Shipping & taxes
-          <br />
-          calculated at checkout
+    <>
+      <div className="pt-2 my-grid mobile:text-grey mobile:border-b-1 mobile:border-white mobile:pb-1">
+        <div className="w-4/8" />
+        <div className={cn('w-2/8 mobile:w-4/8', enOnly(lang))}>
+          <div className="text-ts1B">
+            Shipping & taxes
+            <br />
+            calculated at checkout
+          </div>
+          <button
+            onClick={handleCheckout}
+            className="mt-8 text-ts2 mobile:hidden"
+          >
+            Checkout
+          </button>
         </div>
-        <button onClick={handleCheckout} className="mt-8 text-ts2">
-          Checkout
-        </button>
-      </div>
-      <div className="w-2/8">
-        <div className="text-ts1B">
-          Expédition et taxes
-          <br />
-          calculé à la caisse
+        <div className={cn('w-2/8 mobile:w-4/8', frOnly(lang))}>
+          <div className="text-ts1B">
+            Expédition et taxes
+            <br />
+            calculé à la caisse
+          </div>
+          <button
+            onClick={handleCheckout}
+            className="mt-8 text-ts2 mobile:hidden"
+          >
+            Passer à la caisse
+          </button>
         </div>
-        <button onClick={handleCheckout} className="mt-8 text-ts2">
-          Passer à la caisse
-        </button>
       </div>
-    </div>
+      <div className="hidden mobile:block">
+        <div className="pt-2 my-grid">
+          <div className="w-4/8">
+            <button className="text-tsC text-left" onClick={handleCheckout}>
+              {t('checkout')}
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -159,10 +193,12 @@ const CartHeader = () => {
   return (
     <div className="pt-3 mb-1 my-grid text-ts1B mobile:pt-2">
       <div className={cn('w-1/8 mobile:w-4/8 mobile:text-grey', enOnly(lang))}>
-        <div className="pb-8">Item</div>
+        <div className="pb-8 mobile:pb-2">Item</div>
       </div>
       <div className={cn('w-1/8 mobile:w-4/8 mobile:text-grey', frOnly(lang))}>
-        <div className={cn('pb-8 relative', styles.leftBorder)}>Article</div>
+        <div className={cn('pb-8 relative mobile:pb-2', styles.leftBorder)}>
+          Article
+        </div>
       </div>
       <div className="w-1/16 mobile:hidden">
         <div className={cn('pb-8 relative', styles.leftBorder)}>Colour</div>
@@ -182,7 +218,9 @@ const CartHeader = () => {
           enOnly(lang)
         )}
       >
-        <div className={cn('pb-8 relative', styles.leftBorder)}>Qty</div>
+        <div className={cn('pb-8 relative mobile:pb-2', styles.leftBorder)}>
+          Qty
+        </div>
       </div>
       <div
         className={cn(
@@ -190,7 +228,7 @@ const CartHeader = () => {
           frOnly(lang)
         )}
       >
-        <div className="relative pb-8">Qté</div>
+        <div className="relative pb-8 mobile:pb-2">Qté</div>
       </div>
       <div
         className={cn(
@@ -198,7 +236,9 @@ const CartHeader = () => {
           enOnly(lang)
         )}
       >
-        <div className={cn('pb-8 relative', styles.leftBorder)}>Price</div>
+        <div className={cn('pb-8 relative mobile:pb-2', styles.leftBorder)}>
+          Price
+        </div>
       </div>
       <div
         className={cn(
@@ -206,7 +246,7 @@ const CartHeader = () => {
           frOnly(lang)
         )}
       >
-        <div className="relative pb-8">Prix</div>
+        <div className="relative pb-8 mobile:pb-2">Prix</div>
       </div>
     </div>
   )
@@ -214,7 +254,12 @@ const CartHeader = () => {
 
 const Products = ({ cart, setCart, productMap }) => {
   return (
-    <div className="border-b-2 border-white mobile:border-b-1 pb-15">
+    <div
+      className={`
+      border-b-2 border-white
+      mobile:border-b-1 mobile:border-t-1
+      pb-15 mobile:pt-2 mobile:pb-4`}
+    >
       {Object.keys(cart).map((key) => {
         const product = productMap[key]
         const selectedVariants = cart[key]
@@ -236,7 +281,7 @@ const Products = ({ cart, setCart, productMap }) => {
   )
 }
 
-const getProductMap = (products) => () =>
+const getProductMap = (products) =>
   products.reduce(
     (map, product) => ({
       ...map,
@@ -245,8 +290,8 @@ const getProductMap = (products) => () =>
     {}
   )
 
-const getCartTotal = (cart, productMap) =>
-  Object.keys(cart).reduce((total, productKey) => {
+const getCartTotal = (cart, productMap) => {
+  return Object.keys(cart).reduce((total, productKey) => {
     const product = productMap[productKey]
     const variants = cart[productKey]
     return (
@@ -260,6 +305,7 @@ const getCartTotal = (cart, productMap) =>
       )
     )
   }, 0)
+}
 
 const getLineItems = (cart) =>
   Object.values(cart).flatMap((variants) =>
