@@ -67,7 +67,7 @@ const Slider = ({ children }) => {
 
   return (
     <div className="relative">
-      <div className={cn('overlay z-10', styles.overlay)}>
+      <div className={cn('overlay z-10 mobile:hidden', styles.overlay)}>
         <OverlayButton
           disabled={isPrevDisabled}
           handleClick={scrollPrev}

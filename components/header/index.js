@@ -184,7 +184,7 @@ const ProjectItem = ({ closeMenu }) => {
   )
 }
 
-const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
+const NavItem = ({ item, route, isCart, lang, closeMenu }) => {
   const { value: t } = useAsync(async () => {
     const tr = await getT(lang, 'common')
     return tr
@@ -203,11 +203,7 @@ const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
             'text-grey': isActive,
             'mobile:hidden': isProjectItem,
           })}
-          onClick={() => {
-            if (isOpen && !isShopItem) {
-              closeMenu()
-            }
-          }}
+          onClick={closeMenu}
         >
           {item.title}
         </a>
@@ -233,7 +229,6 @@ const Nav = ({ lang, isOpen, isCart, route, closeMenu }) => {
           <NavItem
             key={item.href}
             item={item}
-            isOpen={isOpen}
             isCart={isCart}
             route={route}
             lang={lang}
