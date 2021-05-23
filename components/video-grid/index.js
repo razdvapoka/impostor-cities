@@ -28,6 +28,8 @@ const groupVideosById = (
 ) => {
   return videos.reduce((map, video, videoIndex) => {
     const isBlock = video.__typename === VIDEO_BLOCK_TYPE
+    // to handle videos that are a part of a takeover and a separate item at the same time
+    const videoId = `${video.sys.id}${blockId || ''}`
     return isBlock
       ? {
           ...map,
@@ -42,7 +44,7 @@ const groupVideosById = (
         }
       : {
           ...map,
-          [video.sys.id]: {
+          [videoId]: {
             ...video,
             blockId,
             isTakeover,
@@ -141,19 +143,27 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
         )
         setCurrentVideos(newCurrentVideos)
       } else if (nextVideo.isTakeover) {
-        const videoBlock = videos.find((v) => v.sys.id === nextVideo.blockId)
+        const blockVideos = Object.values(videoMap).filter(
+          (v) => v.blockId === nextVideo.blockId
+        )
         const blockIndicies = isMobile ? BLOCK_INDICIES_MOBILE : BLOCK_INDICIES
         const indicies = randomItem(
           blockIndicies.filter((i) => i.indexOf(index) !== -1)
         )
-        const newVideos = videoBlock.itemsCollection.items.reduce(
-          (items, item, itemIndex) =>
-            insertAt(items, videoMap[item.sys.id], indicies[itemIndex]),
-          currentVideos
-        )
+        const newVideos = blockVideos
+          .sort((v1, v2) => (v1.indexInBlock > v2.indexInBlock ? 1 : -1))
+          .reduce(
+            (items, item, itemIndex) =>
+              insertAt(
+                items,
+                videoMap[`${item.sys.id}${nextVideo.blockId}`],
+                indicies[itemIndex]
+              ),
+            currentVideos
+          )
         setCurrentVideos(newVideos)
         setTakeover({
-          videoCount: videoBlock.itemsCollection.items.length,
+          videoCount: blockVideos.length,
           refs: [],
         })
       } else {
