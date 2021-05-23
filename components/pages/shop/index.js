@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
+import { useBreakpoint } from '@/lib/hooks'
 import getT from 'next-translate/getT'
 import { useAsync } from 'react-use'
-import { Layout, Dummy } from '@/components'
+import { Layout } from '@/components'
 import Image from 'next/image'
 import Link from 'next/link'
-import { repeat, getSizeOption, hasVariants } from '@/lib/utils'
+import { repeat, getSizeOption, hasVariants, enOnly, frOnly } from '@/lib/utils'
 import cn from 'classnames'
 
 const ProductInfo = ({
@@ -14,15 +14,17 @@ const ProductInfo = ({
   variants,
   isAvailable,
   isComingSoon,
-  locale,
+  lang,
 }) => {
   const { value: t } = useAsync(async () => {
-    const tr = await getT(locale, 'common')
+    const tr = await getT(lang, 'common')
     return tr
   }, [])
   return (
     <div>
-      <div>{title}</div>
+      <div
+        dangerouslySetInnerHTML={{ __html: title.replace(' — ', '<br/>') }}
+      />
       <div>{price}</div>
       {isComingSoon && t && <div>{t('comingSoon')}</div>}
       {!isComingSoon && isAvailable && (
@@ -42,9 +44,10 @@ const ProductInfo = ({
   )
 }
 
-const ProductCard = ({
+export const ProductCard = ({
   en: { images, title: titleEn, variants: variantsEn, handle, tags },
   fr: { title: titleFr, variants: variantsFr },
+  isMobile,
 }) => {
   const isComingSoon = tags.indexOf('comingsoon') !== -1
   const { price } = variantsEn[0]
@@ -63,26 +66,30 @@ const ProductCard = ({
         <div className="aspect-w-1 aspect-h-1">
           <Image layout="fill" src={images[0].src} />
         </div>
-        <div className="flex pt-1 space-x-10 text-ts1B">
-          <ProductInfo
-            title={titleEn}
-            price={priceString}
-            variants={variantsEn}
-            variantsExist={variantsExist}
-            isAvailable={isAvailable}
-            isComingSoon={isComingSoon}
-            locale="en"
-          />
-          {titlesDiffer && (
+        <div className="flex pt-1 space-x-10 mobile:space-x-0 text-ts1B">
+          <div className={cn(enOnly(lang))}>
             <ProductInfo
-              title={titleFr}
+              title={titleEn}
               price={priceString}
-              variants={variantsFr}
+              variants={variantsEn}
               variantsExist={variantsExist}
               isAvailable={isAvailable}
               isComingSoon={isComingSoon}
-              locale="fr"
+              lang="en"
             />
+          </div>
+          {(titlesDiffer || isMobile) && (
+            <div className={cn(frOnly(lang))}>
+              <ProductInfo
+                title={titleFr}
+                price={priceString}
+                variants={variantsFr}
+                variantsExist={variantsExist}
+                isAvailable={isAvailable}
+                isComingSoon={isComingSoon}
+                lang="fr"
+              />
+            </div>
           )}
         </div>
       </a>
@@ -91,25 +98,20 @@ const ProductCard = ({
 }
 
 const Shop = ({ commonData, products }) => {
+  const breakpoint = useBreakpoint()
+  const isMobile = breakpoint === 'MOBILE'
   const fakeProducts = repeat(products, 5).flat()
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 750)
-  }, [])
   return (
     <Layout {...commonData}>
-      {isMobile && <Dummy />}
-      {!isMobile && (
-        <div className="mobile:hidden">
-          <div className="mt-22 my-grid mobile:mt-0">
-            {/* fakeProducts.map((product, productIndex) => (
-          <div key={productIndex} className="w-2/8">
-            <ProductCard {...product} />
-          </div>
-        )) */}
-          </div>
+      <div>
+        <div className="mt-22 my-grid mobile:mt-12">
+          {fakeProducts.map((product, productIndex) => (
+            <div key={productIndex} className="w-2/8 mobile:w-4/8">
+              <ProductCard {...product} isMobile={isMobile} />
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </Layout>
   )
 }

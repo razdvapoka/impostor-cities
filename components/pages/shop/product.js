@@ -1,13 +1,17 @@
-import { useState, useRef, useCallback } from 'react'
-import { useMouse, useAsync } from 'react-use'
+import { useMemo, useState, useRef, useCallback } from 'react'
+import { useBreakpoint } from '@/lib/hooks'
+import Arrow from '../../../assets/icons/slider-arrow.svg'
+import { useToggle, useMouse, useAsync, useMeasure } from 'react-use'
 import { Layout } from '@/components'
 import Image from 'next/image'
 import { useEmblaCarousel } from 'embla-carousel/react'
 import cn from 'classnames'
 import styles from './styles.module.scss'
-import { hasVariants, getSizeOption } from '@/lib/utils'
+import { hasVariants, getSizeOption, enOnly, frOnly } from '@/lib/utils'
 import { useCart } from '@/contexts/cart'
 import getT from 'next-translate/getT'
+import useTranslation from 'next-translate/useTranslation'
+import { ProductCard } from '@/components/pages/shop'
 
 const OverlayButton = ({ disabled, handleClick, className, isReversed }) => {
   const ref = useRef(null)
@@ -82,6 +86,55 @@ const Slider = ({ children }) => {
     </div>
   )
 }
+
+const ProductDescription = ({ descriptionHtml, t }) => {
+  const [isOpen, toggleOpen] = useToggle(false)
+  const [ref, { height }] = useMeasure()
+  return (
+    <div>
+      <button
+        className={cn(
+          `mt-8 text-ts3B pointer-events-none
+           mobile:pointer-events-auto mobile:mt-0 mobile:text-ts2 mobile:transition-colors`,
+          {
+            'mobile:text-grey': isOpen,
+          }
+        )}
+        onClick={toggleOpen}
+      >
+        {t('description')}
+        <span
+          className={cn(
+            'hidden mobile:inline-block transition-opacity',
+            styles.arrow,
+            { 'opacity-0': isOpen }
+          )}
+        >
+          <Arrow />
+        </span>
+      </button>
+      <div
+        className={cn(
+          'overflow-hidden hidden mobile:block',
+          styles.description
+        )}
+        style={{ height: isOpen ? height : 0 }}
+      >
+        <div ref={ref}>
+          <div
+            className="pt-3 text-ts3"
+            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+          />
+        </div>
+      </div>
+      <div
+        className="text-ts3 mobile:hidden"
+        dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+      />
+    </div>
+  )
+}
+
 const ProductInfo = ({
   title,
   variants,
@@ -98,15 +151,20 @@ const ProductInfo = ({
   }, [])
   const variantsExist = hasVariants(variants)
   return (
-    <div className="pt-2 border-t-2 border-white border-solid ">
-      <div className="text-ts2">{title}</div>
+    <div className="pt-2 border-t-2 border-white border-solid mobile:border-t-1 ">
+      <div
+        className="text-ts2"
+        dangerouslySetInnerHTML={{ __html: title.replace(' — ', '<br/>') }}
+      />
       <div className="text-ts2">{priceString}</div>
       {t && (
         <div>
           {variantsExist && (
             <div>
-              <div className="mt-3 text-ts1B">{t('selectSize')}</div>
-              <div className="mt-1 space-x-4">
+              <div className="mt-3 text-ts1B mobile:hidden">
+                {t('selectSize')}
+              </div>
+              <div className="mt-1 space-x-4 mobile:mt-0">
                 {variants.map((variant, variantIndex) => (
                   <button
                     key={variantIndex}
@@ -129,11 +187,7 @@ const ProductInfo = ({
               </div>
             </div>
           )}
-          <div className="mt-8 text-ts3B">{t('description')}</div>
-          <div
-            className="text-ts3"
-            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-          />
+          <ProductDescription t={t} descriptionHtml={descriptionHtml} />
         </div>
       )}
     </div>
@@ -152,7 +206,7 @@ const ProductButtons = ({
     return tr
   }, [])
   return (
-    <div className="pt-2 border-t-2 border-white border-solid">
+    <div className="pt-2 border-t-2 border-white border-solid mobile:border-t-1 mobile:my-6">
       {t && (
         <div>
           <button
@@ -172,7 +226,14 @@ const ProductButtons = ({
   )
 }
 
-const Product = ({ commonData, product }) => {
+const Product = ({ commonData, product, products }) => {
+  const otherProducts = useMemo(
+    () => products.filter((p) => p.en.id !== product.en.id),
+    [products, product]
+  )
+  const breakpoint = useBreakpoint()
+  const isMobile = breakpoint === 'MOBILE'
+  const { lang } = useTranslation('common')
   const { en, fr } = product
   const productId = en.id
   const isComingSoon = en.tags.indexOf('comingsoon') !== -1
@@ -210,10 +271,12 @@ const Product = ({ commonData, product }) => {
     setSelectedVariantId(variantsExist ? null : en.variants[0].id)
   }, [cart, setCart, product, selectedVariantId])
 
+  const { t } = useTranslation('common')
+
   return (
     <Layout {...commonData}>
-      <div className="mt-22 my-grid mobile:mt-0">
-        <div className="w-4/8">
+      <div className="mt-22 my-grid mobile:mt-13">
+        <div className="w-4/8 mobile:w-full mobile:order-3">
           {en.images.length > 1 ? (
             <Slider>
               {en.images.map((image, imageIndex) => (
@@ -230,7 +293,7 @@ const Product = ({ commonData, product }) => {
             </div>
           )}
         </div>
-        <div className="w-2/8">
+        <div className={cn('w-2/8 mobile:w-full mobile:order-1', enOnly(lang))}>
           <ProductInfo
             locale="en"
             selectedVariantId={selectedVariantId}
@@ -238,7 +301,7 @@ const Product = ({ commonData, product }) => {
             {...en}
           />
         </div>
-        <div className="w-2/8">
+        <div className={cn('w-2/8 mobile:w-full mobile:order-1', frOnly(lang))}>
           <ProductInfo
             locale="fr"
             selectedVariantId={selectedVariantId}
@@ -246,10 +309,10 @@ const Product = ({ commonData, product }) => {
             {...fr}
           />
         </div>
-        <div className="fixed bottom-0 left-0 w-screen px-1">
+        <div className="fixed bottom-0 left-0 w-screen px-1 mobile:static mobile:w-full mobile:px-0 mobile:order-2">
           <div className="my-grid">
-            <div className="w-4/8" />
-            <div className="w-2/8">
+            <div className="w-4/8 mobile:hidden" />
+            <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
               <ProductButtons
                 addVariantToCart={addVariantToCart}
                 disabled={selectedVariantId === null}
@@ -258,7 +321,7 @@ const Product = ({ commonData, product }) => {
                 isComingSoon={isComingSoon}
               />
             </div>
-            <div className="w-2/8">
+            <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
               <ProductButtons
                 addVariantToCart={addVariantToCart}
                 disabled={selectedVariantId === null}
@@ -268,6 +331,16 @@ const Product = ({ commonData, product }) => {
               />
             </div>
           </div>
+        </div>
+      </div>
+      <div className="hidden pt-1 mt-2 border-white border-solid mobile:block border-t-1">
+        <div className="text-ts3B">{t('otherItems')}</div>
+        <div className="mt-12 my-grid">
+          {otherProducts.map((p, productIndex) => (
+            <div key={productIndex} className="w-4/8">
+              <ProductCard {...p} isMobile={isMobile} />
+            </div>
+          ))}
         </div>
       </div>
     </Layout>

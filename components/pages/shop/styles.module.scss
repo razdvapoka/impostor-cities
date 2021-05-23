@@ -22,3 +22,13 @@
   background-image: url(/images/slider-arrow.svg);
   pointer-events: none;
 }
+
+.arrow {
+  width: 25px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.description {
+  transition: height 0.2s ease;
+}
