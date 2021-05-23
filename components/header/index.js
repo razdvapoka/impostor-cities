@@ -25,13 +25,14 @@ import {
 
 const INFO_TRANSITION_DELAY = 1000
 
-const CartButton = ({ t, cartItemCount, closeMenu }) => {
+const CartButton = ({ t, cartItemCount, closeMenu, isCart }) => {
   return (
     <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
       <a
         className={cn(
           'flex text-green hover:text-white transition-colors',
-          styles.cartBox
+          styles.cartBox,
+          { 'pointer-events-none cursor-default': isCart }
         )}
       >
         {cartItemCount > 0 && (
@@ -39,8 +40,9 @@ const CartButton = ({ t, cartItemCount, closeMenu }) => {
         )}
         <span
           className={cn(
-            'block ml-2 mr-1 mobile:mr-0 rounded-full bg-green transition-colors',
-            styles.cartButton
+            'block ml-2 mr-1 mobile:mr-0 rounded-full transition-colors',
+            styles.cartButton,
+            isCart ? 'bg-black border-2 border-solid border-green' : 'bg-green'
           )}
           onClick={closeMenu}
         />
@@ -133,6 +135,7 @@ const HeaderMain = ({
             t={t}
             cartItemCount={cartItemCount}
             closeMenu={closeMenu}
+            isCart={isCart}
           />
         </div>
       </div>
