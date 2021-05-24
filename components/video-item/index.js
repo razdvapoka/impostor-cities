@@ -55,7 +55,6 @@ const VideoItem = ({
       onEnded={handleEnded}
     />
   )
-  console.log(state)
 
   useEffect(() => {
     if (ref && ref.current) {
