@@ -180,7 +180,7 @@
 .aboutSection {
   @include mediaQuery(mobile) {
     & > * + * {
-      margin-top: 16px !important;
+      margin-top: 20px !important;
     }
   }
 }
