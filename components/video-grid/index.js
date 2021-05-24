@@ -7,6 +7,9 @@ import { insertAt } from '@/lib/utils'
 import { useBreakpoint } from '@/lib/hooks'
 import styles from './styles.module.scss'
 
+const VIDEO_COUNT = 9
+const VIDEO_COUNT_MOBILE = 6
+
 const BLOCK_INDICIES = [
   [0, 1, 3, 4],
   [1, 2, 4, 5],
@@ -100,7 +103,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     setCurrentVideos(
       randomVideoItems(
         Object.values(videoMap).filter((video) => !video.isTakeover),
-        isMobile ? 4 : 9
+        isMobile ? VIDEO_COUNT_MOBILE : VIDEO_COUNT
       )
     )
   }, [videoMap, isMobile])
@@ -115,7 +118,8 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           !currentVideos.find((cv) => cv.sys.id === v.sys.id) &&
           // don't choose a takeover if there already is one on the grid
           // or the switch wasn't initiated by click
-          ((!isAlreadyTakenOver && isManual) || !v.isTakeover)
+          // or it's the mobile version
+          ((!isAlreadyTakenOver && !isMobile && isManual) || !v.isTakeover)
       )
       const nextVideo = prevVideo.nextVideoItem
         ? nextVideoCandidates.find(
@@ -174,7 +178,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
         ])
       }
     },
-    [currentVideos, setCurrentVideos, videoMap]
+    [currentVideos, setCurrentVideos, videoMap, isMobile]
   )
 
   // preload takeover videos to synchronize them
@@ -204,35 +208,37 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
 
   return (
     <div className="py-20 my-grid mobile:py-13">
-      {currentVideos.slice(0, isMobile ? 4 : 9).map((video, videoIndex) => (
-        <div className="w-2/6 mb-1 mobile:w-full" key={videoIndex}>
-          <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
-            <CSSTransition
-              key={video.sys.id}
-              timeout={TRANSITION_DURATION}
-              classNames={{ ...styles }}
-            >
-              <div>
-                <VideoItem
-                  key={video.sys.id}
-                  id={video.sys.id}
-                  index={videoIndex}
-                  unmutedVideoIndex={unmutedVideoIndex}
-                  setUnmutedVideoIndex={setUnmutedVideoIndex}
-                  hasUserInteraction={hasUserInteraction}
-                  pageHasFocus={pageHasFocus}
-                  switchToNextVideo={switchToNextVideo}
-                  setTakeover={setTakeover}
-                  syncBlocks={syncBlocks}
-                  setSyncBlock={setSyncBlock}
-                  isMobile={isMobile}
-                  {...video}
-                />
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
-        </div>
-      ))}
+      {currentVideos
+        .slice(0, isMobile ? VIDEO_COUNT_MOBILE : VIDEO_COUNT)
+        .map((video, videoIndex) => (
+          <div className="w-2/6 mb-1 mobile:w-full" key={videoIndex}>
+            <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9">
+              <CSSTransition
+                key={video.sys.id}
+                timeout={TRANSITION_DURATION}
+                classNames={{ ...styles }}
+              >
+                <div>
+                  <VideoItem
+                    key={video.sys.id}
+                    id={video.sys.id}
+                    index={videoIndex}
+                    unmutedVideoIndex={unmutedVideoIndex}
+                    setUnmutedVideoIndex={setUnmutedVideoIndex}
+                    hasUserInteraction={hasUserInteraction}
+                    pageHasFocus={pageHasFocus}
+                    switchToNextVideo={switchToNextVideo}
+                    setTakeover={setTakeover}
+                    syncBlocks={syncBlocks}
+                    setSyncBlock={setSyncBlock}
+                    isMobile={isMobile}
+                    {...video}
+                  />
+                </div>
+              </CSSTransition>
+            </TransitionGroup>
+          </div>
+        ))}
     </div>
   )
 }

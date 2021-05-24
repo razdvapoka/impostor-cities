@@ -25,24 +25,26 @@ import {
 
 const INFO_TRANSITION_DELAY = 1000
 
-const CartButton = ({ t, cartItemCount, closeMenu }) => {
+const CartButton = ({ t, cartItemCount, isCart }) => {
   return (
     <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
       <a
         className={cn(
           'flex text-green hover:text-white transition-colors',
-          styles.cartBox
+          styles.cartBox,
+          { 'pointer-events-none cursor-default': isCart }
         )}
+        onClick={(e) => e.stopPropagation()}
       >
         {cartItemCount > 0 && (
           <span className="text-ts1B">{`| ${cartItemCount} |`}</span>
         )}
         <span
           className={cn(
-            'block ml-2 mr-1 mobile:mr-0 rounded-full bg-green transition-colors',
-            styles.cartButton
+            'block ml-2 mr-1 mobile:mr-0 rounded-full transition-colors',
+            styles.cartButton,
+            isCart ? 'bg-black border-2 border-solid border-green' : 'bg-green'
           )}
-          onClick={closeMenu}
         />
       </a>
     </Link>
@@ -64,7 +66,6 @@ const getCartItemCount = (cart) => {
 const HeaderMain = ({
   isOpen,
   isCart,
-  isShop,
   isThreeColumnHeader,
   openMenu,
   closeMenu,
@@ -98,8 +99,8 @@ const HeaderMain = ({
         <Link href="/">
           <a
             className={cn('block ml-1', styles.logo, {
-              [styles.logoOpen]: isOpen || isCart || isShop,
-              'pointer-events-none': isOpen || isCart || isShop,
+              [styles.logoOpen]: isOpen || isCart,
+              'pointer-events-none': isOpen || isCart,
             })}
             onClick={(e) => e.stopPropagation()}
           />
@@ -134,6 +135,7 @@ const HeaderMain = ({
             t={t}
             cartItemCount={cartItemCount}
             closeMenu={closeMenu}
+            isCart={isCart}
           />
         </div>
       </div>
@@ -182,7 +184,7 @@ const ProjectItem = ({ closeMenu }) => {
   )
 }
 
-const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
+const NavItem = ({ item, route, isCart, lang, closeMenu }) => {
   const { value: t } = useAsync(async () => {
     const tr = await getT(lang, 'common')
     return tr
@@ -201,11 +203,7 @@ const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
             'text-grey': isActive,
             'mobile:hidden': isProjectItem,
           })}
-          onClick={() => {
-            if (isOpen && !isShopItem) {
-              closeMenu()
-            }
-          }}
+          onClick={closeMenu}
         >
           {item.title}
         </a>
@@ -218,12 +216,12 @@ const NavItem = ({ item, route, isCart, isOpen, lang, closeMenu }) => {
   )
 }
 
-const Nav = ({ lang, isOpen, isCart, isShop, route, closeMenu }) => {
+const Nav = ({ lang, isOpen, isCart, route, closeMenu }) => {
   const items = NAV_ITEMS[lang]
   return (
     <nav
       className={cn(styles.nav, {
-        [styles.navOpen]: isOpen || isCart || isShop,
+        [styles.navOpen]: isOpen || isCart,
       })}
     >
       <ul className="mobile:space-y-7">
@@ -231,9 +229,7 @@ const Nav = ({ lang, isOpen, isCart, isShop, route, closeMenu }) => {
           <NavItem
             key={item.href}
             item={item}
-            isOpen={isOpen}
             isCart={isCart}
-            isShop={isShop}
             route={route}
             lang={lang}
             closeMenu={closeMenu}
@@ -326,7 +322,6 @@ const HeaderNavColumn = ({
   className,
   isOpen,
   isCart,
-  isShop,
   closeMenu,
   route,
   isThreeColumnHeader,
@@ -344,7 +339,6 @@ const HeaderNavColumn = ({
         isOpen={isOpen}
         route={route}
         isCart={isCart}
-        isShop={isShop}
         closeMenu={closeMenu}
       />
       <NavBottom closeMenu={closeMenu} />
@@ -368,7 +362,6 @@ const HeaderNavHomeColumn = ({ closeMenu, isThreeColumnHeader }) => {
 
 const HeaderNav = ({
   isOpen,
-  isShop,
   route,
   isCart,
   isThreeColumnHeader,
@@ -388,7 +381,6 @@ const HeaderNav = ({
           className={enOnly(lang)}
           isOpen={isOpen}
           isCart={isCart}
-          isShop={isShop}
           route={route}
           isThreeColumnHeader={isThreeColumnHeader}
           closeMenu={closeMenu}
@@ -398,7 +390,6 @@ const HeaderNav = ({
           className={frOnly(lang)}
           isOpen={isOpen}
           isCart={isCart}
-          isShop={isShop}
           route={route}
           isThreeColumnHeader={isThreeColumnHeader}
           closeMenu={closeMenu}
@@ -410,7 +401,7 @@ const HeaderNav = ({
             'mobile:hidden'
           )}
         >
-          <SocialMediaLinks isOpen={isOpen || isCart || isShop} />
+          <SocialMediaLinks isOpen={isOpen || isCart} />
         </div>
       </div>
     </div>
@@ -435,8 +426,7 @@ const Lift = ({ isUp, children }) => {
   )
 }
 
-const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
-  const isOpen = isReallyOpen || isShop
+const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
   const delay = isOpen ? INFO_TRANSITION_DELAY : 0
   return (
     <div className={cn('pb-1 my-grid flex-1', styles.headerInfoContent)}>
@@ -472,7 +462,6 @@ const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
               Canada’s Official <br />
               Representation
             </TextReveal>
-            {isShop && <div className="mt-30 text-ts2">Coming soon</div>}
           </div>
         </Lift>
         <div className="mt-auto text-ts3">
@@ -501,7 +490,6 @@ const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
               Représentation <br />
               officielle du Canada
             </TextReveal>
-            {isShop && <div className="mt-30 text-ts2">À venir</div>}
           </div>
         </Lift>
         <div className="mt-auto text-ts1">
@@ -566,7 +554,7 @@ const HeaderInfo = ({ isOpen: isReallyOpen, isShop, isThreeColumnHeader }) => {
   )
 }
 
-const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
+const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
   const [isOpen, setIsOpen] = useState(isOpenByDefault)
   const openMenu = useCallback(() => {
     setIsOpen(true)
@@ -583,19 +571,19 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
   const isCart = CART_ROUTES.indexOf(route) !== -1
   const menuHeight = isCart
     ? navHeight + BOTTOM_BORDER_WIDTH
-    : isOpen || isShop
+    : isOpen
     ? 'calc(100vh - 54px)'
     : 0
 
   useEffect(() => {
     if (ref.current) {
-      if (isOpen || isShop) {
+      if (isOpen) {
         disableBodyScroll(ref.current)
       } else {
         enableBodyScroll(ref.current)
       }
     }
-  }, [isOpen, isShop])
+  }, [isOpen])
 
   useUnmount(clearAllBodyScrollLocks)
 
@@ -611,14 +599,12 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         bg-black
         z-30
       `,
-        styles.header,
-        { [styles.disableTransitions]: isShop }
+        styles.header
       )}
     >
       <HeaderMain
         isOpen={isOpen}
         isCart={isCart}
-        isShop={isShop}
         isThreeColumnHeader={isThreeColumnHeader}
         openMenu={openMenu}
         closeMenu={closeMenu}
@@ -644,7 +630,6 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
             route={route}
             isOpen={isOpen}
             isCart={isCart}
-            isShop={isShop}
             isThreeColumnHeader={isThreeColumnHeader}
             closeMenu={closeMenu}
           />
@@ -652,7 +637,6 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader, isShop }) => {
         <div className="flex flex-col flex-1 mobile:hidden">
           <HeaderInfo
             isOpen={isOpen}
-            isShop={isShop}
             isThreeColumnHeader={isThreeColumnHeader}
           />
         </div>

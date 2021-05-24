@@ -73,17 +73,24 @@ const SectionHeader = ({
 
 const AboutSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div className="space-y-20 mobile:space-y-3 mb-30 mobile:mb-19 mobile:mt-11">
+    <div
+      className={cn(
+        'space-y-20 mb-30 mobile:mb-19 mobile:mt-11',
+        styles.aboutSection
+      )}
+    >
       {items.map((item, itemIndex) => (
         <div key={itemIndex} className="my-grid">
           <div className="w-2/8 mobile:hidden" />
           <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
-            <div className={cn({ 'pr-5 mobile:p3-3': itemIndex !== 0 })}>
-              <Markdown locale="en-US">{item.textEn}</Markdown>
+            <div className={cn('pr-5 mobile:pr-3')}>
+              <Markdown locale="en-US" disableTypograph={itemIndex === 0}>
+                {item.textEn}
+              </Markdown>
             </div>
           </div>
           <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
-            <div className={cn({ 'pr-5 mobile:pr-3': itemIndex !== 0 })}>
+            <div className={cn('pr-5 mobile:pr-3')}>
               <Markdown locale="fr">{item.textFr}</Markdown>
             </div>
           </div>

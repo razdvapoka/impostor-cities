@@ -49,7 +49,7 @@ const VideoItem = ({
       className="object-contain object-center"
       src={vimeoUrl}
       poster={vimeoPosterUrl}
-      autoPlay={!isTakeover}
+      autoPlay={!isTakeover && !isMobile}
       playsInline
       muted={isMuted}
       onEnded={handleEnded}
@@ -72,14 +72,18 @@ const VideoItem = ({
     }
   }, [ref])
 
-  const handleClick = useCallback(() => {
-    if (stopOnHover) {
-      if (state.paused) {
+  useEffect(() => {
+    if (isMobile) {
+      if (index === unmutedVideoIndex && state.paused) {
         controls.play()
-      } else {
+      } else if (index !== unmutedVideoIndex && !state.paused) {
         controls.pause()
       }
-    } else if (index === unmutedVideoIndex) {
+    }
+  }, [unmutedVideoIndex, index, isMobile, state, controls])
+
+  const handleClick = useCallback(() => {
+    if (index === unmutedVideoIndex) {
       setUnmutedVideoIndex(null)
     } else {
       setUnmutedVideoIndex(index)
@@ -150,6 +154,7 @@ const VideoItem = ({
         switchToNext={switchToNext}
         blockCount={blockCount}
         isMobile={isMobile}
+        isPlaying={!state.paused}
       />
     </div>
   )

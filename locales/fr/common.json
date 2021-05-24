@@ -1,12 +1,12 @@
 {
   "selectSize": "Sélectionnez une taille",
   "description": "Déscription",
-  "addToCart": "Ajouter au panier",
-  "goToCart": "Passé au panier",
+  "addToCart": "Ajouter au Panier",
+  "goToCart": "Passé au Panier",
   "cart": "panier",
   "cartUC": "Panier",
   "shop": "boutique",
-  "comingSoon": "Disponible  bientôt",
+  "comingSoon": "Disponible bientôt",
   "soldOut": "Vendu",
   "en": "English",
   "fr": "French",
@@ -15,5 +15,7 @@
   "team": "Équipe",
   "sponsors": "Commanditaires",
   "contact": "Nous Joindre",
-  "project": "Projet"
+  "project": "Projet",
+  "otherItems": "Autres articles",
+  "checkout": "Passer à la caisse"
 }

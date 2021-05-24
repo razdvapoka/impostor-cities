@@ -1,15 +1,23 @@
 import { Product } from '@/components'
-import { getProductByHandle, getProductHandles } from '@/lib/shopify'
+import {
+  getProductByHandle,
+  getProductHandles,
+  getProducts,
+} from '@/lib/shopify'
 import { withCommonData } from '@/lib/utils'
 
 export const getStaticProps = async (context) => {
-  const { commonData, data: product } = await withCommonData(
-    getProductByHandle
+  const {
+    commonData,
+    data: [product, products],
+  } = await withCommonData((c) =>
+    Promise.all([getProductByHandle(c), getProducts(c)])
   )(context)
   return {
     props: {
       commonData,
       product,
+      products,
     },
   }
 }
@@ -26,8 +34,10 @@ export const getStaticPaths = async ({ locales }) => {
   }
 }
 
-const ProductPage = ({ commonData, product }) => {
-  return <Product commonData={commonData} product={product} />
+const ProductPage = ({ commonData, product, products }) => {
+  return (
+    <Product commonData={commonData} product={product} products={products} />
+  )
 }
 
 export default ProductPage

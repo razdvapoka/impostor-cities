@@ -1,5 +1,8 @@
 .cart {
   margin-top: 184px;
+  @include mediaQuery(mobile) {
+    margin-top: 52px;
+  }
 }
 
 .leftBorder::before {
@@ -10,11 +13,19 @@
   left: -4px;
   width: 1px;
   background-color: color(grey);
+  @include mediaQuery(mobile) {
+    display: none;
+  }
 }
 
 .deleteButton {
   width: 20px;
   height: 14px;
+}
+
+.deleteMButton {
+  width: 25px;
+  height: 19px;
 }
 
 .incButton,
@@ -26,4 +37,14 @@
 
 .incButton {
   margin-left: -2px;
+}
+
+.incMButton,
+.decMButton {
+  width: 25px;
+  height: 19px;
+}
+
+.incMButton {
+  margin-left: -1px;
 }
