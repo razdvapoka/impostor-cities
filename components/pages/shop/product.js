@@ -144,7 +144,7 @@ const ProductInfo = ({
   setSelectedVariantId,
 }) => {
   const { price } = variants[0]
-  const priceString = `$${price} CDN`
+  const priceString = `$${parseInt(price)} CDN`
   const { value: t } = useAsync(async () => {
     const tr = await getT(locale, 'common')
     return tr

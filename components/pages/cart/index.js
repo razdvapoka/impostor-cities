@@ -140,7 +140,7 @@ const CartProduct = ({
         {getPriceString(variantEn.price)}
       </div>
       <div className="order-1 hidden mobile:block w-2/8">
-        {`$${variantEn.price}`}
+        {`$${parseInt(variantEn.price)}`}
       </div>
       <div className="w-1/8 mobile:hidden">
         <button

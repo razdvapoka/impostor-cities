@@ -51,7 +51,7 @@ export const ProductCard = ({
 }) => {
   const isComingSoon = tags.indexOf('comingsoon') !== -1
   const { price } = variantsEn[0]
-  const priceString = `$${price} CDN`
+  const priceString = `$${parseInt(price)} CDN`
   const titlesDiffer = titleEn !== titleFr
   const { lang } = useTranslation('common')
   const productHref = `/${lang === 'fr' ? 'boutique' : 'shop'}/${handle}`
@@ -100,12 +100,11 @@ export const ProductCard = ({
 const Shop = ({ commonData, products }) => {
   const breakpoint = useBreakpoint()
   const isMobile = breakpoint === 'MOBILE'
-  const fakeProducts = repeat(products, 5).flat()
   return (
     <Layout {...commonData}>
       <div>
         <div className="mt-22 my-grid mobile:mt-12">
-          {fakeProducts.map((product, productIndex) => (
+          {products.map((product, productIndex) => (
             <div key={productIndex} className="w-2/8 mobile:w-4/8">
               <ProductCard {...product} isMobile={isMobile} />
             </div>
