@@ -25,12 +25,10 @@
 .videoOverlay {
   padding: 6px 6px 4px 6px;
 }
+
 .videoOverlayHidden {
   opacity: 0;
   transition: opacity 0.2s ease;
-  @include mediaQuery(mobile) {
-    opacity: 1;
-  }
   &:hover {
     opacity: 1;
   }
@@ -87,4 +85,9 @@
 
 .forwardButton:hover .forwardIcon {
   opacity: 1;
+}
+
+.playIcon {
+  width: 12px;
+  height: 14px;
 }

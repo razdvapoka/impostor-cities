@@ -3,6 +3,7 @@ import cn from 'classnames'
 import VolumeIcon from '../../assets/icons/volume.svg'
 import CamIcon from '../../assets/icons/cam.svg'
 import ForwardIcon from '../../assets/icons/forward.svg'
+import PlayIcon from '../../assets/icons/play.svg'
 import styles from './styles.module.scss'
 
 const TZ = 'Europe/Rome'
@@ -154,51 +155,65 @@ const Overlay = ({
   videoTime,
   blockCount,
   isMobile,
+  isPlaying,
 }) => {
   const isInBlock = indexInBlock != null
   const isLocation = isInBlock && !isTakeover
   const isTopVideo = isTakeover && indexInBlock < 2
   const isBottomVideo = isLocation || (isTakeover && indexInBlock >= 2)
   return (
-    <div
-      className={cn(
-        'overlay flex flex-col justify-between',
-        styles.videoOverlay,
-        { [styles.videoOverlayHidden]: !isTakeover }
-      )}
-    >
-      {!stopOnHover && (
-        <>
-          <TopLine
-            isLocation={isLocation}
-            videoTime={videoTime}
-            isTakeover={isTakeover}
-            person={person}
+    <>
+      <div
+        className={cn(
+          'overlay flex flex-col justify-between',
+          styles.videoOverlay,
+          {
+            [styles.videoOverlayHidden]: !isTakeover && !isMobile,
+            'opacity-0': isMobile && !isPlaying,
+            'opacity-1': isMobile && isPlaying,
+          }
+        )}
+      >
+        {!stopOnHover && (
+          <>
+            <TopLine
+              isLocation={isLocation}
+              videoTime={videoTime}
+              isTakeover={isTakeover}
+              person={person}
+              isTopVideo={isTopVideo}
+              indexInBlock={indexInBlock}
+            />
+            <BottomLine
+              isBottomVideo={isBottomVideo}
+              isLocation={isLocation}
+              isTakeover={isTakeover}
+              indexInBlock={indexInBlock}
+              blockCount={blockCount}
+              captionEn={captionEn}
+              captionFr={captionFr}
+              isInBlock={isInBlock}
+              isMobile={isMobile}
+            />
+            <Volume isTopVideo={isTopVideo} isBottomVideo={isBottomVideo} />
+          </>
+        )}
+        {(!isTakeover || isMobile) && (
+          <ForwardButton
             isTopVideo={isTopVideo}
-            indexInBlock={indexInBlock}
-          />
-          <BottomLine
             isBottomVideo={isBottomVideo}
-            isLocation={isLocation}
-            isTakeover={isTakeover}
-            indexInBlock={indexInBlock}
-            blockCount={blockCount}
-            captionEn={captionEn}
-            captionFr={captionFr}
-            isInBlock={isInBlock}
-            isMobile={isMobile}
+            switchToNext={switchToNext}
           />
-          <Volume isTopVideo={isTopVideo} isBottomVideo={isBottomVideo} />
-        </>
+        )}
+      </div>
+      {isMobile && !isPlaying && (
+        <button className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+          <div className={styles.playIcon}>
+            <PlayIcon />
+          </div>
+        </button>
       )}
-      {(!isTakeover || isMobile) && (
-        <ForwardButton
-          isTopVideo={isTopVideo}
-          isBottomVideo={isBottomVideo}
-          switchToNext={switchToNext}
-        />
-      )}
-    </div>
+    </>
   )
 }
 
