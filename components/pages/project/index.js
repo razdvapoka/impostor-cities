@@ -84,7 +84,9 @@ const AboutSection = ({ itemsCollection: { items }, lang }) => {
           <div className="w-2/8 mobile:hidden" />
           <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
             <div className={cn('pr-5 mobile:pr-3')}>
-              <Markdown locale="en-US">{item.textEn}</Markdown>
+              <Markdown locale="en-US" disableTypograph={itemIndex === 0}>
+                {item.textEn}
+              </Markdown>
             </div>
           </div>
           <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
