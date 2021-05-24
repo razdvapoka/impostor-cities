@@ -41,12 +41,11 @@ export const HeadphonesAlert = () => {
               <Markdown
                 className="hidden text-ts2 mobile:block"
                 locale="en-US"
+                disableTypograph
                 override
               >
-                {`This site is best viewed\\
-                on a computer.\\
-                Use headphones for\\
-                the best experience.`}
+                {`This site is best viewed on a computer.\\
+                Use headphones for the best experience.`}
               </Markdown>
               <div>Close</div>
             </div>
@@ -56,10 +55,19 @@ export const HeadphonesAlert = () => {
                 frOnly(lang)
               )}
             >
-              <Markdown className="text-ts2" locale="fr" override>
+              <Markdown className="text-ts2 mobile:hidden" locale="fr" override>
                 {`Ce site est optimisé sur un ordinateur.\\
                 Utiliser les écouteurs
                 pour la meilleure expérience.`}
+              </Markdown>
+              <Markdown
+                className="hidden text-ts2 mobile:block"
+                locale="fr"
+                disableTypograph
+                override
+              >
+                {`Ce site est optimisé sur un ordinateur.\\
+                Utiliser les écouteurs pour la meilleure expérience.`}
               </Markdown>
               <div>Fermer</div>
             </div>
