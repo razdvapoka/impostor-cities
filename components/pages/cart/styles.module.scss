@@ -23,19 +23,28 @@
   height: 14px;
 }
 
+.deleteMButton {
+  width: 25px;
+  height: 19px;
+}
+
 .incButton,
 .decButton {
   width: 18px;
   height: 14px;
   margin-top: -2px;
-  @include mediaQuery(mobile) {
-    stroke-width: 0.5;
-  }
 }
 
 .incButton {
   margin-left: -2px;
-  @include mediaQuery(mobile) {
-    margin-left: -2.5px;
-  }
+}
+
+.incMButton,
+.decMButton {
+  width: 25px;
+  height: 19px;
+}
+
+.incMButton {
+  margin-left: -1px;
 }

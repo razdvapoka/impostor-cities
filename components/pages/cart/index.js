@@ -14,6 +14,9 @@ import cn from 'classnames'
 import DeleteIcon from '../../../assets/icons/delete.svg'
 import IncIcon from '../../../assets/icons/inc.svg'
 import DecIcon from '../../../assets/icons/dec.svg'
+import DeleteMIcon from '../../../assets/icons/delete-m.svg'
+import IncMIcon from '../../../assets/icons/inc-m.svg'
+import DecMIcon from '../../../assets/icons/dec-m.svg'
 
 const getVariants = (product, variantId) => {
   const variantEn = product.en.variants.find((v) => v.id === variantId)
@@ -67,14 +70,34 @@ const CartProduct = ({
   return (
     <div className="my-grid text-ts1B">
       <div className={cn('w-1/8 mobile:w-4/8', enOnly(lang))}>
-        <div>{product.en.title}</div>
-        {colorEn && <div>{colorEn}</div>}
-        {sizeEn && <div>{sizeEn}</div>}
+        <div className="flex justify-between">
+          <div>
+            <div>{product.en.title}</div>
+            {colorEn && <div>{colorEn}</div>}
+            {sizeEn && <div>{sizeEn}</div>}
+          </div>
+          <button
+            className={cn(styles.deleteMButton, 'text-grey mr-2')}
+            onClick={deleteVariant}
+          >
+            <DeleteMIcon />
+          </button>
+        </div>
       </div>
       <div className={cn('w-1/8 mobile:w-4/8', frOnly(lang))}>
-        {product.fr.title}
-        {colorFr && <div>{colorFr}</div>}
-        {sizeFr && <div>{sizeFr}</div>}
+        <div className="flex justify-between">
+          <div>
+            <div>{product.fr.title}</div>
+            {colorFr && <div>{colorFr}</div>}
+            {sizeFr && <div>{sizeFr}</div>}
+          </div>
+          <button
+            className={cn(styles.deleteButton, 'text-grey')}
+            onClick={deleteVariant}
+          >
+            <DeleteIcon />
+          </button>
+        </div>
       </div>
       <div className={cn('w-1/16 mobile:hidden')}>{colorEn || '—'}</div>
       <div className={cn('w-1/8 mobile:hidden')}>{colorFr || '—'}</div>
@@ -83,7 +106,7 @@ const CartProduct = ({
       <div className="w-1/8 mobile:order-2 mobile:w-2/8">
         <div className="flex mobile:justify-between">
           <div>{count}</div>
-          <div className="ml-3">
+          <div className="ml-3 mobile:hidden">
             <button
               className={cn(styles.decButton, 'text-grey')}
               onClick={decreaseNumber}
@@ -95,6 +118,20 @@ const CartProduct = ({
               onClick={increaseNumber}
             >
               <IncIcon />
+            </button>
+          </div>
+          <div className="hidden ml-3 mobile:flex">
+            <button
+              className={cn(styles.decMButton, 'text-grey')}
+              onClick={decreaseNumber}
+            >
+              <DecMIcon />
+            </button>
+            <button
+              className={cn(styles.incMButton, 'text-grey')}
+              onClick={increaseNumber}
+            >
+              <IncMIcon />
             </button>
           </div>
         </div>
@@ -146,7 +183,7 @@ const Checkout = ({ handleCheckout }) => {
   const { t, lang } = useTranslation('common')
   return (
     <>
-      <div className="pt-2 my-grid mobile:text-grey mobile:border-b-1 mobile:border-white mobile:pb-1">
+      <div className="pt-2 my-grid mobile:text-grey mobile:pb-1">
         <div className="w-4/8" />
         <div className={cn('w-2/8 mobile:w-4/8', enOnly(lang))}>
           <div className="text-ts1B">
@@ -175,10 +212,10 @@ const Checkout = ({ handleCheckout }) => {
           </button>
         </div>
       </div>
-      <div className="hidden mobile:block">
+      <div className="hidden mobile:block mobile:border-t-1 mobile:border-white ">
         <div className="pt-2 my-grid">
           <div className="w-4/8">
-            <button className="text-tsC text-left" onClick={handleCheckout}>
+            <button className="text-left text-tsC" onClick={handleCheckout}>
               {t('checkout')}
             </button>
           </div>
