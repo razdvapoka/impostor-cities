@@ -41,6 +41,13 @@
   animation-direction: alternate;
 }
 
+.volumeIconBlink {
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+
 .cameraIcon {
   width: 30px;
   height: 17px;
@@ -88,6 +95,18 @@
 }
 
 .playIcon {
-  width: 12px;
+  width: 14px;
   height: 14px;
+}
+
+.playButton {
+  left: 75%;
+  &Top {
+    top: calc(75 / 1440 * 100vw);
+    height: calc(100% - 75 / 1440 * 100vw);
+  }
+  &Bottom {
+    bottom: calc(75 / 1440 * 100vw);
+    height: calc(100% - 75 / 1440 * 100vw);
+  }
 }

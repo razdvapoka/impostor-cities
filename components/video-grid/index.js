@@ -102,7 +102,9 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   useEffect(() => {
     setCurrentVideos(
       randomVideoItems(
-        Object.values(videoMap).filter((video) => !video.isTakeover),
+        Object.values(videoMap).filter(
+          (video) => !video.isTakeover && (!isMobile || !video.stopOnHover)
+        ),
         isMobile ? VIDEO_COUNT_MOBILE : VIDEO_COUNT
       )
     )
@@ -119,7 +121,9 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           // don't choose a takeover if there already is one on the grid
           // or the switch wasn't initiated by click
           // or it's the mobile version
-          ((!isAlreadyTakenOver && !isMobile && isManual) || !v.isTakeover)
+          ((!isAlreadyTakenOver && !isMobile && isManual) || !v.isTakeover) &&
+          // don't choose typographic videos on mobile
+          (!isMobile || !v.stopOnHover)
       )
       const nextVideo = prevVideo.nextVideoItem
         ? nextVideoCandidates.find(

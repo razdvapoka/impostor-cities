@@ -20,12 +20,13 @@ const formatVideoTime = (s) => {
   return `00:${hoursStr}:${minutesStr}:${secondsStr}`
 }
 
-const Volume = ({ isTopVideo, isBottomVideo }) => {
+const Volume = ({ isTopVideo, isBottomVideo, isMobile, isPlaying }) => {
   return (
     <div
       className={cn('absolute', styles.volumeIcon, {
         [styles.volumeIconTop]: isTopVideo,
         [styles.volumeIconBottom]: isBottomVideo,
+        [styles.volumeIconBlink]: isMobile && isPlaying,
       })}
     >
       <VolumeIcon />
@@ -62,7 +63,10 @@ const ForwardButton = ({ isTopVideo, isBottomVideo, switchToNext }) => {
           [styles.forwardButtonBottom]: isBottomVideo,
         }
       )}
-      onClick={() => switchToNext(true)}
+      onClick={(e) => {
+        e.stopPropagation()
+        switchToNext(true)
+      }}
     >
       <div className={cn(styles.forwardIcon)}>
         <ForwardIcon />
@@ -195,7 +199,12 @@ const Overlay = ({
               isInBlock={isInBlock}
               isMobile={isMobile}
             />
-            <Volume isTopVideo={isTopVideo} isBottomVideo={isBottomVideo} />
+            <Volume
+              isTopVideo={isTopVideo}
+              isBottomVideo={isBottomVideo}
+              isMobile={isMobile}
+              isPlaying={isPlaying}
+            />
           </>
         )}
         {(!isTakeover || isMobile) && (
@@ -207,11 +216,22 @@ const Overlay = ({
         )}
       </div>
       {isMobile && !isPlaying && (
-        <button className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-          <div className={styles.playIcon}>
-            <PlayIcon />
-          </div>
-        </button>
+        <div className={cn('overlay', styles.videoOverlay)}>
+          <button
+            className={cn(
+              'absolute w-2/8 h-full flex items-center justify-end pr-2',
+              styles.playButton,
+              {
+                [styles.playButtonTop]: isTopVideo,
+                [styles.playButtonBottom]: isBottomVideo,
+              }
+            )}
+          >
+            <div className={styles.playIcon}>
+              <PlayIcon />
+            </div>
+          </button>
+        </div>
       )}
     </>
   )
