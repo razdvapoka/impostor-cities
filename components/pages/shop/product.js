@@ -281,9 +281,13 @@ const Product = ({ commonData, product, products }) => {
             <Slider>
               {en.images.map((image, imageIndex) => (
                 <div key={imageIndex} className="embla__slide">
-                  <div className="aspect-w-1 aspect-h-1">
-                    <Image layout="fill" src={image.src} />
-                  </div>
+                  <Image
+                    layout="responsive"
+                    width={600}
+                    height={600}
+                    sizes="(max-width: 750px) 100vw, 50vw"
+                    src={image.src}
+                  />
                 </div>
               ))}
             </Slider>

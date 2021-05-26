@@ -63,9 +63,13 @@ export const ProductCard = ({
   return (
     <Link href={productHref}>
       <a className="block mb-9 hover:text-grey transition-colors">
-        <div className="aspect-w-1 aspect-h-1">
-          <Image layout="fill" src={images[0].src} />
-        </div>
+        <Image
+          layout="responsive"
+          width={355}
+          height={355}
+          sizes="(max-width: 750px) 50vw, 25vw"
+          src={images[0].src}
+        />
         <div className="flex pt-1 space-x-10 mobile:space-x-0 text-ts1B">
           <div className={cn(enOnly(lang))}>
             <ProductInfo
