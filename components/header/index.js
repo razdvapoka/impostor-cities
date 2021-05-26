@@ -167,18 +167,20 @@ const ProjectItem = ({ closeMenu }) => {
           height: isOpen ? height : 0,
         }}
       >
-        <ul className="text-altGrey" ref={ref}>
-          {PROJECT_ITEM_SECTIONS.map((section) => (
-            <li key={section}>
-              <Link
-                href={`${lang === 'en' ? '/project' : '/projet'}#${section}`}
-                locale={lang}
-              >
-                <a onClick={closeMenu}>{t(section)}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div ref={ref}>
+          <ul className="pt-2 text-altGrey">
+            {PROJECT_ITEM_SECTIONS.map((section) => (
+              <li key={section} className="">
+                <Link
+                  href={`${lang === 'en' ? '/project' : '/projet'}#${section}`}
+                  locale={lang}
+                >
+                  <a onClick={closeMenu}>{t(section)}</a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   )
