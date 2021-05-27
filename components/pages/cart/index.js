@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation'
-import { useEffect, useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useAsync } from 'react-use'
 import { Layout } from '@/components'
 import { useCart } from '@/contexts/cart'

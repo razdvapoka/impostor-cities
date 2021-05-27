@@ -169,8 +169,8 @@ const ProductInfo = ({
                   <button
                     key={variantIndex}
                     className={cn(
+                      styles.sizeOption,
                       `text-ts2
-                       disabled:pointer-events-none disabled:line-through
                        hover:text-grey transition-colors`,
                       { 'text-grey': variant.id === selectedVariantId }
                     )}

@@ -32,3 +32,8 @@
 .description {
   transition: height 0.2s ease;
 }
+
+.sizeOption:disabled {
+  pointer-events: none;
+  opacity: 0;
+}

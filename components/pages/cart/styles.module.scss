@@ -12,7 +12,7 @@
   height: 100%;
   left: -4px;
   width: 1px;
-  background-color: color(grey);
+  background-color: color(white);
   @include mediaQuery(mobile) {
     display: none;
   }

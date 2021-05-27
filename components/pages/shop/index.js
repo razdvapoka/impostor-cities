@@ -33,7 +33,7 @@ const ProductInfo = ({
           {variants.map((variant, variantIndex) => (
             <span
               key={variantIndex}
-              className={cn({ 'line-through': !variant.available })}
+              className={cn({ 'opacity-0': !variant.available })}
             >
               {getSizeOption(variant).value}
             </span>
