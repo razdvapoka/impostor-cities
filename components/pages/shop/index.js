@@ -5,13 +5,14 @@ import { useAsync } from 'react-use'
 import { Layout } from '@/components'
 import Image from 'next/image'
 import Link from 'next/link'
-import { repeat, getSizeOption, hasVariants, enOnly, frOnly } from '@/lib/utils'
+import { getSizeOption, hasVariants, enOnly, frOnly } from '@/lib/utils'
 import cn from 'classnames'
 
 const ProductInfo = ({
   title,
   price,
   variants,
+  variantsExist,
   isAvailable,
   isComingSoon,
   lang,
@@ -27,7 +28,7 @@ const ProductInfo = ({
       />
       <div>{price}</div>
       {isComingSoon && t && <div>{t('comingSoon')}</div>}
-      {!isComingSoon && isAvailable && (
+      {!isComingSoon && isAvailable && variantsExist && (
         <div className="flex space-x-2">
           {variants.map((variant, variantIndex) => (
             <span

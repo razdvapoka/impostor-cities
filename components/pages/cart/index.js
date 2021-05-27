@@ -73,11 +73,14 @@ const CartProduct = ({
         <div className="flex justify-between">
           <div>
             <div>{product.en.title}</div>
-            {colorEn && <div>{colorEn}</div>}
-            {sizeEn && <div>{sizeEn}</div>}
+            {colorEn && <div className="hidden mobile:block">{colorEn}</div>}
+            {sizeEn && <div className="hidden mobile:block">{sizeEn}</div>}
           </div>
           <button
-            className={cn(styles.deleteMButton, 'text-grey mr-2')}
+            className={cn(
+              styles.deleteMButton,
+              'text-grey mr-2 hidden mobile:block'
+            )}
             onClick={deleteVariant}
           >
             <DeleteMIcon />
@@ -88,14 +91,17 @@ const CartProduct = ({
         <div className="flex justify-between">
           <div>
             <div>{product.fr.title}</div>
-            {colorFr && <div>{colorFr}</div>}
-            {sizeFr && <div>{sizeFr}</div>}
+            {colorFr && <div className="hidden mobile:block">{colorFr}</div>}
+            {sizeFr && <div className="hidden mobile:block">{sizeFr}</div>}
           </div>
           <button
-            className={cn(styles.deleteButton, 'text-grey')}
+            className={cn(
+              styles.deleteMButton,
+              'text-grey mr-2 hidden mobile:block'
+            )}
             onClick={deleteVariant}
           >
-            <DeleteIcon />
+            <DeleteMIcon />
           </button>
         </div>
       </div>

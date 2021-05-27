@@ -240,7 +240,7 @@ const Product = ({ commonData, product, products }) => {
   const variantsExist = hasVariants(en.variants)
   const isAvailable = variantsExist
     ? en.variants.some((v) => v.available)
-    : en.variants.available
+    : en.variants[0].available
   const [selectedVariantId, setSelectedVariantId] = useState(
     variantsExist ? null : en.variants[0].id
   )
