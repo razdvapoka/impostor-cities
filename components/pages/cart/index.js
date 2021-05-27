@@ -72,7 +72,11 @@ const CartProduct = ({
       <div className={cn('w-1/8 mobile:w-4/8', enOnly(lang))}>
         <div className="flex justify-between">
           <div>
-            <div>{product.en.title}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: product.en.title.replace(' — ', '<br/>'),
+              }}
+            />
             {colorEn && <div className="hidden mobile:block">{colorEn}</div>}
             {sizeEn && <div className="hidden mobile:block">{sizeEn}</div>}
           </div>
@@ -90,7 +94,11 @@ const CartProduct = ({
       <div className={cn('w-1/8 mobile:w-4/8', frOnly(lang))}>
         <div className="flex justify-between">
           <div>
-            <div>{product.fr.title}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: product.fr.title.replace(' — ', '<br/>'),
+              }}
+            />
             {colorFr && <div className="hidden mobile:block">{colorFr}</div>}
             {sizeFr && <div className="hidden mobile:block">{sizeFr}</div>}
           </div>
@@ -307,7 +315,7 @@ const Products = ({ cart, setCart, productMap }) => {
         const product = productMap[key]
         const selectedVariants = cart[key]
         return (
-          <div key={key}>
+          <div className="space-y-2" key={key}>
             {selectedVariants.map((variant) => (
               <CartProduct
                 key={variant.variantId}
