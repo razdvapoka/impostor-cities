@@ -1,6 +1,6 @@
-import { useMemo, useState, useRef, useCallback, useEffect } from 'react'
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import useTranslation from 'next-translate/useTranslation'
-import { useUnmount, useMeasure, useAsync } from 'react-use'
+import { useMeasure, useAsync } from 'react-use'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
 import cn from 'classnames'
@@ -9,11 +9,6 @@ import { useRouter } from 'next/router'
 import { TextReveal, LineReveal, LangSwitcher } from '@/components'
 import getT from 'next-translate/getT'
 import { enOnly, frOnly } from '@/lib/utils'
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks,
-} from 'body-scroll-lock'
 import {
   NAV_ITEMS,
   BOTTOM_BORDER_WIDTH,
@@ -25,14 +20,19 @@ import {
 
 const INFO_TRANSITION_DELAY = 300
 
-const CartButton = ({ t, cartItemCount, isCart }) => {
+const CartButton = ({ t, cartItemCount, isCart, closeMenu }) => {
   return (
     <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
       <a
         className={cn('flex text-green transition-colors', styles.cartBox, {
           'pointer-events-none cursor-default': isCart,
         })}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation()
+          if (!(cartItemCount > 0)) {
+            closeMenu()
+          }
+        }}
       >
         {cartItemCount > 0 && (
           <span className="text-ts1B">{`| ${cartItemCount} |`}</span>
@@ -575,17 +575,20 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
     ? 'calc(100vh - 54px)'
     : 0
 
-  useEffect(() => {
-    if (ref.current) {
-      if (isOpen) {
-        disableBodyScroll(ref.current)
-      } else {
-        enableBodyScroll(ref.current)
+  const handleScroll = useCallback(() => {
+    setIsOpen((wasOpen) => {
+      if (wasOpen) {
+        return false
       }
-    }
-  }, [isOpen])
+    })
+  }, [])
 
-  useUnmount(clearAllBodyScrollLocks)
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <header
