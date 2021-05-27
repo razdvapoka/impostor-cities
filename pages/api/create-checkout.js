@@ -8,7 +8,7 @@ const client = Client.buildClient({
 const handler = async ({ body: { lineItems } }, res) => {
   const checkout = await client.checkout.create()
   await client.checkout.addLineItems(checkout.id, lineItems)
-  res.status(200).json({ url: checkout.webUrl })
+  res.status(200).json({ url: checkout.webUrl, id: checkout.id })
 }
 
 export default handler

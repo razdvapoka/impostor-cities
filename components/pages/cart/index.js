@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation'
-import { useCallback, useMemo } from 'react'
+import { useEffect, useCallback, useMemo, useState } from 'react'
+import { useAsync } from 'react-use'
 import { Layout } from '@/components'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
@@ -193,45 +194,62 @@ const Total = ({ total }) => {
   )
 }
 
-const Checkout = ({ handleCheckout }) => {
+const Checkout = ({ isCheckoutAvailable, checkout }) => {
   const { t, lang } = useTranslation('common')
   return (
     <>
       <div className="pt-2 my-grid mobile:text-grey mobile:pb-1">
         <div className="w-4/8" />
         <div className={cn('w-2/8 mobile:w-4/8', enOnly(lang))}>
-          <div className="text-ts1B">
+          <div className="mb-8 text-ts1B">
             Shipping & taxes
             <br />
             calculated at checkout
           </div>
-          <button
-            onClick={handleCheckout}
-            className="mt-8 text-ts2 mobile:hidden"
+          <a
+            href={checkout?.url}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(
+              'text-ts2 mobile:hidden hover:text-grey transition-colors',
+              { 'pointer-events-none': !isCheckoutAvailable }
+            )}
           >
             Checkout
-          </button>
+          </a>
         </div>
         <div className={cn('w-2/8 mobile:w-4/8', frOnly(lang))}>
-          <div className="text-ts1B">
+          <div className="mb-8 text-ts1B">
             Expédition et taxes
             <br />
             calculé à la caisse
           </div>
-          <button
-            onClick={handleCheckout}
-            className="mt-8 text-ts2 mobile:hidden"
+          <a
+            href={checkout?.url}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(
+              'text-ts2 mobile:hidden hover:text-grey transition-colors',
+              { 'pointer-events-none': !isCheckoutAvailable }
+            )}
           >
             Passer à la caisse
-          </button>
+          </a>
         </div>
       </div>
       <div className="hidden mobile:block mobile:border-t-1 mobile:border-white ">
         <div className="pt-2 my-grid">
           <div className="w-4/8">
-            <button className="text-left text-tsC" onClick={handleCheckout}>
+            <a
+              href={checkout?.url}
+              target="_blank"
+              rel="noreferrer"
+              className={cn('text-left text-tsC', {
+                'pointer-events-none': !isCheckoutAvailable,
+              })}
+            >
               {t('checkout')}
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -366,8 +384,8 @@ const getLineItems = (cart) =>
     }))
   )
 
-const checkout = (lineItems) =>
-  fetch('/api/checkout', {
+const createCheckout = (lineItems) =>
+  fetch('/api/create-checkout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -375,15 +393,38 @@ const checkout = (lineItems) =>
     body: JSON.stringify({ lineItems }),
   })
     .then((response) => response.json())
-    .then(({ url }) => {
-      window.open(url, '_blank')
-    })
     .catch((err) => {
       console.log('ERROR', err)
+      return null
     })
+
+const replaceLineItems = (checkoutId, lineItems) =>
+  fetch('/api/replace-checkout-items', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ checkoutId, lineItems }),
+  }).catch((err) => {
+    console.log('ERROR', err)
+  })
 
 const Cart = ({ commonData, products }) => {
   const [cart, setCart] = useCart()
+  const [checkout, setCheckout] = useState(null)
+  const [isCheckoutAvailable, setIsCheckoutAvailable] = useState(false)
+
+  useAsync(async () => {
+    setIsCheckoutAvailable(false)
+    const lineItems = getLineItems(cart)
+    if (checkout) {
+      await replaceLineItems(checkout.id, lineItems)
+    } else {
+      const newCheckout = await createCheckout(lineItems)
+      setCheckout(newCheckout)
+    }
+    setIsCheckoutAvailable(true)
+  }, [checkout, cart])
 
   const productMap = useMemo(() => getProductMap(products), [products])
 
@@ -392,10 +433,6 @@ const Cart = ({ commonData, products }) => {
     productMap,
   ])
 
-  const handleCheckout = useCallback(() => {
-    checkout(getLineItems(cart))
-  }, [cart])
-
   return (
     <Layout {...commonData}>
       <div className={cn('mobile:border-t-1 mobile:border-white', styles.cart)}>
@@ -403,7 +440,10 @@ const Cart = ({ commonData, products }) => {
         <Products cart={cart} setCart={setCart} productMap={productMap} />
         <TotalHeader />
         <Total total={cartTotal} />
-        <Checkout handleCheckout={handleCheckout} />
+        <Checkout
+          isCheckoutAvailable={isCheckoutAvailable && cartTotal > 0}
+          checkout={checkout}
+        />
       </div>
     </Layout>
   )
