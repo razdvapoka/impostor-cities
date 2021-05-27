@@ -23,7 +23,7 @@ import {
   PROJECT_ROUTES,
 } from '@/consts'
 
-const INFO_TRANSITION_DELAY = 1000
+const INFO_TRANSITION_DELAY = 300
 
 const CartButton = ({ t, cartItemCount, isCart }) => {
   return (
