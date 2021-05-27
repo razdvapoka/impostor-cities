@@ -201,7 +201,7 @@ const Checkout = ({ isCheckoutAvailable, checkout }) => {
       <div className="pt-2 my-grid mobile:text-grey mobile:pb-1">
         <div className="w-4/8" />
         <div className={cn('w-2/8 mobile:w-4/8', enOnly(lang))}>
-          <div className="mb-8 text-ts1B">
+          <div className="mb-8 mobile:mb-0 text-ts1B">
             Shipping & taxes
             <br />
             calculated at checkout
@@ -219,7 +219,7 @@ const Checkout = ({ isCheckoutAvailable, checkout }) => {
           </a>
         </div>
         <div className={cn('w-2/8 mobile:w-4/8', frOnly(lang))}>
-          <div className="mb-8 text-ts1B">
+          <div className="mb-8 mobile:mb-0 text-ts1B">
             Expédition et taxes
             <br />
             calculé à la caisse
