@@ -210,7 +210,7 @@ const ProductButtons = ({
       {t && (
         <div>
           <button
-            className="text-ts2 hover:text-grey transition-colors disabled:pointer-events-none"
+            className="text-left text-ts2 hover:text-grey transition-colors disabled:pointer-events-none"
             onClick={addVariantToCart}
             disabled={disabled || !isAvailable || isComingSoon}
           >
