@@ -29,11 +29,9 @@ const CartButton = ({ t, cartItemCount, isCart }) => {
   return (
     <Link href={cartItemCount > 0 ? `/${t('cart')}` : `/${t('shop')}`}>
       <a
-        className={cn(
-          'flex text-green hover:text-white transition-colors',
-          styles.cartBox,
-          { 'pointer-events-none cursor-default': isCart }
-        )}
+        className={cn('flex text-green transition-colors', styles.cartBox, {
+          'pointer-events-none cursor-default': isCart,
+        })}
         onClick={(e) => e.stopPropagation()}
       >
         {cartItemCount > 0 && (

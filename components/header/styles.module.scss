@@ -96,8 +96,10 @@
 
 .cartBox:hover .cartButton {
   background-color: white;
+  color: white;
   @include mediaQuery(mobile) {
     background-color: black;
+    color: color(green);
   }
 }
 
