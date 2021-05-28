@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { TextReveal, LineReveal, LangSwitcher } from '@/components'
 import getT from 'next-translate/getT'
 import { enOnly, frOnly } from '@/lib/utils'
+import { useBreakpoint } from '@/lib/hooks'
 import {
   NAV_ITEMS,
   BOTTOM_BORDER_WIDTH,
@@ -605,6 +606,9 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
     }
   }, [])
 
+  const breakpoint = useBreakpoint()
+  const isMobile = breakpoint === 'MOBILE'
+
   return (
     <header
       ref={ref}
@@ -619,46 +623,48 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
       `,
         styles.header
       )}
+      style={{
+        paddingRight:
+          (isMobile ? 8 : 4) + (pageHasScroll ? scrollBarWidth || 0 : 0),
+      }}
     >
-      <div style={{ paddingRight: pageHasScroll ? scrollBarWidth : 0 }}>
-        <HeaderMain
-          isOpen={isOpen}
-          isCart={isCart}
-          isThreeColumnHeader={isThreeColumnHeader}
-          openMenu={openMenu}
-          closeMenu={closeMenu}
-        />
+      <HeaderMain
+        isOpen={isOpen}
+        isCart={isCart}
+        isThreeColumnHeader={isThreeColumnHeader}
+        openMenu={openMenu}
+        closeMenu={closeMenu}
+      />
+      <div
+        className={cn(
+          'h-0 overflow-hidden flex flex-col mobile:bg-black',
+          styles.expand,
+          {
+            [styles.expandOpened]: isOpen,
+          }
+        )}
+        style={{ height: menuHeight }}
+      >
         <div
+          ref={navRef}
           className={cn(
-            'h-0 overflow-hidden flex flex-col mobile:bg-black',
-            styles.expand,
-            {
-              [styles.expandOpened]: isOpen,
-            }
+            { 'border-b-2 border-solid border-white': isCart },
+            'mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
           )}
-          style={{ height: menuHeight }}
         >
-          <div
-            ref={navRef}
-            className={cn(
-              { 'border-b-2 border-solid border-white': isCart },
-              'mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
-            )}
-          >
-            <HeaderNav
-              route={route}
-              isOpen={isOpen}
-              isCart={isCart}
-              isThreeColumnHeader={isThreeColumnHeader}
-              closeMenu={closeMenu}
-            />
-          </div>
-          <div className="flex flex-col flex-1 mobile:hidden">
-            <HeaderInfo
-              isOpen={isOpen}
-              isThreeColumnHeader={isThreeColumnHeader}
-            />
-          </div>
+          <HeaderNav
+            route={route}
+            isOpen={isOpen}
+            isCart={isCart}
+            isThreeColumnHeader={isThreeColumnHeader}
+            closeMenu={closeMenu}
+          />
+        </div>
+        <div className="flex flex-col flex-1 mobile:hidden">
+          <HeaderInfo
+            isOpen={isOpen}
+            isThreeColumnHeader={isThreeColumnHeader}
+          />
         </div>
       </div>
     </header>
