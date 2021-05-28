@@ -103,4 +103,12 @@ button {
   flex: 0 0 100%;
 }
 
+* {
+  scrollbar-color: #C2C2C2 black;
+}
+
+*::-webkit-scrollbar-track {
+  background: black;
+}
+
 /*! purgecss end ignore */
