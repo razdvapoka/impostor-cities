@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
   return (
     <main className="flex-1 p-1 mobile:p-2 mobile:flex mobile:flex-col">
       {children}
-      {cookieBannerVisible && <CookieBanner close={closeCookieBanner} />}
+      {/* cookieBannerVisible && <CookieBanner close={closeCookieBanner} /> */}
     </main>
   )
 }
