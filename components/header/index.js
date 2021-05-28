@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import useTranslation from 'next-translate/useTranslation'
-import { useMeasure, useAsync } from 'react-use'
+import { useScrollbarWidth, useMeasure, useAsync } from 'react-use'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
 import cn from 'classnames'
@@ -555,6 +555,14 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
 }
 
 const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
+  const [scrollBarWidth, setScrollBarWidth] = useState(0)
+  const [pageHasScroll, setPageHasScroll] = useState(false)
+
+  const sbw = useScrollbarWidth()
+  useEffect(() => {
+    setScrollBarWidth(sbw)
+  }, [sbw])
+
   const [isOpen, setIsOpen] = useState(isOpenByDefault)
   const openMenu = useCallback(() => {
     setIsOpen(true)
@@ -575,6 +583,10 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
     ? 'calc(100vh - 54px)'
     : 0
 
+  const handleResize = useCallback(() => {
+    setPageHasScroll(document.body.scrollHeight > document.body.clientHeight)
+  }, [setPageHasScroll])
+
   const handleScroll = useCallback(() => {
     setIsOpen((wasOpen) => {
       if (wasOpen) {
@@ -584,9 +596,12 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
   }, [])
 
   useEffect(() => {
+    handleResize()
     window.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
@@ -605,43 +620,45 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
         styles.header
       )}
     >
-      <HeaderMain
-        isOpen={isOpen}
-        isCart={isCart}
-        isThreeColumnHeader={isThreeColumnHeader}
-        openMenu={openMenu}
-        closeMenu={closeMenu}
-      />
-      <div
-        className={cn(
-          'h-0 overflow-hidden flex flex-col mobile:bg-black',
-          styles.expand,
-          {
-            [styles.expandOpened]: isOpen,
-          }
-        )}
-        style={{ height: menuHeight }}
-      >
+      <div style={{ paddingRight: pageHasScroll ? scrollBarWidth : 0 }}>
+        <HeaderMain
+          isOpen={isOpen}
+          isCart={isCart}
+          isThreeColumnHeader={isThreeColumnHeader}
+          openMenu={openMenu}
+          closeMenu={closeMenu}
+        />
         <div
-          ref={navRef}
           className={cn(
-            { 'border-b-2 border-solid border-white': isCart },
-            'mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
+            'h-0 overflow-hidden flex flex-col mobile:bg-black',
+            styles.expand,
+            {
+              [styles.expandOpened]: isOpen,
+            }
           )}
+          style={{ height: menuHeight }}
         >
-          <HeaderNav
-            route={route}
-            isOpen={isOpen}
-            isCart={isCart}
-            isThreeColumnHeader={isThreeColumnHeader}
-            closeMenu={closeMenu}
-          />
-        </div>
-        <div className="flex flex-col flex-1 mobile:hidden">
-          <HeaderInfo
-            isOpen={isOpen}
-            isThreeColumnHeader={isThreeColumnHeader}
-          />
+          <div
+            ref={navRef}
+            className={cn(
+              { 'border-b-2 border-solid border-white': isCart },
+              'mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
+            )}
+          >
+            <HeaderNav
+              route={route}
+              isOpen={isOpen}
+              isCart={isCart}
+              isThreeColumnHeader={isThreeColumnHeader}
+              closeMenu={closeMenu}
+            />
+          </div>
+          <div className="flex flex-col flex-1 mobile:hidden">
+            <HeaderInfo
+              isOpen={isOpen}
+              isThreeColumnHeader={isThreeColumnHeader}
+            />
+          </div>
         </div>
       </div>
     </header>
