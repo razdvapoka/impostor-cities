@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import smoothscroll from 'smoothscroll-polyfill'
 import { useIntersection } from 'react-use'
@@ -373,7 +373,7 @@ const Section = ({ type, ...rest }) => {
 
 const HEADER_HEIGHT = 35
 
-const Project = ({ commonData, data }) => {
+const Project = ({ commonData, data, setIsHeaderOpen }) => {
   const sectionsRef = useRef(null)
   const scrollToSection = (type) => {
     const sectionEl = document.querySelector(`#${type}`)
@@ -381,6 +381,19 @@ const Project = ({ commonData, data }) => {
       behavior: 'smooth',
     })
   }
+  const handleWheel = useCallback(() => {
+    setIsHeaderOpen((wasHeaderOpen) => {
+      if (wasHeaderOpen) {
+        return false
+      }
+    })
+  }, [setIsHeaderOpen])
+  useEffect(() => {
+    window.addEventListener('wheel', handleWheel)
+    return () => {
+      window.removeEventListener('wheel', handleWheel)
+    }
+  }, [])
   const { lang } = useTranslation('common')
   return (
     <Layout {...commonData}>

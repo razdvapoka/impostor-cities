@@ -43,6 +43,7 @@ function MyApp({ Component, pageProps }) {
         window.innerWidth > 750
     )
   }, [router])
+  const [isHeaderOpen, setIsHeaderOpen] = useState(false)
   return (
     <div>
       <Head>
@@ -64,8 +65,17 @@ function MyApp({ Component, pageProps }) {
       <CartProvider>
         <UserInteractionProvider>
           <div className={cn('flex flex-col', styles.box)}>
-            <Header isThreeColumnHeader={isThreeColumnHeader} isShop={isShop} />
-            <Component {...pageProps} />
+            <Header
+              isThreeColumnHeader={isThreeColumnHeader}
+              isShop={isShop}
+              isOpen={isHeaderOpen}
+              setIsOpen={setIsHeaderOpen}
+            />
+            <Component
+              {...pageProps}
+              isHeaderOpen={isHeaderOpen}
+              setIsHeaderOpen={setIsHeaderOpen}
+            />
           </div>
         </UserInteractionProvider>
       </CartProvider>

@@ -555,7 +555,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
   )
 }
 
-const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
+const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
   const [scrollBarWidth, setScrollBarWidth] = useState(0)
   const [pageHasScroll, setPageHasScroll] = useState(false)
 
@@ -564,7 +564,6 @@ const Header = ({ isOpenByDefault = false, isThreeColumnHeader }) => {
     setScrollBarWidth(sbw)
   }, [sbw])
 
-  const [isOpen, setIsOpen] = useState(isOpenByDefault)
   const openMenu = useCallback(() => {
     setIsOpen(true)
   }, [setIsOpen])

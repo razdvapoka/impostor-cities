@@ -13,8 +13,15 @@ export const getStaticProps = async (context) => {
   }
 }
 
-const ProjectPage = ({ commonData, data }) => {
-  return <Project commonData={commonData} data={data} />
+const ProjectPage = ({ commonData, data, setIsHeaderOpen, isHeaderOpen }) => {
+  return (
+    <Project
+      commonData={commonData}
+      data={data}
+      setIsHeaderOpen={setIsHeaderOpen}
+      isHeaderOpen={isHeaderOpen}
+    />
+  )
 }
 
 export default ProjectPage
