@@ -94,14 +94,12 @@
   height: 23px;
 }
 
-.cartBox:hover {
-  color: white;
-  @include mediaQuery(mobile) {
-    color: color(green);
-  }
-}
 
 @media(min-width: 751px) {
+  .cartBox:hover {
+    color: white;
+  }
+
   .cartBox:hover .cartButton {
     background-color: white;
     color: white;
