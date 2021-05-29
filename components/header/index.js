@@ -168,9 +168,12 @@ const ProjectItem = ({ closeMenu }) => {
         {t('project')}
       </button>
       <div
-        className={cn('overflow-hidden', styles.projectItemExpand)}
+        className={cn('overflow-hidden', styles.projectItemExpand, {
+          [styles.projectItemExpandOpen]: isOpen,
+        })}
         style={{
           height: isOpen ? height : 0,
+          opacity: isOpen ? 1 : 0,
         }}
       >
         <div ref={ref}>
