@@ -82,6 +82,7 @@ const TopLine = ({
   person,
   isTopVideo,
   indexInBlock,
+  captionType,
 }) => {
   const localTimeString = format(
     utcToZonedTime(Date.now(), TZ),
@@ -94,7 +95,11 @@ const TopLine = ({
   return (
     <div className="flex justify-between">
       <div>
-        {isLocation || firstInTakeover ? (
+        {captionType === 'counter' ? (
+          <div className="text-tsMono">{formatVideoTime(videoTime)}</div>
+        ) : captionType === 'time' ? (
+          <div className="text-tsMono">{localTimeString}</div>
+        ) : isLocation || firstInTakeover ? (
           <div className="text-tsMono">{formatVideoTime(videoTime)}</div>
         ) : isTakeover ? (
           <div />
@@ -160,6 +165,7 @@ const Overlay = ({
   blockCount,
   isMobile,
   isPlaying,
+  captionType,
 }) => {
   const isInBlock = indexInBlock != null
   const isLocation = isInBlock && !isTakeover
@@ -187,6 +193,7 @@ const Overlay = ({
               person={person}
               isTopVideo={isTopVideo}
               indexInBlock={indexInBlock}
+              captionType={captionType}
             />
             <BottomLine
               isBottomVideo={isBottomVideo}

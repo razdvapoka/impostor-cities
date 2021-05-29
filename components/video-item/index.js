@@ -24,6 +24,7 @@ const VideoItem = ({
   isTakeover,
   setTakeover,
   isMobile,
+  captionType,
   defaultVideoTime = 0,
 }) => {
   const switchToNext = useCallback(
@@ -155,6 +156,7 @@ const VideoItem = ({
         blockCount={blockCount}
         isMobile={isMobile}
         isPlaying={!state.paused}
+        captionType={captionType}
       />
     </div>
   )
