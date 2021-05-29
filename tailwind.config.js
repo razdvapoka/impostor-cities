@@ -61,6 +61,8 @@ module.exports = {
         /^mobile:pointer-events-/,
         /^justify-center$/,
         /^opacity-0$/,
+        /pl-3/,
+        /pb-7/,
       ],
     },
   },
