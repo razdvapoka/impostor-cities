@@ -60,3 +60,5 @@ export const THREE_COLUMN_ROUTES = ['/']
 
 export const VIDEO_ITEM_TYPE = 'VideoItem'
 export const VIDEO_BLOCK_TYPE = 'VideoBlock'
+
+export const MOBILE_BP = 750

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Header } from '@/components'
-import { THREE_COLUMN_ROUTES, SHOP_ROUTES, PROJECT_ROUTES } from '@/consts'
+import { THREE_COLUMN_ROUTES, SHOP_ROUTES, MOBILE_BP } from '@/consts'
 import styles from './styles.module.scss'
 import cn from 'classnames'
 
@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     setIsShop(
       !!SHOP_ROUTES.find((route) => route === router.route) &&
-        window.innerWidth > 750
+        window?.innerWidth > MOBILE_BP
     )
   }, [router])
   const [isHeaderOpen, setIsHeaderOpen] = useState(false)
@@ -71,11 +71,7 @@ function MyApp({ Component, pageProps }) {
               isOpen={isHeaderOpen}
               setIsOpen={setIsHeaderOpen}
             />
-            <Component
-              {...pageProps}
-              isHeaderOpen={isHeaderOpen}
-              setIsHeaderOpen={setIsHeaderOpen}
-            />
+            <Component {...pageProps} />
           </div>
         </UserInteractionProvider>
       </CartProvider>

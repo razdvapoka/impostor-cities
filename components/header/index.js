@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
+import { useRef, useEffect, useMemo, useState, useCallback } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import { useScrollbarWidth, useMeasure, useAsync } from 'react-use'
+import useMeasureDirty from 'react-use/lib/useMeasureDirty'
 import { useCart } from '@/contexts/cart'
 import styles from './styles.module.scss'
 import cn from 'classnames'
@@ -11,12 +12,18 @@ import getT from 'next-translate/getT'
 import { enOnly, frOnly } from '@/lib/utils'
 import { useBreakpoint } from '@/lib/hooks'
 import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from 'body-scroll-lock'
+import {
   NAV_ITEMS,
   BOTTOM_BORDER_WIDTH,
   CART_ROUTES,
   ROUTE_MAP,
   SHOP_ROUTES,
   PROJECT_ROUTES,
+  MOBILE_BP,
 } from '@/consts'
 
 const INFO_TRANSITION_DELAY = 300
@@ -271,7 +278,9 @@ const SocialMediaLinks = ({ isOpen }) => {
 
 const NavBottom = ({ closeMenu }) => {
   return (
-    <div className={cn(styles.navBottom, 'pb-10 hidden mobile:block')}>
+    <div
+      className={cn(styles.navBottom, 'pb-10 hidden mobile:block mobile:mt-7')}
+    >
       <div className="mb-7 text-altGrey">
         <a
           href="https://www.instagram.com/impostorcities"
@@ -571,9 +580,21 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
     setIsOpen(false)
   }, [setIsOpen])
 
-  const ref = useRef(null)
+  const navRef = useRef(null)
+  const { height: navHeight } = useMeasureDirty(navRef)
 
-  const [navRef, { height: navHeight }] = useMeasure()
+  useEffect(() => {
+    if (navRef.current && window?.innerWidth < MOBILE_BP) {
+      if (isOpen) {
+        disableBodyScroll(navRef.current)
+      } else {
+        enableBodyScroll(navRef.current)
+      }
+    }
+    return () => {
+      clearAllBodyScrollLocks()
+    }
+  }, [navRef, isOpen])
 
   const { route } = useRouter()
   const isCart = CART_ROUTES.indexOf(route) !== -1
@@ -587,30 +608,31 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
     setPageHasScroll(document.body.scrollHeight > document.body.clientHeight)
   }, [setPageHasScroll])
 
+  const breakpoint = useBreakpoint()
+  const isMobile = breakpoint === 'MOBILE'
+
   const handleScroll = useCallback(() => {
-    setIsOpen((wasOpen) => {
-      if (wasOpen) {
-        return false
-      }
-    })
+    if (window?.innerWidth > MOBILE_BP) {
+      setIsOpen((wasOpen) => {
+        if (wasOpen) {
+          return false
+        }
+      })
+    }
   }, [])
 
   useEffect(() => {
     handleResize()
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('wheel', handleScroll)
     window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('wheel', handleScroll)
       window.removeEventListener('resize', handleResize)
     }
   }, [])
 
-  const breakpoint = useBreakpoint()
-  const isMobile = breakpoint === 'MOBILE'
-
   return (
     <header
-      ref={ref}
       className={cn(
         `
         fixed top-0 left-0
@@ -649,7 +671,7 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
           ref={navRef}
           className={cn(
             { 'border-b-2 border-solid border-white': isCart },
-            'mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
+            'mobile:overflow-auto mobile:border-0 mobile:flex mobile:flex-col mobile:flex-1'
           )}
         >
           <HeaderNav

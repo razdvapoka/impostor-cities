@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useRef, useCallback } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import smoothscroll from 'smoothscroll-polyfill'
 import { useIntersection } from 'react-use'
@@ -438,26 +438,13 @@ const SlidingHeader = () => {
   )
 }
 
-const Project = ({ commonData, data, setIsHeaderOpen }) => {
+const Project = ({ commonData, data }) => {
   const scrollToSection = (type) => {
     const sectionEl = document.querySelector(`#${type}`)
     sectionEl.scrollIntoView({
       behavior: 'smooth',
     })
   }
-  const handleWheel = useCallback(() => {
-    setIsHeaderOpen((wasHeaderOpen) => {
-      if (wasHeaderOpen) {
-        return false
-      }
-    })
-  }, [setIsHeaderOpen])
-  useEffect(() => {
-    window.addEventListener('wheel', handleWheel)
-    return () => {
-      window.removeEventListener('wheel', handleWheel)
-    }
-  }, [])
   return (
     <Layout {...commonData} isProject>
       <div className={cn('pt-22', styles.sectionsBox)}>
