@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useLocalStorage, useTimeoutFn } from 'react-use'
 import { CookieBanner } from '@/components'
 import { useUserInteraction } from '@/contexts/user-interaction'
+import cn from 'classnames'
 
-const Layout = ({ children }) => {
+const Layout = ({ children, isProject }) => {
   const [userInteraction, setUserInteraction] = useUserInteraction()
   const [cookiesAccepted] = useLocalStorage('cookiesAccepted')
   const [cookieBannerVisible, setCookieBannerVisible] = useState(false)
@@ -28,7 +29,12 @@ const Layout = ({ children }) => {
     }
   }, [])
   return (
-    <main className="flex-1 p-1 mobile:p-2 mobile:flex mobile:flex-col">
+    <main
+      className={cn(
+        'flex-1 p-1 mobile:flex mobile:flex-col',
+        isProject ? 'mobile:py-2 mobile:px-0' : 'mobile:p-2'
+      )}
+    >
       {children}
       {/* cookieBannerVisible && <CookieBanner close={closeCookieBanner} /> */}
     </main>

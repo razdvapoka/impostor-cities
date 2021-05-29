@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Header } from '@/components'
-import { THREE_COLUMN_ROUTES, SHOP_ROUTES } from '@/consts'
+import { THREE_COLUMN_ROUTES, SHOP_ROUTES, PROJECT_ROUTES } from '@/consts'
 import styles from './styles.module.scss'
 import cn from 'classnames'
 

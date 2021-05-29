@@ -636,7 +636,8 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
       />
       <div
         className={cn(
-          'h-0 overflow-hidden flex flex-col mobile:bg-black',
+          `h-0 overflow-hidden flex flex-col
+          mobile:bg-black mobile:w-screen mobile:-ml-2 mobile:px-2`,
           styles.expand,
           {
             [styles.expandOpened]: isOpen,

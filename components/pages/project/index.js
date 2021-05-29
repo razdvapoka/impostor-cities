@@ -373,8 +373,72 @@ const Section = ({ type, ...rest }) => {
 
 const HEADER_HEIGHT = 35
 
+const Sections = ({ sections, scrollToSection }) => {
+  const { lang } = useTranslation('common')
+  return (
+    <>
+      {sections.map((section, index) => (
+        <React.Fragment key={section.type}>
+          <SectionHeader
+            {...section}
+            scrollToSection={scrollToSection}
+            top={index * HEADER_HEIGHT}
+            bottom={(sections.length - 1 - index) * HEADER_HEIGHT}
+            zIndex={sections.length - index}
+            lang={lang}
+          />
+          <div className={cn(styles.sectionBox, 'pt-16 relative mobile:pt-0')}>
+            <div
+              id={section.type}
+              className={cn('absolute left-0', styles.anchor)}
+              style={{
+                top: -(index + 1) * HEADER_HEIGHT,
+              }}
+            />
+            <Section lang={lang} {...section} />
+          </div>
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
+
+const SlidingHeader = () => {
+  return (
+    <div
+      className={cn(
+        'pt-2 pl-3 pb-7 overflow-auto text-ts2 hidden mobile:block',
+        styles.slidingHeader
+      )}
+    >
+      <div className={cn(styles.slidingHeaderGrid)}>
+        <div className="w-6/8">
+          Canada’s
+          <br />
+          Official
+          <br />
+          Representation
+        </div>
+        <div className="w-full">
+          17th International
+          <br />
+          Architecture Exhibition
+          <br />
+          La Biennale di Venezia
+        </div>
+        <div className="w-full">
+          Canada Pavilion
+          <br />
+          Giardini di Castello
+          <br />
+          Venezia
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const Project = ({ commonData, data, setIsHeaderOpen }) => {
-  const sectionsRef = useRef(null)
   const scrollToSection = (type) => {
     const sectionEl = document.querySelector(`#${type}`)
     sectionEl.scrollIntoView({
@@ -394,38 +458,14 @@ const Project = ({ commonData, data, setIsHeaderOpen }) => {
       window.removeEventListener('wheel', handleWheel)
     }
   }, [])
-  const { lang } = useTranslation('common')
   return (
-    <Layout {...commonData}>
+    <Layout {...commonData} isProject>
       <div className={cn('pt-22', styles.sectionsBox)}>
-        <div
-          ref={sectionsRef}
-          className={cn('overflow-auto px-1', styles.sections)}
-        >
-          {data.map((section, index) => (
-            <React.Fragment key={section.type}>
-              <SectionHeader
-                {...section}
-                scrollToSection={scrollToSection}
-                top={index * HEADER_HEIGHT}
-                bottom={(data.length - 1 - index) * HEADER_HEIGHT}
-                zIndex={data.length - index}
-                lang={lang}
-              />
-              <div
-                className={cn(styles.sectionBox, 'pt-16 relative mobile:pt-0')}
-              >
-                <div
-                  id={section.type}
-                  className={cn('absolute left-0', styles.anchor)}
-                  style={{
-                    top: -(index + 1) * HEADER_HEIGHT,
-                  }}
-                />
-                <Section lang={lang} {...section} />
-              </div>
-            </React.Fragment>
-          ))}
+        <div className={cn('overflow-auto', styles.sections)}>
+          <SlidingHeader />
+          <div className="px-1 mobile:px-3">
+            <Sections sections={data} scrollToSection={scrollToSection} />
+          </div>
           <div
             className={cn(
               'absolute left-0 bottom-0 w-full pointer-events-none mobile:hidden',
