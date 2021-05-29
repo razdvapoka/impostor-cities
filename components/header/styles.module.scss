@@ -106,6 +106,12 @@
   }
 }
 
+@include mediaQuery(mobile) {
+  .cartBox:hover {
+    color: color(green) !important;
+  }
+}
+
 .homeButton {
   width: 43px;
   height: 35px;
