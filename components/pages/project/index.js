@@ -410,7 +410,7 @@ const SlidingHeader = () => {
   const { lang } = useTranslation('common')
   return (
     <div className="hidden pt-2 pl-3 overflow-auto pb-7 text-ts2 mobile:block">
-      <div className="flex flex-nowrap space-x-15">
+      <div className={cn('flex flex-nowrap space-x-15', enOnly(lang))}>
         <div className="whitespace-nowrap">
           Canada’s
           <br />
@@ -418,14 +418,30 @@ const SlidingHeader = () => {
           <br />
           Representation
         </div>
-        <div className={cn('whitespace-nowrap', enOnly(lang))}>
+        <div className="whitespace-nowrap">
           17th International
           <br />
           Architecture Exhibition of
           <br />
           La Biennale di Venezia
         </div>
-        <div className={cn('whitespace-nowrap', frOnly(lang))}>
+        <div className="pr-3 whitespace-nowrap">
+          Canada Pavilion
+          <br />
+          Giardini della
+          <br />
+          Biennale Venezia
+        </div>
+      </div>
+      <div className={cn('flex flex-nowrap space-x-15', frOnly(lang))}>
+        <div className="whitespace-nowrap">
+          Répresentation
+          <br />
+          officielle
+          <br />
+          du Canada
+        </div>
+        <div className="whitespace-nowrap">
           17e exposition internationale
           <br />
           d’architecture de
@@ -433,7 +449,7 @@ const SlidingHeader = () => {
           La Biennale di Venezia
         </div>
         <div className="pr-3 whitespace-nowrap">
-          Canada Pavilion
+          Pavillon du Canada
           <br />
           Giardini della
           <br />
