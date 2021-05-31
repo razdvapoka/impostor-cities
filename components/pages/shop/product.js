@@ -128,7 +128,7 @@ const ProductDescription = ({ descriptionHtml, t }) => {
         </div>
       </div>
       <div
-        className="text-ts3 mobile:hidden"
+        className="text-ts3 pr-6 mobile:hidden"
         dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />
     </div>
