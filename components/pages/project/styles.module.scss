@@ -164,6 +164,12 @@
   }
 }
 
+.firstAnchor {
+  @include mediaQuery(mobile) {
+    top: -300px !important;
+  }
+}
+
 .markdown {
   @include mediaQuery(mobile) {
     @include font-style(ts3Alt);
@@ -181,23 +187,6 @@
   @include mediaQuery(mobile) {
     & > * + * {
       margin-top: 20px !important;
-    }
-  }
-}
-
-.slidingHeader {
-  &Grid {
-    width: calc(275% + 12px);
-    display: flex;
-    flex-wrap: nowrap !important;
-    margin-left: -6px;
-    margin-right: -6px;
-    & * {
-      padding-left: 6px;
-      padding-right: 6px;
-    }
-    & *:last-child {
-      width: calc(100% + 12px);
     }
   }
 }

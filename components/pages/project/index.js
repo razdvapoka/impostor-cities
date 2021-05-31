@@ -63,7 +63,7 @@ const SectionHeader = ({
             className="hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="text-ts2">{headerFr}</h2>
+            <h2 className="pt-2 text-ts2">{headerFr}</h2>
           </button>
         </div>
       </div>
@@ -390,7 +390,10 @@ const Sections = ({ sections, scrollToSection }) => {
           <div className={cn(styles.sectionBox, 'pt-16 relative mobile:pt-0')}>
             <div
               id={section.type}
-              className={cn('absolute left-0', styles.anchor)}
+              className={cn(
+                'absolute left-0',
+                index === 0 ? styles.firstAnchor : styles.anchor
+              )}
               style={{
                 top: -(index + 1) * HEADER_HEIGHT,
               }}
@@ -404,34 +407,37 @@ const Sections = ({ sections, scrollToSection }) => {
 }
 
 const SlidingHeader = () => {
+  const { lang } = useTranslation('common')
   return (
-    <div
-      className={cn(
-        'pt-2 pl-3 pb-7 overflow-auto text-ts2 hidden mobile:block',
-        styles.slidingHeader
-      )}
-    >
-      <div className={cn(styles.slidingHeaderGrid)}>
-        <div className="w-6/8">
+    <div className="hidden pt-2 pl-3 overflow-auto pb-7 text-ts2 mobile:block">
+      <div className="flex flex-nowrap space-x-15">
+        <div className="whitespace-nowrap">
           Canada’s
           <br />
           Official
           <br />
           Representation
         </div>
-        <div className="w-full">
+        <div className={cn('whitespace-nowrap', enOnly(lang))}>
           17th International
           <br />
-          Architecture Exhibition
+          Architecture Exhibition of
           <br />
           La Biennale di Venezia
         </div>
-        <div className="w-full">
+        <div className={cn('whitespace-nowrap', frOnly(lang))}>
+          17e exposition internationale
+          <br />
+          d’architecture de
+          <br />
+          La Biennale di Venezia
+        </div>
+        <div className="pr-3 whitespace-nowrap">
           Canada Pavilion
           <br />
-          Giardini di Castello
+          Giardini della
           <br />
-          Venezia
+          Biennale Venezia
         </div>
       </div>
     </div>
@@ -447,8 +453,11 @@ const Project = ({ commonData, data }) => {
   }
   return (
     <Layout {...commonData} isProject>
-      <div className={cn('pt-22', styles.sectionsBox)}>
+      <div className={cn('pt-22 mobile:pt-15', styles.sectionsBox)}>
         <div className={cn('overflow-auto', styles.sections)}>
+          <div className="hidden px-3 mb-4 mobile:block text-ts2">
+            22.05-21.11 2021
+          </div>
           <SlidingHeader />
           <div className="px-1 mobile:px-3">
             <Sections sections={data} scrollToSection={scrollToSection} />
