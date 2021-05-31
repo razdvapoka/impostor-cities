@@ -47,6 +47,9 @@ module.exports = {
     ],
     options: {
       safelist: [
+        /^whitespace-nowrap$/,
+        /^space-x-15$/,
+        /^pr-3$/,
         /^desktop:col-start/,
         /^desktop:col-span/,
         /^w-/,
