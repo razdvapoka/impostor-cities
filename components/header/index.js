@@ -88,7 +88,9 @@ const HeaderMain = ({
   }, [isOpen, closeMenu, openMenu])
   return (
     <div
-      className={`
+      className={cn(
+        { [styles.headerMainJumping]: !isCart },
+        `
         my-grid
         pb-4 mobile:pb-5
         text-ts1B
@@ -96,7 +98,8 @@ const HeaderMain = ({
         mobile:bg-black
         mobile:relative mobile:z-10
         cursor-pointer
-      `}
+      `
+      )}
       onClick={toggle}
     >
       <div
@@ -118,6 +121,7 @@ const HeaderMain = ({
       </div>
       <div
         className={cn(
+          styles.jumpOnHover,
           styles.headerColumn,
           isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
           'mobile:w-2/8'
@@ -129,6 +133,7 @@ const HeaderMain = ({
       </div>
       <div
         className={cn(
+          styles.jumpOnHover,
           styles.headerColumn,
           isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
           'mobile:w-2/8'
@@ -140,6 +145,7 @@ const HeaderMain = ({
       </div>
       <div
         className={cn(
+          styles.jumpOnHover,
           styles.headerColumn,
           isThreeColumnHeader ? 'w-1/6' : 'w-1/8',
           'mobile:hidden'

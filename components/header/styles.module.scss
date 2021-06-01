@@ -53,6 +53,31 @@
   }
 }
 
+.headerColumn {
+  transition: width 0.3s ease 0.2s;
+  @include mediaQuery(mobile) {
+    transition: none;
+  }
+}
+
+@keyframes jump {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headerMainJumping:hover .jumpOnHover {
+  animation: jump 300ms forwards ease;
+  @include mediaQuery(mobile) {
+    animation: none;
+  }
+}
+
 .headerInfo {
   &Content {
     border-color: color(black);
@@ -151,6 +176,3 @@
   }
 }
 
-.headerColumn {
-  transition: width 0.3s ease 0.2s;
-}
