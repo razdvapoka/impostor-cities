@@ -100,7 +100,11 @@ const HeaderMain = ({
       onClick={toggle}
     >
       <div
-        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
+        className={cn(
+          styles.headerColumn,
+          isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+          'mobile:w-2/8'
+        )}
       >
         <Link href="/">
           <a
@@ -113,28 +117,44 @@ const HeaderMain = ({
         </Link>
       </div>
       <div
-        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
+        className={cn(
+          styles.headerColumn,
+          isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+          'mobile:w-2/8'
+        )}
       >
         Impostor
         <br />
         Cities
       </div>
       <div
-        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-2/8', 'mobile:w-2/8')}
+        className={cn(
+          styles.headerColumn,
+          isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
+          'mobile:w-2/8'
+        )}
       >
         Édifices
         <br />
         et artifice
       </div>
       <div
-        className={cn(isThreeColumnHeader ? 'w-1/6' : 'w-1/8', 'mobile:hidden')}
+        className={cn(
+          styles.headerColumn,
+          isThreeColumnHeader ? 'w-1/6' : 'w-1/8',
+          'mobile:hidden'
+        )}
       >
         Inganni
         <br />
         Urbani
       </div>
       <div
-        className={cn(isThreeColumnHeader ? 'w-2/6' : 'w-1/8', 'mobile:w-2/8')}
+        className={cn(
+          styles.headerColumn,
+          isThreeColumnHeader ? 'w-2/6' : 'w-1/8',
+          'mobile:w-2/8'
+        )}
       >
         <div className="flex justify-end h-full">
           <CartButton
