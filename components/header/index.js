@@ -76,6 +76,7 @@ const HeaderMain = ({
   openMenu,
   closeMenu,
 }) => {
+  const [isHovering, setIsHovering] = useState(false)
   const { t } = useTranslation('common')
   const [cart] = useCart()
   const cartItemCount = useMemo(() => getCartItemCount(cart), [cart])
@@ -89,7 +90,7 @@ const HeaderMain = ({
   return (
     <div
       className={cn(
-        { [styles.headerMainJumping]: !isCart },
+        { [styles.headerMainJumping]: isHovering && !isCart },
         `
         my-grid
         pb-4 mobile:pb-5
@@ -110,13 +111,14 @@ const HeaderMain = ({
         )}
       >
         <Link href="/">
-          <a
-            className={cn('block ml-1', styles.logo, {
-              [styles.logoOpen]: isOpen || isCart,
-              'pointer-events-none': isOpen || isCart,
-            })}
-            onClick={(e) => e.stopPropagation()}
-          />
+          <a className={cn('inline-block', styles.logoBox)}>
+            <span
+              className={cn('block ml-1', styles.logo, {
+                [styles.logoOpen]: isOpen || isCart,
+                'pointer-events-none': isOpen || isCart,
+              })}
+            />
+          </a>
         </Link>
       </div>
       <div
@@ -126,10 +128,14 @@ const HeaderMain = ({
           isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
           'mobile:w-2/8'
         )}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        Impostor
-        <br />
-        Cities
+        <div className={cn(styles.headerColumnContent)}>
+          Impostor
+          <br />
+          Cities
+        </div>
       </div>
       <div
         className={cn(
@@ -138,10 +144,14 @@ const HeaderMain = ({
           isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
           'mobile:w-2/8'
         )}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        Édifices
-        <br />
-        et artifice
+        <div className={cn(styles.headerColumnContent)}>
+          Édifices
+          <br />
+          et artifice
+        </div>
       </div>
       <div
         className={cn(
@@ -150,10 +160,14 @@ const HeaderMain = ({
           isThreeColumnHeader ? 'w-1/6' : 'w-1/8',
           'mobile:hidden'
         )}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        Inganni
-        <br />
-        Urbani
+        <div className={cn(styles.headerColumnContent)}>
+          Inganni
+          <br />
+          Urbani
+        </div>
       </div>
       <div
         className={cn(
@@ -477,7 +491,9 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
           <Lift isUp={isOpen}>
             <div className="text-ts2">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                22.05-21.11 2021
+                22.05-21.11
+                <br />
+                2021
               </TextReveal>
             </div>
           </Lift>
