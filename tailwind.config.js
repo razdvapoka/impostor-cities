@@ -66,6 +66,7 @@ module.exports = {
         /^mobile:overflow-auto/,
         /^justify-center$/,
         /^opacity-0$/,
+        /^mobile:pt-2/,
         /pl-3/,
         /pb-7/,
       ],

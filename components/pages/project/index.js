@@ -63,7 +63,7 @@ const SectionHeader = ({
             className="hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="pt-2 text-ts2">{headerFr}</h2>
+            <h2 className="mobile:pt-2 text-ts2">{headerFr}</h2>
           </button>
         </div>
       </div>
