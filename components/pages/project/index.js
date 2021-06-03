@@ -52,7 +52,7 @@ const SectionHeader = ({
         <div className="w-2/8 mobile:hidden" />
         <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
           <button
-            className="hover:text-grey transition-colors"
+            className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
             <h2 className="text-ts2">{headerEn}</h2>
@@ -60,10 +60,12 @@ const SectionHeader = ({
         </div>
         <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
           <button
-            className="hover:text-grey transition-colors"
+            className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="mobile:pt-2 text-ts2">{headerFr}</h2>
+            <h2 className="mobile:pt-2 text-ts2 whitespace-nowrap">
+              {headerFr}
+            </h2>
           </button>
         </div>
       </div>
@@ -144,9 +146,14 @@ const TeamSectionItem = ({ textEn, textMEn, textMFr, index, lang }) => {
             </Markdown>
           </div>
           {index === 0 && (
-            <div className={cn(styles.councilLogo, 'mt-4')}>
+            <a
+              herf="https://canadacouncil.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(styles.councilLogo, 'block mt-4')}
+            >
               <CouncilLogo />
-            </div>
+            </a>
           )}
         </div>
       </div>
@@ -185,7 +192,12 @@ const SponsorsItem = ({ textEn, textMEn, textMFr, index, lang }) => {
         className={cn(index === 3 ? 'w-6/8' : 'w-2/8', 'mobile:w-full')}
         ref={intersectionRef}
       >
-        <div className="pb-20 mobile:pb-8">
+        <div
+          className={cn('mobile:pb-8', {
+            'pb-10': index === 3,
+            'pb-20': index === 0 || index === 4,
+          })}
+        >
           <LineReveal
             isRevealed={intersection && intersection.isIntersecting}
           />
@@ -202,25 +214,50 @@ const SponsorsItem = ({ textEn, textMEn, textMFr, index, lang }) => {
           </div>
           <div className="mt-10 mobile:mt-6">
             {index === 0 ? (
-              <div className={styles.sajo}>
+              <a
+                href="https://sajo.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(styles.sajo, 'block')}
+              >
                 <SponsorSajo />
-              </div>
+              </a>
             ) : index === 1 ? (
-              <div className="flex items-end space-x-18 mobile:items-center mobile:justify-between">
-                <div className={styles.mcgill}>
+              <div className="items-center justify-between hidden mobile:flex">
+                <a
+                  href="https://www.mcgill.ca/architecture/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(styles.mcgill, 'block')}
+                >
                   <SponsorMcGill />
-                </div>
-                <div className={styles.udm}>
+                </a>
+                <a
+                  href="https://architecture.umontreal.ca/accueil/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(styles.udm, 'block')}
+                >
                   <SponsorUDM />
-                </div>
+                </a>
               </div>
             ) : index === 2 ? (
-              <div className={styles.oaa}>
+              <a
+                href="https://oaa.on.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(styles.oaa, 'hidden mobile:block')}
+              >
                 <SponsorOAA />
-              </div>
+              </a>
             ) : (
               <>
-                <div className="flex items-center w-full mobile:hidden">
+                <div
+                  className={cn(
+                    'flex flex-wrap items-center w-full mobile:hidden',
+                    styles.longSponsorsRow
+                  )}
+                >
                   <div className={styles.panasonic}>
                     <SponsorPanasonic />
                   </div>
@@ -293,7 +330,45 @@ const SponsorsItem = ({ textEn, textMEn, textMFr, index, lang }) => {
         </div>
       </div>
       {index === 0 && <div className="w-4/8" />}
-      {index === 2 && <div className="w-2/8" />}
+      {index === 2 && (
+        <>
+          <div className="w-2/8" />
+          <div className="w-2/8" />
+          <div className="flex flex-wrap items-center justify-between pb-10 mobile:pb-0 w-4/8 mobile:hidden">
+            <div className="flex-1 mb-10 mr-10">
+              <a
+                href="https://www.mcgill.ca/architecture/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn('block', styles.mcgill)}
+              >
+                <SponsorMcGill />
+              </a>
+            </div>
+            <div className="flex-1 mb-10 mr-10">
+              <a
+                href="https://architecture.umontreal.ca/accueil/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn('block', styles.udm)}
+              >
+                <SponsorUDM />
+              </a>
+            </div>
+            <div className="flex-1 mb-10">
+              <a
+                href="https://oaa.on.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn('block', styles.oaa)}
+              >
+                <SponsorOAA />
+              </a>
+            </div>
+          </div>
+          <div className="w-2/8" />
+        </>
+      )}
     </>
   )
 }

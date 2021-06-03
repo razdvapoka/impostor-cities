@@ -53,6 +53,7 @@
 .mcgill {
   width: 111px;
   height: 26px;
+  // margin-right: calc(174 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 30%;
     height: auto;
@@ -62,6 +63,7 @@
 .udm {
   width: 103px;
   height: 39px;
+  // margin-right: calc(174 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 27%;
     height: auto;
@@ -80,9 +82,7 @@
 .panasonic {
   width: 118px;
   height: 18px;
-  margin-right: 98px;
   @include mediaQuery(mobile) {
-    margin-right: 0;
     width: 31%;
     height: auto;
   }
@@ -91,9 +91,7 @@
 .frog {
   width: 70px;
   height: 38px;
-  margin-right: 85px;
   @include mediaQuery(mobile) {
-    margin-right: 0;
     width: 19%;
     height: auto;
   }
@@ -102,9 +100,7 @@
 .mrx {
   width: 71px;
   height: 35px;
-  margin-right: 78px;
   @include mediaQuery(mobile) {
-    margin-right: 0;
     width: 17%;
     height: auto;
   }
@@ -113,9 +109,7 @@
 .zebulon {
   width: 156px;
   height: 14px;
-  margin-right: 68px;
   @include mediaQuery(mobile) {
-    margin-right: 0;
     width: 42%;
     height: auto;
   }
@@ -124,9 +118,7 @@
 .habitations {
   width: 121px;
   height: 25px;
-  margin-right: 60px;
   @include mediaQuery(mobile) {
-    margin-right: 0;
     width: 32%;
     height: auto;
   }
@@ -135,9 +127,7 @@
 .spencer {
   width: 150px;
   height: 10px;
-  margin-right: 24px;
   @include mediaQuery(mobile) {
-    margin-right: 0;
     width: 40%;
     height: auto;
   }
@@ -189,4 +179,12 @@
       margin-top: 20px !important;
     }
   }
+}
+
+.longSponsorsRow > div {
+  margin-bottom: 40px;
+}
+
+.longSponsorsRow > div:not(:last-child) {
+  margin-right: calc(76 / 1440 * 100vw);
 }
