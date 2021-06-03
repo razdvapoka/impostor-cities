@@ -139,6 +139,7 @@ const HeaderMain = ({
       </div>
       <div
         className={cn(
+          '-mt-1 mobile:mt-0',
           styles.jumpOnHover,
           styles.headerColumn,
           isThreeColumnHeader ? 'w-1/6' : 'w-2/8',
@@ -147,7 +148,7 @@ const HeaderMain = ({
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <div className={cn(styles.headerColumnContent)}>
+        <div className={cn(styles.headerColumnContent, 'pt-1 mobile:pt-0')}>
           Édifices
           <br />
           et artifice
