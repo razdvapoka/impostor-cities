@@ -1,7 +1,8 @@
 const nextTranslate = require('next-translate')
 const withPlugins = require('next-compose-plugins')
+const withTM = require('next-transpile-modules')(['@mavrin/remark-typograf'])
 
-module.exports = withPlugins([nextTranslate], {
+module.exports = withPlugins([withTM, nextTranslate], {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
