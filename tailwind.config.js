@@ -69,6 +69,8 @@ module.exports = {
         /^mobile:pt-2/,
         /pl-3/,
         /pb-7/,
+        /pb-2/,
+        /mobile:pb-0/,
         /^flex-wrap$/,
       ],
     },

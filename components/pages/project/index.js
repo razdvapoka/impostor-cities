@@ -55,7 +55,7 @@ const SectionHeader = ({
             className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="text-ts2">{headerEn}</h2>
+            <h2 className="pb-2 mobile:pb-0 text-ts2">{headerEn}</h2>
           </button>
         </div>
         <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
@@ -63,7 +63,7 @@ const SectionHeader = ({
             className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="mobile:pt-2 text-ts2 whitespace-nowrap">
+            <h2 className="mobile:pt-2 pb-2 mobile:pb-0 text-ts2 whitespace-nowrap">
               {headerFr}
             </h2>
           </button>
