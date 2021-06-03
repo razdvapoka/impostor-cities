@@ -492,9 +492,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
           <Lift isUp={isOpen}>
             <div className="text-ts2">
               <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
-                22.05-21.11
-                <br />
-                2021
+                22.05-21.11 2021
               </TextReveal>
             </div>
           </Lift>

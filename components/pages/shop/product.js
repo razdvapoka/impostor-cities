@@ -128,7 +128,7 @@ const ProductDescription = ({ descriptionHtml, t }) => {
         </div>
       </div>
       <div
-        className="text-ts3 pr-6 mobile:hidden"
+        className="pr-6 text-ts3 mobile:hidden"
         dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />
     </div>
@@ -201,6 +201,14 @@ const ProductButtons = ({
   isAvailable,
   isComingSoon,
 }) => {
+  const [isAddedTextVisible, setIsAddedTextVisible] = useState(false)
+  const handleClick = useCallback(() => {
+    addVariantToCart()
+    setIsAddedTextVisible(true)
+    setTimeout(() => {
+      setIsAddedTextVisible(false)
+    }, 1000)
+  }, [addVariantToCart, setIsAddedTextVisible])
   const { value: t } = useAsync(async () => {
     const tr = await getT(locale, 'common')
     return tr
@@ -211,13 +219,17 @@ const ProductButtons = ({
         <div>
           <button
             className="text-left text-ts2 hover:text-grey transition-colors disabled:pointer-events-none"
-            onClick={addVariantToCart}
-            disabled={disabled || !isAvailable || isComingSoon}
+            onClick={handleClick}
+            disabled={
+              disabled || !isAvailable || isComingSoon || isAddedTextVisible
+            }
           >
             {isComingSoon
               ? t('comingSoon')
               : !isAvailable
               ? t('soldOut')
+              : isAddedTextVisible
+              ? t('addedToCart')
               : t('addToCart')}
           </button>
         </div>
