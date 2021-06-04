@@ -22,10 +22,6 @@
   }
 }
 
-.sectionBox {
-  // min-height: calc(100vh - 268px);
-}
-
 .gradient {
   height: 280px;
   background: linear-gradient(transparent, black 40%);
@@ -53,7 +49,6 @@
 .mcgill {
   width: 111px;
   height: 26px;
-  // margin-right: calc(174 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 30%;
     height: auto;
@@ -63,8 +58,9 @@
 .udm {
   width: 103px;
   height: 39px;
-  // margin-right: calc(174 / 1440 * 100vw);
+  margin: 0 auto;
   @include mediaQuery(mobile) {
+    margin: 0;
     width: 27%;
     height: auto;
   }
@@ -91,7 +87,9 @@
 .frog {
   width: 70px;
   height: 38px;
+  margin: 0 auto;
   @include mediaQuery(mobile) {
+    margin: 0;
     width: 19%;
     height: auto;
   }
@@ -109,7 +107,9 @@
 .zebulon {
   width: 156px;
   height: 14px;
+  margin: 0 auto;
   @include mediaQuery(mobile) {
+    margin: 0;
     width: 42%;
     height: auto;
   }
@@ -127,8 +127,18 @@
 .spencer {
   width: 150px;
   height: 10px;
+  margin: 0 auto;
   @include mediaQuery(mobile) {
+    margin: 0;
     width: 40%;
+    height: auto;
+  }
+}
+
+.artspce {
+  width: 100px;
+  @include mediaQuery(mobile) {
+    width: 25%;
     height: auto;
   }
 }
@@ -142,10 +152,8 @@
   }
 }
 
-.sponsorsRow {
-  @include mediaQuery(mobile) {
-    height: 102px;
-  }
+.mobileSponsorsRow {
+  height: calc(108 / 375 * 100vw);
 }
 
 .anchor {
@@ -179,12 +187,4 @@
       margin-top: 20px !important;
     }
   }
-}
-
-.longSponsorsRow > div {
-  margin-bottom: 40px;
-}
-
-.longSponsorsRow > div:not(:last-child) {
-  margin-right: calc(76 / 1440 * 100vw);
 }

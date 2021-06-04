@@ -17,6 +17,7 @@ import SponsorMRX from '../../../assets/icons/sponsor-mrx.svg'
 import SponsorZebulon from '../../../assets/icons/sponsor-zebulon.svg'
 import SponsorHabitations from '../../../assets/icons/sponsor-habitations.svg'
 import SponsorSpencer from '../../../assets/icons/sponsor-spencer.svg'
+import SponsorArtspce from '../../../assets/icons/sponsor-artspce.svg'
 
 if (typeof window !== 'undefined') {
   smoothscroll.polyfill()
@@ -63,7 +64,7 @@ const SectionHeader = ({
             className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="mobile:pt-2 pb-2 mobile:pb-0 text-ts2 whitespace-nowrap">
+            <h2 className="pb-2 mobile:pt-2 mobile:pb-0 text-ts2 whitespace-nowrap">
               {headerFr}
             </h2>
           </button>
@@ -177,209 +178,235 @@ const TeamSection = ({ itemsCollection: { items }, lang }) => {
   )
 }
 
-const SponsorsItem = ({ textEn, textMEn, textMFr, index, lang }) => {
+const SponsorsHeader = ({ textEn, isEmpty }) => {
   const intersectionRef = useRef(null)
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px 0px -200px 0px',
   })
   return (
-    <>
-      {(index === 0 || index === 1 || index === 3) && (
-        <div className="w-2/8 mobile:hidden" />
-      )}
-      <div
-        className={cn(index === 3 ? 'w-6/8' : 'w-2/8', 'mobile:w-full')}
-        ref={intersectionRef}
-      >
-        <div
-          className={cn('mobile:pb-8', {
-            'pb-10': index === 3,
-            'pb-20': index === 0 || index === 4,
-          })}
-        >
-          <LineReveal
-            isRevealed={intersection && intersection.isIntersecting}
-          />
-          <Markdown className="mt-1 mobile:hidden" locale="en-US">
+    <div className="mb-10" ref={intersectionRef}>
+      <div>
+        <LineReveal isRevealed={intersection && intersection.isIntersecting} />
+        {isEmpty ? (
+          <div className="mt-1">
+            <br />
+            <br />
+          </div>
+        ) : (
+          <Markdown className="mt-1" locale="en-US">
             {textEn}
           </Markdown>
-          <div className="hidden mobile:block">
-            <Markdown className={cn('mt-1', enOnly(lang))} locale="en-US">
-              {textMEn}
-            </Markdown>
-            <Markdown className={cn('mt-1', frOnly(lang))} locale="fr">
-              {textMFr}
-            </Markdown>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const MobileSponsorsRow = ({ textMEn, textMFr, lang, isEmpty, children }) => {
+  const intersectionRef = useRef(null)
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: '0px 0px -100px 0px',
+  })
+  return (
+    <div
+      className={cn('flex flex-col', styles.mobileSponsorsRow)}
+      ref={intersectionRef}
+    >
+      <LineReveal isRevealed={intersection && intersection.isIntersecting} />
+      {!isEmpty && (
+        <div>
+          <Markdown className={cn('mt-1', enOnly(lang))} locale="en-US">
+            {textMEn}
+          </Markdown>
+          <Markdown className={cn('mt-1', frOnly(lang))} locale="fr">
+            {textMFr}
+          </Markdown>
+        </div>
+      )}
+      <div className="flex items-center justify-between flex-1">{children}</div>
+    </div>
+  )
+}
+
+const MobileSponsors = ({ items, lang }) => {
+  return (
+    <div className="hidden mt-5 mb-10 mobile:block">
+      <MobileSponsorsRow {...items[0]} lang={lang}>
+        <a
+          href="https://sajo.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(styles.sajo, 'block')}
+        >
+          <SponsorSajo />
+        </a>
+      </MobileSponsorsRow>
+      <MobileSponsorsRow {...items[1]} lang={lang}>
+        <a
+          href="https://www.mcgill.ca/architecture/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(styles.mcgill, 'block')}
+        >
+          <SponsorMcGill />
+        </a>
+        <a
+          href="https://architecture.umontreal.ca/accueil/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(styles.udm, 'block')}
+        >
+          <SponsorUDM />
+        </a>
+      </MobileSponsorsRow>
+      <MobileSponsorsRow {...items[2]} lang={lang}>
+        <a
+          href="https://oaa.on.ca"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(styles.oaa, 'block')}
+        >
+          <SponsorOAA />
+        </a>
+      </MobileSponsorsRow>
+      <MobileSponsorsRow {...items[3]} lang={lang}>
+        <div className={styles.panasonic}>
+          <SponsorPanasonic />
+        </div>
+        <div className={styles.frog}>
+          <SponsorFrog />
+        </div>
+      </MobileSponsorsRow>
+      <MobileSponsorsRow isEmpty lang={lang}>
+        <div className={styles.mrx}>
+          <SponsorMRX />
+        </div>
+        <div className={styles.zebulon}>
+          <SponsorZebulon />
+        </div>
+      </MobileSponsorsRow>
+      <MobileSponsorsRow isEmpty lang={lang}>
+        <div className={cn(styles.habitations)}>
+          <SponsorHabitations />
+        </div>
+        <div className={cn(styles.spencer)}>
+          <SponsorSpencer />
+        </div>
+      </MobileSponsorsRow>
+      <MobileSponsorsRow isEmpty lang={lang}>
+        <div className={styles.artspce}>
+          <SponsorArtspce />
+        </div>
+      </MobileSponsorsRow>
+    </div>
+  )
+}
+
+const DesktopSponsors = ({ items }) => {
+  return (
+    <div className="mb-10 mobile:hidden">
+      <div className="my-grid">
+        <div className="w-2/8" />
+        <div className="w-2/8">
+          <SponsorsHeader {...items[0]} />
+          <a
+            href="https://sajo.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(styles.sajo, 'block')}
+          >
+            <SponsorSajo />
+          </a>
+        </div>
+      </div>
+      <div className="mt-20 my-grid">
+        <div className="w-2/8" />
+        <div className="w-2/8">
+          <SponsorsHeader {...items[1]} />
+          <div className="flex items-center">
+            <a
+              href="https://www.mcgill.ca/architecture/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(styles.mcgill, 'block mr-1')}
+            >
+              <SponsorMcGill />
+            </a>
+            <a
+              href="https://architecture.umontreal.ca/accueil/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(styles.udm, 'block')}
+            >
+              <SponsorUDM />
+            </a>
           </div>
-          <div className="mt-10 mobile:mt-6">
-            {index === 0 ? (
-              <a
-                href="https://sajo.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(styles.sajo, 'block')}
-              >
-                <SponsorSajo />
-              </a>
-            ) : index === 1 ? (
-              <div className="items-center justify-between hidden mobile:flex">
-                <a
-                  href="https://www.mcgill.ca/architecture/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(styles.mcgill, 'block')}
-                >
-                  <SponsorMcGill />
-                </a>
-                <a
-                  href="https://architecture.umontreal.ca/accueil/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(styles.udm, 'block')}
-                >
-                  <SponsorUDM />
-                </a>
-              </div>
-            ) : index === 2 ? (
-              <a
-                href="https://oaa.on.ca"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(styles.oaa, 'hidden mobile:block')}
-              >
-                <SponsorOAA />
-              </a>
-            ) : (
-              <>
-                <div
-                  className={cn(
-                    'flex flex-wrap items-center w-full mobile:hidden',
-                    styles.longSponsorsRow
-                  )}
-                >
-                  <div className={styles.panasonic}>
-                    <SponsorPanasonic />
-                  </div>
-                  <div className={styles.frog}>
-                    <SponsorFrog />
-                  </div>
-                  <div className={styles.mrx}>
-                    <SponsorMRX />
-                  </div>
-                  <div className={styles.zebulon}>
-                    <SponsorZebulon />
-                  </div>
-                  <div className={styles.habitations}>
-                    <SponsorHabitations />
-                  </div>
-                  <div className={styles.spencer}>
-                    <SponsorSpencer />
-                  </div>
-                </div>
-                <div className="hidden w-full -mt-6 mobile:block">
-                  <div
-                    className={cn(
-                      'flex items-center justify-between',
-                      styles.sponsorsRow
-                    )}
-                  >
-                    <div className={cn(styles.panasonic)}>
-                      <SponsorPanasonic />
-                    </div>
-                    <div className={cn(styles.frog)}>
-                      <SponsorFrog />
-                    </div>
-                  </div>
-                  <LineReveal
-                    isRevealed={intersection && intersection.isIntersecting}
-                  />
-                  <div
-                    className={cn(
-                      'flex items-center justify-between',
-                      styles.sponsorsRow
-                    )}
-                  >
-                    <div className={cn(styles.mrx)}>
-                      <SponsorMRX />
-                    </div>
-                    <div className={cn(styles.zebulon)}>
-                      <SponsorZebulon />
-                    </div>
-                  </div>
-                  <LineReveal
-                    isRevealed={intersection && intersection.isIntersecting}
-                  />
-                  <div
-                    className={cn(
-                      'flex items-center justify-between',
-                      styles.sponsorsRow
-                    )}
-                  >
-                    <div className={cn(styles.habitations)}>
-                      <SponsorHabitations />
-                    </div>
-                    <div className={cn(styles.spencer)}>
-                      <SponsorSpencer />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
+        </div>
+        <div className="w-2/8">
+          <SponsorsHeader {...items[2]} />
+          <a
+            href="https://oaa.on.ca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(styles.oaa, 'block')}
+          >
+            <SponsorOAA />
+          </a>
+        </div>
+      </div>
+      <div className="my-30 my-grid">
+        <div className="w-2/8">
+          <SponsorsHeader {...items[3]} />
+          <div className="flex items-center">
+            <div className={cn(styles.panasonic, 'mr-1')}>
+              <SponsorPanasonic />
+            </div>
+            <div className={styles.frog}>
+              <SponsorFrog />
+            </div>
+          </div>
+        </div>
+        <div className="w-2/8">
+          <SponsorsHeader isEmpty />
+          <div className="flex items-center">
+            <div className={cn(styles.mrx, 'mr-1')}>
+              <SponsorMRX />
+            </div>
+            <div className={styles.zebulon}>
+              <SponsorZebulon />
+            </div>
+          </div>
+        </div>
+        <div className="w-2/8">
+          <SponsorsHeader isEmpty />
+          <div className="flex items-center">
+            <div className={cn(styles.habitations, 'mr-1')}>
+              <SponsorHabitations />
+            </div>
+            <div className={styles.spencer}>
+              <SponsorSpencer />
+            </div>
+          </div>
+        </div>
+        <div className="w-2/8">
+          <SponsorsHeader isEmpty />
+          <div className={styles.artspce}>
+            <SponsorArtspce />
           </div>
         </div>
       </div>
-      {index === 0 && <div className="w-4/8" />}
-      {index === 2 && (
-        <>
-          <div className="w-2/8" />
-          <div className="w-2/8" />
-          <div className="flex flex-wrap items-center justify-between pb-10 mobile:pb-0 w-4/8 mobile:hidden">
-            <div className="flex-1 mb-10 mr-10">
-              <a
-                href="https://www.mcgill.ca/architecture/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn('block', styles.mcgill)}
-              >
-                <SponsorMcGill />
-              </a>
-            </div>
-            <div className="flex-1 mb-10 mr-10">
-              <a
-                href="https://architecture.umontreal.ca/accueil/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn('block', styles.udm)}
-              >
-                <SponsorUDM />
-              </a>
-            </div>
-            <div className="flex-1 mb-10">
-              <a
-                href="https://oaa.on.ca"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn('block', styles.oaa)}
-              >
-                <SponsorOAA />
-              </a>
-            </div>
-          </div>
-          <div className="w-2/8" />
-        </>
-      )}
-    </>
+    </div>
   )
 }
 
 const SponsorsSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div className="mb-10 my-grid mobile:mt-4 mobile:mb-0">
-      {items.map((item, itemIndex) => (
-        <SponsorsItem key={itemIndex} {...item} index={itemIndex} lang={lang} />
-      ))}
-    </div>
+    <>
+      <DesktopSponsors items={items} />
+      <MobileSponsors items={items} lang={lang} />
+    </>
   )
 }
 
@@ -462,7 +489,7 @@ const Sections = ({ sections, scrollToSection }) => {
             zIndex={sections.length - index}
             lang={lang}
           />
-          <div className={cn(styles.sectionBox, 'pt-16 relative mobile:pt-0')}>
+          <div className="pt-16 relative mobile:pt-0">
             <div
               id={section.type}
               className={cn(
