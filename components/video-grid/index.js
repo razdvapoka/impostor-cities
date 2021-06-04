@@ -56,6 +56,7 @@ const groupVideosById = (
             defaultVideoTime: defaultVideoTime || video.defaultVideoTime,
             captionEn: blockDescriptionEn || video.captionEn,
             captionFr: blockDescriptionFr || video.captionFr,
+            isLobby: video.title.indexOf('LOBBY') !== -1,
           },
         }
   }, {})
@@ -104,7 +105,10 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     setCurrentVideos(
       randomVideoItems(
         Object.values(videoMap).filter(
-          (video) => !video.isTakeover && (!isMobile || !video.stopOnHover)
+          (video) =>
+            !video.isTakeover &&
+            !video.isLobby &&
+            (!isMobile || !video.stopOnHover)
         ),
         isMobile ? VIDEO_COUNT_MOBILE : VIDEO_COUNT
       )
@@ -115,6 +119,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
     (index, isManual) => {
       const prevVideo = currentVideos[index]
       const isAlreadyTakenOver = currentVideos.some((v) => v.isTakeover)
+      const isAlreadyLobbied = currentVideos.some((v) => v.isLobby)
       const nextVideoCandidates = Object.values(videoMap).filter(
         (v) =>
           // don't choose a video that's already on the grid
@@ -123,6 +128,8 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           // or the switch wasn't initiated by click
           // or it's the mobile version
           ((!isAlreadyTakenOver && !isMobile && isManual) || !v.isTakeover) &&
+          // don't choose lobby videos if there already is one on the grid
+          (!isAlreadyLobbied || !v.isLobby) &&
           // don't choose typographic videos on mobile
           (!isMobile || !v.stopOnHover)
       )
