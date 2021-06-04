@@ -88,6 +88,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
   const isMobile = breakpoint === 'MOBILE'
   const videoMap = useMemo(() => groupVideosById(videos), [videos])
   const [unmutedVideoIndex, setUnmutedVideoIndex] = useState(null)
+  const [playingVideoIndex, setPlayingVideoIndex] = useState(null)
   const [currentVideos, setCurrentVideos] = useState([])
   const [takeover, setTakeover] = useState(null)
   const [syncBlocks, setSyncBlocks] = useState({})
@@ -236,6 +237,8 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
                     syncBlocks={syncBlocks}
                     setSyncBlock={setSyncBlock}
                     isMobile={isMobile}
+                    playingVideoIndex={playingVideoIndex}
+                    setPlayingVideoIndex={setPlayingVideoIndex}
                     {...video}
                   />
                 </div>

@@ -3,6 +3,8 @@ import { useVideo } from 'react-use'
 import Overlay from './overlay'
 
 const VideoItem = ({
+  playingVideoIndex,
+  setPlayingVideoIndex,
   vimeoUrl,
   vimeoPosterUrl,
   person,
@@ -25,6 +27,7 @@ const VideoItem = ({
   setTakeover,
   isMobile,
   captionType,
+  sys: { id },
   defaultVideoTime = 0,
 }) => {
   const switchToNext = useCallback(
@@ -42,9 +45,10 @@ const VideoItem = ({
   }, [switchToNext, blockId, isTakeover, setSyncBlock])
 
   const isMuted =
-    !pageHasFocus ||
-    !hasUserInteraction ||
-    (unmutedVideoIndex !== null && index !== unmutedVideoIndex)
+    !isMobile &&
+    (!pageHasFocus ||
+      !hasUserInteraction ||
+      (unmutedVideoIndex !== null && index !== unmutedVideoIndex))
   const [video, state, controls, ref] = useVideo(
     <video
       className="object-contain object-center"
@@ -73,30 +77,23 @@ const VideoItem = ({
     }
   }, [ref])
 
+  const handleClick = useCallback(() => {
+    if (playingVideoIndex === index) {
+      setPlayingVideoIndex(null)
+    } else {
+      setPlayingVideoIndex(index)
+    }
+  }, [index, playingVideoIndex, setPlayingVideoIndex])
+
   useEffect(() => {
     if (isMobile) {
-      if (index === unmutedVideoIndex && state.paused) {
+      if (index === playingVideoIndex) {
         controls.play()
-      } else if (index !== unmutedVideoIndex && !state.paused) {
+      } else {
         controls.pause()
       }
     }
-  }, [unmutedVideoIndex, index, isMobile, state, controls])
-
-  const handleClick = useCallback(() => {
-    if (index === unmutedVideoIndex) {
-      setUnmutedVideoIndex(null)
-    } else {
-      setUnmutedVideoIndex(index)
-    }
-  }, [
-    index,
-    unmutedVideoIndex,
-    setUnmutedVideoIndex,
-    stopOnHover,
-    state,
-    controls,
-  ])
+  }, [isMobile, index, playingVideoIndex, controls])
 
   const handleMouseEnter = useCallback(() => {
     if (stopOnHover) {
