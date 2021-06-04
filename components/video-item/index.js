@@ -82,16 +82,13 @@ const VideoItem = ({
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
+      controls.play()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
   useEffect(() => {
-    if (isMobile) {
-      if (index === playingVideoIndex) {
-        controls.play()
-      } else {
-        controls.pause()
-      }
+    if (isMobile && index !== playingVideoIndex) {
+      controls.pause()
     }
   }, [isMobile, index, playingVideoIndex, controls])
 
