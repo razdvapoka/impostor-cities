@@ -111,7 +111,13 @@ const HeaderMain = ({
         )}
       >
         <Link href="/">
-          <a className={cn('inline-block', styles.logoBox)}>
+          <a
+            className={cn('inline-block', styles.logoBox)}
+            onClick={(e) => {
+              e.stopPropagation()
+              closeMenu()
+            }}
+          >
             <span
               className={cn('block ml-1', styles.logo, {
                 [styles.logoOpen]: isOpen || isCart,
@@ -620,6 +626,7 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
   const openMenu = useCallback(() => {
     setIsOpen(true)
   }, [setIsOpen])
+
   const closeMenu = useCallback(() => {
     setIsOpen(false)
   }, [setIsOpen])
