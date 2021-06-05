@@ -473,7 +473,7 @@ const Section = ({ type, ...rest }) => {
   return Component ? <Component {...rest} /> : null
 }
 
-const HEADER_HEIGHT = 35
+const HEADER_HEIGHT = 42
 
 const Sections = ({ sections, scrollToSection }) => {
   const { lang } = useTranslation('common')
@@ -489,7 +489,7 @@ const Sections = ({ sections, scrollToSection }) => {
             zIndex={sections.length - index}
             lang={lang}
           />
-          <div className="pt-16 relative mobile:pt-0">
+          <div className="relative pt-16 mobile:pt-0">
             <div
               id={section.type}
               className={cn(
