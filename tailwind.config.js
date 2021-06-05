@@ -47,6 +47,8 @@ module.exports = {
     ],
     options: {
       safelist: [
+        /^mt-20$/,
+        /^my-30$/,
         /^whitespace-nowrap$/,
         /^space-x-15$/,
         /^pr-3$/,
