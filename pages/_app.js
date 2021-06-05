@@ -32,18 +32,33 @@ const correctVH = `
   setCorrectVh();
 `
 
+const checkIfThreeColumnHeader = (url) =>
+  !!THREE_COLUMN_ROUTES.find((route) => route === url)
+
 function MyApp({ Component, pageProps }) {
   const [isShop, setIsShop] = useState(false)
   const router = useRouter()
-  const isThreeColumnHeader = !!THREE_COLUMN_ROUTES.find(
-    (route) => route === router.route
+  const [isThreeColumnHeader, setIsThreeColumnHeader] = useState(
+    checkIfThreeColumnHeader(router.route)
   )
+
   useEffect(() => {
     setIsShop(
       !!SHOP_ROUTES.find((route) => route === router.route) &&
         window?.innerWidth > MOBILE_BP
     )
   }, [router])
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      setIsThreeColumnHeader(checkIfThreeColumnHeader(url))
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [])
+
   const [isHeaderOpen, setIsHeaderOpen] = useState(false)
   return (
     <div>
