@@ -17,7 +17,7 @@ import SponsorMRX from '../../../assets/icons/sponsor-mrx.svg'
 import SponsorZebulon from '../../../assets/icons/sponsor-zebulon.svg'
 import SponsorHabitations from '../../../assets/icons/sponsor-habitations.svg'
 import SponsorSpencer from '../../../assets/icons/sponsor-spencer.svg'
-import SponsorArtspce from '../../../assets/icons/sponsor-artspce.svg'
+import SponsorArtspce from '../../../assets/icons/sponsor-arts.svg'
 
 if (typeof window !== 'undefined') {
   smoothscroll.polyfill()
