@@ -27,7 +27,6 @@ const VideoItem = ({
   setTakeover,
   isMobile,
   captionType,
-  sys: { id },
   defaultVideoTime = 0,
 }) => {
   const switchToNext = useCallback(
@@ -85,6 +84,12 @@ const VideoItem = ({
       controls.play()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
+
+  useEffect(() => {
+    if (isMobile && index === playingVideoIndex && state.paused) {
+      controls.play()
+    }
+  }, [isMobile, index, playingVideoIndex, state])
 
   useEffect(() => {
     if (isMobile && index !== playingVideoIndex) {
