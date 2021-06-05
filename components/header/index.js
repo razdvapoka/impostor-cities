@@ -357,7 +357,7 @@ const NavBottom = ({ closeMenu }) => {
 const HeaderNavTop = ({ closeMenu, isOpen }) => {
   return (
     <div className="hidden mobile:block">
-      <div className="my-grid mobile:pb-2">
+      <div className={cn('my-grid mobile:pb-2', styles.navContent)}>
         <div className="w-4/8">
           <Link href="/">
             <a
@@ -440,7 +440,12 @@ const HeaderNav = ({
   return (
     <div className="mobile:flex-1 mobile:flex mobile:flex-col">
       <HeaderNavTop isOpen={isOpen} closeMenu={closeMenu} />
-      <div className="pb-6 my-grid mobile:flex-1 mobile:pb-2 mobile:-mt-8">
+      <div
+        className={cn(
+          'pb-6 my-grid mobile:flex-1 mobile:pb-2 mobile:-mt-8',
+          styles.navContent
+        )}
+      >
         <HeaderNavHomeColumn
           closeMenu={closeMenu}
           isThreeColumnHeader={isThreeColumnHeader}
