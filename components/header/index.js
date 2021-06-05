@@ -524,7 +524,7 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
             </TextReveal>
           </div>
         </Lift>
-        <div className="mt-auto text-ts3">
+        <div className="mt-auto text-ts1">
           <TextReveal isRevealed={isOpen} transitionDelayMs={delay}>
             ©2021 Impostor Cities
             <br />
