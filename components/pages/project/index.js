@@ -76,14 +76,12 @@ const SectionHeader = ({
 
 const AboutSection = ({ itemsCollection: { items }, lang }) => {
   return (
-    <div
-      className={cn(
-        'space-y-4 mb-30 mobile:mb-19 mobile:mt-11',
-        styles.aboutSection
-      )}
-    >
+    <div className={cn('mb-30 mobile:mb-19 mobile:mt-11', styles.aboutSection)}>
       {items.map((item, itemIndex) => (
-        <div key={itemIndex} className="my-grid">
+        <div
+          key={itemIndex}
+          className={cn('my-grid', itemIndex === 1 ? 'mt-20' : 'mt-4')}
+        >
           <div className="w-2/8 mobile:hidden" />
           <div className={cn('w-2/8 mobile:w-full', enOnly(lang))}>
             <div className={cn('pr-5 mobile:pr-3')}>
