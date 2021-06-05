@@ -528,9 +528,9 @@ const SlidingHeader = () => {
         <div className="pr-3 whitespace-nowrap">
           Canada Pavilion
           <br />
-          Giardini della
+          Giardini della Biennale
           <br />
-          Biennale Venezia
+          Venezia
         </div>
       </div>
       <div className={cn('flex flex-nowrap space-x-15', frOnly(lang))}>
@@ -551,9 +551,9 @@ const SlidingHeader = () => {
         <div className="pr-3 whitespace-nowrap">
           Pavillon du Canada
           <br />
-          Giardini della
+          Giardini della Biennale
           <br />
-          Biennale Venezia
+          Venezia
         </div>
       </div>
     </div>
