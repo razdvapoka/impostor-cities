@@ -78,7 +78,7 @@ const AboutSection = ({ itemsCollection: { items }, lang }) => {
   return (
     <div
       className={cn(
-        'space-y-20 mb-30 mobile:mb-19 mobile:mt-11',
+        'space-y-4 mb-30 mobile:mb-19 mobile:mt-11',
         styles.aboutSection
       )}
     >
