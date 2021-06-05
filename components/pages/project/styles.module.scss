@@ -29,7 +29,6 @@
 
 .councilLogo {
   width: 257px;
-  height: 45px;
   @include mediaQuery(mobile) {
     width: 50%;
     height: auto;
@@ -39,7 +38,6 @@
 
 .sajo {
   width: 80px;
-  height: 22px;
   @include mediaQuery(mobile) {
     width: 21%;
     height: auto;
@@ -47,8 +45,7 @@
 }
 
 .mcgill {
-  width: 111px;
-  height: 26px;
+  width: calc(111 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 30%;
     height: auto;
@@ -56,8 +53,7 @@
 }
 
 .udm {
-  width: 103px;
-  height: 39px;
+  width: calc(103 / 1440 * 100vw);
   margin: 0 auto;
   @include mediaQuery(mobile) {
     margin: 0;
@@ -67,8 +63,7 @@
 }
 
 .oaa {
-  width: 148px;
-  height: 33px;
+  width: calc(148 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 40%;
     height: auto;
@@ -76,8 +71,7 @@
 }
 
 .panasonic {
-  width: 118px;
-  height: 18px;
+  width: calc(118 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 31%;
     height: auto;
@@ -85,8 +79,7 @@
 }
 
 .frog {
-  width: 70px;
-  height: 38px;
+  width: calc(70 / 1440 * 100vw);
   margin: 0 auto;
   @include mediaQuery(mobile) {
     margin: 0;
@@ -96,8 +89,7 @@
 }
 
 .mrx {
-  width: 71px;
-  height: 35px;
+  width: calc(71 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 17%;
     height: auto;
@@ -105,8 +97,7 @@
 }
 
 .zebulon {
-  width: 156px;
-  height: 14px;
+  width: calc(156 / 1440 * 100vw);
   margin: 0 auto;
   @include mediaQuery(mobile) {
     margin: 0;
@@ -116,8 +107,7 @@
 }
 
 .habitations {
-  width: 121px;
-  height: 25px;
+  width: calc(121 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 32%;
     height: auto;
@@ -125,8 +115,7 @@
 }
 
 .spencer {
-  width: 150px;
-  height: 10px;
+  width: calc(150 / 1440 * 100vw);
   margin: 0 auto;
   @include mediaQuery(mobile) {
     margin: 0;
@@ -136,7 +125,7 @@
 }
 
 .artspce {
-  width: 100px;
+  width: calc(100 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 25%;
     height: auto;
