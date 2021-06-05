@@ -33,25 +33,16 @@ const PressColumn = ({ locale, assets, inquiries }) => {
         {assets}
       </Markdown>
       <Markdown
-        className={cn('text-ts2 mobile:pt-2', styles.markdown)}
+        className={cn(
+          'text-ts2 mobile:pt-2',
+          styles.markdown,
+          styles.markdownMedia
+        )}
         locale={locale}
         override
       >
         {inquiries}
       </Markdown>
-      {/*
-      <div className="mt-12">
-        <div className="text-ts3">{inquiriesTitle}</div>
-        <a
-          className="text-ts3B transition-colors hover:text-grey"
-          href={`mailto:${inquiriesUrl}`}
-        >
-          <Markdown className="inline-block" locale={locale}>
-            {inquiries}
-          </Markdown>
-        </a>
-      </div>
-      */}
     </div>
   )
 }

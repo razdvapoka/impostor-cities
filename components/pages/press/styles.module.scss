@@ -11,3 +11,7 @@
 .markdown a:hover {
   color: color(grey);
 }
+
+.markdownMedia a {
+  @include font-style(ts1B);
+}
