@@ -11,6 +11,7 @@ import { TextReveal, LineReveal, LangSwitcher } from '@/components'
 import getT from 'next-translate/getT'
 import { enOnly, frOnly } from '@/lib/utils'
 import { useBreakpoint } from '@/lib/hooks'
+import Arrow from '../../assets/icons/slider-arrow.svg'
 import {
   disableBodyScroll,
   enableBodyScroll,
@@ -360,7 +361,7 @@ const HeaderNavTop = ({ closeMenu, isOpen }) => {
         <div className="w-4/8">
           <Link href="/">
             <a
-              className={cn(styles.homeButton, 'mt-1 mb-9 hidden mobile:block')}
+              className={cn(styles.homeButton, 'mt-1 mb-9')}
               onClick={closeMenu}
             />
           </Link>
@@ -413,7 +414,15 @@ const HeaderNavHomeColumn = ({ closeMenu, isThreeColumnHeader }) => {
     >
       <div className="flex items-end h-full pl-1">
         <Link href="/">
-          <a className={cn(styles.homeButton, 'block')} onClick={closeMenu} />
+          <a
+            className={cn(
+              styles.homeArrow,
+              'hover:text-grey transition-colors'
+            )}
+            onClick={closeMenu}
+          >
+            <Arrow />
+          </a>
         </Link>
       </div>
     </div>
