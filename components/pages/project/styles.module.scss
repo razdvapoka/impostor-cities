@@ -37,7 +37,7 @@
 }
 
 .sajo {
-  width: 80px;
+  width: calc(80 / 1440 * 100vw);
   @include mediaQuery(mobile) {
     width: 21%;
     height: auto;
