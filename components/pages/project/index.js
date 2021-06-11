@@ -1,7 +1,8 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useBreakpoint } from '@/lib/hooks'
 import useTranslation from 'next-translate/useTranslation'
 import smoothscroll from 'smoothscroll-polyfill'
-import { useIntersection } from 'react-use'
+import { useScrollbarWidth, useIntersection } from 'react-use'
 import { Markdown as MarkdownBase, Layout, LineReveal } from '@/components'
 import { enOnly, frOnly } from '@/lib/utils'
 import cn from 'classnames'
@@ -561,6 +562,13 @@ const SlidingHeader = () => {
 }
 
 const Project = ({ commonData, data }) => {
+  const breakpoint = useBreakpoint()
+  const [scrollBarWidth, setScrollBarWidth] = useState(0)
+  const isMobile = breakpoint === 'MOBILE'
+  const sbw = useScrollbarWidth()
+  useEffect(() => {
+    setScrollBarWidth(sbw)
+  }, [sbw])
   const scrollToSection = (type) => {
     const sectionEl = document.querySelector(`#${type}`)
     sectionEl.scrollIntoView({
@@ -569,8 +577,19 @@ const Project = ({ commonData, data }) => {
   }
   return (
     <Layout {...commonData} isProject>
-      <div className={cn('pt-22 mobile:pt-15', styles.sectionsBox)}>
-        <div className={cn('overflow-auto', styles.sections)}>
+      <div
+        className={cn('pt-22 mobile:pt-15 overflow-hidden', styles.sectionsBox)}
+      >
+        <div
+          className={cn('overflow-auto', styles.sections)}
+          style={
+            !isMobile && scrollBarWidth > 0
+              ? {
+                  marginRight: `-${scrollBarWidth}px`,
+                }
+              : {}
+          }
+        >
           <div className="hidden px-3 mb-4 mobile:block text-ts2">
             22.05-21.11 2021
           </div>

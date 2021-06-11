@@ -628,9 +628,8 @@ const HeaderInfo = ({ isOpen, isThreeColumnHeader }) => {
   )
 }
 
-const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
+const Header = ({ isOpen, setIsOpen, isThreeColumnHeader, pageHasScroll }) => {
   const [scrollBarWidth, setScrollBarWidth] = useState(0)
-  const [pageHasScroll, setPageHasScroll] = useState(false)
 
   const sbw = useScrollbarWidth()
   useEffect(() => {
@@ -669,13 +668,6 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
     ? 'calc(100vh - 54px)'
     : 0
 
-  const handleResize = useCallback(() => {
-    window.requestAnimationFrame(() => {
-      const hasScroll = document.body.scrollHeight > document.body.clientHeight
-      setPageHasScroll(hasScroll)
-    })
-  }, [setPageHasScroll])
-
   const breakpoint = useBreakpoint()
   const isMobile = breakpoint === 'MOBILE'
 
@@ -690,12 +682,9 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
   }, [])
 
   useEffect(() => {
-    handleResize()
     window.addEventListener('wheel', handleScroll)
-    window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('wheel', handleScroll)
-      window.removeEventListener('resize', handleResize)
     }
   }, [])
 

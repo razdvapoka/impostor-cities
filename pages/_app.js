@@ -1,5 +1,5 @@
 import 'intl-pluralrules'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Header } from '@/components'
@@ -37,6 +37,7 @@ const checkIfThreeColumnHeader = (url) =>
 
 function MyApp({ Component, pageProps }) {
   const [isShop, setIsShop] = useState(false)
+  const [pageHasScroll, setPageHasScroll] = useState(false)
   const router = useRouter()
   const [isThreeColumnHeader, setIsThreeColumnHeader] = useState(
     checkIfThreeColumnHeader(router.route)
@@ -49,9 +50,25 @@ function MyApp({ Component, pageProps }) {
     )
   }, [router])
 
+  const handleResize = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      const hasScroll = document.body.scrollHeight > document.body.clientHeight
+      setPageHasScroll(hasScroll)
+    })
+  }, [setPageHasScroll])
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   useEffect(() => {
     const handleRouteChange = (url) => {
       setIsThreeColumnHeader(checkIfThreeColumnHeader(url))
+      handleResize()
     }
     router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
@@ -86,6 +103,7 @@ function MyApp({ Component, pageProps }) {
               isShop={isShop}
               isOpen={isHeaderOpen}
               setIsOpen={setIsHeaderOpen}
+              pageHasScroll={pageHasScroll}
             />
             <Component {...pageProps} />
           </div>
