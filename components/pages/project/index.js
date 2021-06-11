@@ -484,7 +484,7 @@ const Sections = ({ sections, scrollToSection }) => {
             scrollToSection={scrollToSection}
             top={index * HEADER_HEIGHT_NO_PADDING}
             bottom={(sections.length - 1 - index) * HEADER_HEIGHT_NO_PADDING}
-            zIndex={index === 2 ? 20 : index === 3 ? 10 : 1}
+            zIndex={index === 0 || index === 2 ? 20 : index === 3 ? 10 : 1}
             lang={lang}
           />
           <div className="relative pt-16 mobile:pt-0">
