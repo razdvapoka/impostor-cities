@@ -670,7 +670,10 @@ const Header = ({ isOpen, setIsOpen, isThreeColumnHeader }) => {
     : 0
 
   const handleResize = useCallback(() => {
-    setPageHasScroll(document.body.scrollHeight > document.body.clientHeight)
+    window.requestAnimationFrame(() => {
+      const hasScroll = document.body.scrollHeight > document.body.clientHeight
+      setPageHasScroll(hasScroll)
+    })
   }, [setPageHasScroll])
 
   const breakpoint = useBreakpoint()
