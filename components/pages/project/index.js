@@ -57,7 +57,7 @@ const SectionHeader = ({
             className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="pb-2 mobile:pb-0 text-ts2">{headerEn}</h2>
+            <h2 className="text-ts2">{headerEn}</h2>
           </button>
         </div>
         <div className={cn('w-2/8 mobile:w-full', frOnly(lang))}>
@@ -65,9 +65,7 @@ const SectionHeader = ({
             className="text-left hover:text-grey transition-colors"
             onClick={handleClick}
           >
-            <h2 className="pb-2 mobile:pt-2 mobile:pb-0 text-ts2 whitespace-nowrap">
-              {headerFr}
-            </h2>
+            <h2 className="text-ts2 whitespace-nowrap">{headerFr}</h2>
           </button>
         </div>
       </div>
@@ -472,7 +470,8 @@ const Section = ({ type, ...rest }) => {
   return Component ? <Component {...rest} /> : null
 }
 
-const HEADER_HEIGHT = 42
+const HEADER_HEIGHT = 43
+const HEADER_HEIGHT_NO_PADDING = 36
 
 const Sections = ({ sections, scrollToSection }) => {
   const { lang } = useTranslation('common')
@@ -483,9 +482,9 @@ const Sections = ({ sections, scrollToSection }) => {
           <SectionHeader
             {...section}
             scrollToSection={scrollToSection}
-            top={index * HEADER_HEIGHT}
-            bottom={(sections.length - 1 - index) * HEADER_HEIGHT}
-            zIndex={sections.length - index}
+            top={index * HEADER_HEIGHT_NO_PADDING}
+            bottom={(sections.length - 1 - index) * HEADER_HEIGHT_NO_PADDING}
+            zIndex={index === 2 ? 20 : index === 3 ? 10 : 1}
             lang={lang}
           />
           <div className="relative pt-16 mobile:pt-0">

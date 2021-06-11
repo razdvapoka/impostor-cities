@@ -1,10 +1,7 @@
 .sectionHeader {
   bottom: 0;
   h2 {
-    transform: translateY(10px);
-    @include mediaQuery(mobile) {
-      transform: none;
-    }
+    padding-top: 8px;
   }
 }
 
