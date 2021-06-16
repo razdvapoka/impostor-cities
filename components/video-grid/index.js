@@ -20,6 +20,17 @@ const BLOCK_INDICIES = [
 const BLOCK_INDICIES_MOBILE = [[0, 1, 2, 3]]
 
 const TRANSITION_DURATION = 1000
+const TAG_REGEXP = /\*(?<tag>.+)\*/
+
+const getVideoTag = (video) => {
+  const matches = video.title.match(TAG_REGEXP)
+  return matches ? matches.groups.tag.toLowerCase() : null
+}
+
+const getActiveTags = (videos) =>
+  videos
+    .filter((video) => video.tag)
+    .reduce((tags, video) => tags.add(video.tag), new Set())
 
 const groupVideosById = (
   videos,
@@ -57,6 +68,7 @@ const groupVideosById = (
             captionEn: blockDescriptionEn || video.captionEn,
             captionFr: blockDescriptionFr || video.captionFr,
             isLobby: video.title.indexOf('LOBBY') !== -1,
+            tag: getVideoTag(video),
           },
         }
   }, {})
@@ -120,6 +132,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
       const prevVideo = currentVideos[index]
       const isAlreadyTakenOver = currentVideos.some((v) => v.isTakeover)
       const isAlreadyLobbied = currentVideos.some((v) => v.isLobby)
+      const activeTags = getActiveTags(currentVideos)
       const nextVideoCandidates = Object.values(videoMap).filter(
         (v) =>
           // don't choose a video that's already on the grid
@@ -131,7 +144,9 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
           // don't choose lobby videos if there already is one on the grid
           (!isAlreadyLobbied || !v.isLobby) &&
           // don't choose typographic videos on mobile
-          (!isMobile || !v.stopOnHover)
+          (!isMobile || !v.stopOnHover) &&
+          // don't choose videos with tags that already are on the grid
+          !activeTags.has(v.tag)
       )
       const nextVideo = prevVideo.nextVideoItem
         ? nextVideoCandidates.find(
