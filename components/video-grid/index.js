@@ -90,8 +90,13 @@ const randomVideoItems = (videos, count) => {
   const pickedVideos = []
   for (let i = 0; i < count; i++) {
     const pickedIndex = pickRandomWeighted(candidates)
-    pickedVideos.push(videos[pickedIndex])
-    candidates = candidates.filter(([index]) => index !== pickedIndex)
+    const pickedVideo = videos[pickedIndex]
+    pickedVideos.push(pickedVideo)
+    candidates = candidates.filter(
+      ([index]) =>
+        index !== pickedIndex &&
+        (!pickedVideo.tag || pickedVideo.tag !== videos[index].tag)
+    )
   }
   return pickedVideos
 }
