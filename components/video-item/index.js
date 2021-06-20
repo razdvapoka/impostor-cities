@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useVideo } from 'react-use'
 import Overlay from './overlay'
 
@@ -52,7 +52,6 @@ const VideoItem = ({
     <video
       className="object-contain object-center"
       src={vimeoUrl}
-      poster={vimeoPosterUrl}
       playsInline
       muted={isMuted}
       onEnded={handleEnded}
@@ -81,34 +80,42 @@ const VideoItem = ({
     }
   }, [ref])
 
+  const [isLoading, setIsLoading] = useState(false)
   const preloadAndPlay = useCallback(() => {
-    if (ref.current) {
+    if (ref.current && state.paused) {
       if (ref.current.readyState > 1) {
         controls.play()
       } else {
-        const handleCanPlay = () => {
-          controls.play()
+        if (!isLoading) {
+          const handleCanPlay = () => {
+            controls.play()
+            setIsLoading(false)
+          }
+          const handleLoadStart = () => {
+            setIsLoading(true)
+          }
+          ref.current.addEventListener('canplay', handleCanPlay, { once: true })
+          ref.current.addEventListener('loadstart', handleLoadStart, {
+            once: true,
+          })
+          ref.current.load()
         }
-        ref.current.addEventListener('canplay', handleCanPlay)
-        ref.current.load()
       }
     }
-  }, [state, controls, ref])
+  }, [state, controls, ref, isLoading, setIsLoading])
 
   const handleClick = useCallback(() => {
     if (playingVideoIndex === index) {
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
-      // preloadAndPlay()
-      controls.play()
+      preloadAndPlay()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
   useEffect(() => {
     if (isMobile && index === playingVideoIndex && state.paused) {
-      // preloadAndPlay()
-      controls.play()
+      preloadAndPlay()
     }
   }, [isMobile, index, playingVideoIndex, state])
 
@@ -154,7 +161,7 @@ const VideoItem = ({
 
   return (
     <div
-      className="aspect-w-16 aspect-h-9"
+      className="aspect-w-16 aspect-h-9 w-full h-full"
       {...(isMobile
         ? { onClick: handleClick }
         : {
@@ -163,6 +170,12 @@ const VideoItem = ({
           })}
     >
       {video}
+      {state.paused && state.time === 0 && (
+        <div
+          className="bg-black bg-center bg-no-repeat bg-contain"
+          style={{ backgroundImage: `url(${vimeoPosterUrl})` }}
+        />
+      )}
       <Overlay
         stopOnHover={stopOnHover}
         captionEn={captionEn}
@@ -176,6 +189,7 @@ const VideoItem = ({
         blockCount={blockCount}
         isMobile={isMobile}
         isPlaying={!state.paused}
+        isLoading={isLoading}
         captionType={captionType}
       />
     </div>
