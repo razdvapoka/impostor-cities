@@ -50,7 +50,7 @@ const VideoItem = ({
       (unmutedVideoIndex !== null && index !== unmutedVideoIndex))
   const [video, state, controls, ref] = useVideo(
     <video
-      className="object-contain object-center"
+      className="object-contain object-center w-full h-full"
       src={vimeoUrl}
       poster={vimeoPosterUrl}
       playsInline
