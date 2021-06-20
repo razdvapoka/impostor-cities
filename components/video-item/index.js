@@ -50,9 +50,8 @@ const VideoItem = ({
       (unmutedVideoIndex !== null && index !== unmutedVideoIndex))
   const [video, state, controls, ref] = useVideo(
     <video
-      className="object-contain object-center w-full h-full"
+      className="object-contain object-center"
       src={vimeoUrl}
-      poster={vimeoPosterUrl}
       playsInline
       muted={isMuted}
       onEnded={handleEnded}
@@ -162,7 +161,7 @@ const VideoItem = ({
 
   return (
     <div
-      className="aspect-w-16 aspect-h-9 w-full"
+      className="aspect-w-16 aspect-h-9 w-full h-full"
       {...(isMobile
         ? { onClick: handleClick }
         : {
@@ -171,6 +170,7 @@ const VideoItem = ({
           })}
     >
       {video}
+      {state.paused && <img className="object-contain" src={vimeoPosterUrl} />}
       <Overlay
         stopOnHover={stopOnHover}
         captionEn={captionEn}
