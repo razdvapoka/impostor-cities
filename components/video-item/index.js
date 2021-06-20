@@ -53,12 +53,17 @@ const VideoItem = ({
       className="object-contain object-center"
       src={vimeoUrl}
       poster={vimeoPosterUrl}
-      autoPlay={!isTakeover && !isMobile}
       playsInline
       muted={isMuted}
       onEnded={handleEnded}
     />
   )
+
+  useEffect(() => {
+    if (!isTakeover && !isMobile) {
+      preloadAndPlay()
+    }
+  }, [isTakeover, isMobile])
 
   useEffect(() => {
     if (ref && ref.current) {
@@ -76,18 +81,33 @@ const VideoItem = ({
     }
   }, [ref])
 
+  const preloadAndPlay = useCallback(() => {
+    if (ref.current) {
+      if (ref.current.readyState > 1) {
+        controls.play()
+      } else {
+        const handleCanPlay = () => {
+          controls.play()
+        }
+        ref.current.addEventListener('canplay', handleCanPlay)
+        ref.current.load()
+      }
+    }
+  }, [state, controls, ref])
+
   const handleClick = useCallback(() => {
     if (playingVideoIndex === index) {
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
-      controls.play()
+      preloadAndPlay()
+      // controls.play()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
   useEffect(() => {
     if (isMobile && index === playingVideoIndex && state.paused) {
-      controls.play()
+      preloadAndPlay()
     }
   }, [isMobile, index, playingVideoIndex, state])
 
