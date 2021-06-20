@@ -109,7 +109,7 @@ const VideoItem = ({
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
-      preloadAndPlay()
+      controls.play()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
