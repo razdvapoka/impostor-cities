@@ -100,14 +100,15 @@ const VideoItem = ({
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
-      preloadAndPlay()
-      // controls.play()
+      // preloadAndPlay()
+      controls.play()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
   useEffect(() => {
     if (isMobile && index === playingVideoIndex && state.paused) {
-      preloadAndPlay()
+      // preloadAndPlay()
+      controls.play()
     }
   }, [isMobile, index, playingVideoIndex, state])
 
