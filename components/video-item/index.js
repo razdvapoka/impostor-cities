@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useVideo } from 'react-use'
 import Overlay from './overlay'
 
@@ -81,34 +81,41 @@ const VideoItem = ({
     }
   }, [ref])
 
+  const [isLoading, setIsLoading] = useState(false)
   const preloadAndPlay = useCallback(() => {
-    if (ref.current) {
+    if (ref.current && state.paused) {
       if (ref.current.readyState > 1) {
         controls.play()
       } else {
-        const handleCanPlay = () => {
-          controls.play()
+        if (!isLoading) {
+          const handleCanPlay = () => {
+            controls.play()
+          }
+          const handleLoadStart = () => {
+            setIsLoading(true)
+          }
+          ref.current.addEventListener('canplay', handleCanPlay, { once: true })
+          ref.current.addEventListener('loadstart', handleLoadStart, {
+            once: true,
+          })
+          ref.current.load()
         }
-        ref.current.addEventListener('canplay', handleCanPlay)
-        ref.current.load()
       }
     }
-  }, [state, controls, ref])
+  }, [state, controls, ref, isLoading, setIsLoading])
 
   const handleClick = useCallback(() => {
     if (playingVideoIndex === index) {
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
-      // preloadAndPlay()
-      controls.play()
+      preloadAndPlay()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
   useEffect(() => {
     if (isMobile && index === playingVideoIndex && state.paused) {
-      // preloadAndPlay()
-      controls.play()
+      preloadAndPlay()
     }
   }, [isMobile, index, playingVideoIndex, state])
 
