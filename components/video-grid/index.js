@@ -127,10 +127,10 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
             !video.isLobby &&
             (!isMobile || !video.stopOnHover)
         ),
-        isMobile ? VIDEO_COUNT_MOBILE : VIDEO_COUNT
+        window.innerWidth < 750 ? VIDEO_COUNT_MOBILE : VIDEO_COUNT
       )
     )
-  }, [videoMap, isMobile])
+  }, [])
 
   const switchToNextVideo = useCallback(
     (index, isManual) => {
@@ -244,7 +244,7 @@ const VideoGrid = ({ videos, hasUserInteraction, pageHasFocus }) => {
         .slice(0, isMobile ? VIDEO_COUNT_MOBILE : VIDEO_COUNT)
         .map((video, videoIndex) => (
           <div className="w-2/6 mb-1 mobile:w-full" key={videoIndex}>
-            <TransitionGroup className="overflow-hidden aspect-w-16 aspect-h-9 w-full">
+            <TransitionGroup className="w-full overflow-hidden aspect-w-16 aspect-h-9">
               <CSSTransition
                 key={video.sys.id}
                 timeout={TRANSITION_DURATION}

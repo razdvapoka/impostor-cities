@@ -170,7 +170,12 @@ const VideoItem = ({
           })}
     >
       {video}
-      {state.paused && <img className="object-contain" src={vimeoPosterUrl} />}
+      {state.paused && state.time === 0 && (
+        <div
+          className="bg-black bg-center bg-no-repeat bg-contain"
+          style={{ backgroundImage: `url(${vimeoPosterUrl})` }}
+        />
+      )}
       <Overlay
         stopOnHover={stopOnHover}
         captionEn={captionEn}
