@@ -165,6 +165,7 @@ const Overlay = ({
   blockCount,
   isMobile,
   isPlaying,
+  isLoading,
   captionType,
 }) => {
   const isInBlock = indexInBlock != null
@@ -222,7 +223,7 @@ const Overlay = ({
           />
         )}
       </div>
-      {isMobile && !isPlaying && (
+      {isMobile && !isPlaying && !isLoading && (
         <div className={cn('overlay', styles.videoOverlay)}>
           <button
             className={cn(

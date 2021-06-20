@@ -90,6 +90,7 @@ const VideoItem = ({
         if (!isLoading) {
           const handleCanPlay = () => {
             controls.play()
+            setIsLoading(false)
           }
           const handleLoadStart = () => {
             setIsLoading(true)
@@ -109,7 +110,7 @@ const VideoItem = ({
       setPlayingVideoIndex(null)
     } else {
       setPlayingVideoIndex(index)
-      controls.play()
+      preloadAndPlay()
     }
   }, [index, playingVideoIndex, setPlayingVideoIndex])
 
@@ -183,6 +184,7 @@ const VideoItem = ({
         blockCount={blockCount}
         isMobile={isMobile}
         isPlaying={!state.paused}
+        isLoading={isLoading}
         captionType={captionType}
       />
     </div>
