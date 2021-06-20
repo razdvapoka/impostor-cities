@@ -162,7 +162,7 @@ const VideoItem = ({
 
   return (
     <div
-      className="aspect-w-16 aspect-h-9"
+      className="aspect-w-16 aspect-h-9 w-full"
       {...(isMobile
         ? { onClick: handleClick }
         : {
