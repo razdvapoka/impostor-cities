@@ -32,55 +32,7 @@ const spacing = range(31).reduce(
 )
 
 module.exports = {
-  future: {
-    // purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-  },
-  purge: {
-    content: [
-      './components/**/*.ts',
-      './components/**/*.tsx',
-      './components/**/*.js',
-      './pages/**/*.ts',
-      './pages/**/*.tsx',
-      './pages/**/*.js',
-    ],
-    options: {
-      safelist: [
-        /^mt-20$/,
-        /^my-30$/,
-        /^whitespace-nowrap$/,
-        /^space-x-15$/,
-        /^pr-3$/,
-        /^desktop:col-start/,
-        /^desktop:col-span/,
-        /^w-/,
-        /mt-30/,
-        /^mobile:w-/,
-        /^mobile:bg-/,
-        /^mobile:pt-/,
-        /^mobile:mt-/,
-        /^mobile:items-stretch$/,
-        /^mobile:space-/,
-        /^mobile:static$/,
-        /^mobile:transition-colors$/,
-        /^mobile:pointer-events-/,
-        /^mobile:overflow-auto/,
-        /^justify-center$/,
-        /^opacity-0$/,
-        /^mobile:pt-2/,
-        /pl-3/,
-        /pb-7/,
-        /pb-2/,
-        /mobile:pb-0/,
-        /^flex-wrap$/,
-        /^bg-black$/,
-        /^bg-center$/,
-        /^bg-no-repeat$/,
-        /^bg-contain$/,
-      ],
-    },
-  },
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
       mobile: { max: '750px' },
