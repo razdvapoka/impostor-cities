@@ -1,5 +1,5 @@
 const url = process.env.VERCEL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  ? `https://impostorcities.com`
   : 'http://localhost:3000'
 
 module.exports = {
